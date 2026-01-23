@@ -3,8 +3,9 @@ import { getMessages } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { notFound } from 'next/navigation';
 
-// Forzar renderizado dinámico para evitar prerendering estático
-export const dynamic = 'force-dynamic';
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
 
 export default async function LocaleLayout({
   children,
