@@ -1,0 +1,103 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "about": "Sobre Mí",
+    "tours": "Tours",
+    "gallery": "Galería",
+    "map": "Mapa",
+    "booking": "Reservas",
+    "ebook": "Ebook",
+    "contact": "Contacto",
+    "bookTour": "Reservar Tour"
+  },
+  "hero": {
+    "title": "Descubre el Auténtico Tango de Buenos Aires",
+    "subtitle": "Experiencias únicas en los barrios más emblemáticos de la ciudad",
+    "bookNow": "Reservar Ahora",
+    "viewTours": "Ver Tours"
+  },
+  "about": {
+    "title": "Sobre Tu Guía",
+    "description": "Soy un apasionado del tango con más de 15 años de experiencia compartiendo la cultura y la historia de Buenos Aires con visitantes de todo el mundo.",
+    "years": "Años de Experiencia",
+    "tours": "Tours Realizados",
+    "reviews": "Reseñas 5 Estrellas"
+  },
+  "services": {
+    "title": "El Tour",
+    "private": {
+      "title": "Tour Privado",
+      "description": "Una experiencia personalizada diseñada exclusivamente para ti",
+      "duration": "Duración: 3 horas",
+      "price": "Desde $150 USD",
+      "includes": "Incluye: Guía privado, transporte, entrada a milonga"
+    },
+    "group": {
+      "title": "Tour Grupal",
+      "description": "Únete a un grupo pequeño y descubre el tango juntos",
+      "duration": "Duración: 2.5 horas",
+      "price": "Desde $80 USD",
+      "includes": "Incluye: Guía experto, visita a milonga, clase básica"
+    },
+    "book": "Reservar"
+  },
+  "customizedTours": {
+    "title": "Tours Personalizados",
+    "educational": {
+      "title": "Educacional",
+      "description": "Tango como Experiencia Educativa y Cultural\n\nPropuesta para escuelas bilingües e internacionales"
+    },
+    "corporate": {
+      "title": "Corporativo",
+      "description": "Tango como Experiencia Cultural para Empresas y Delegaciones Internacionales"
+    },
+    "university": {
+      "title": "Universitario",
+      "description": "Tango como Experiencia Cultural y Educativa\n\nPropuesta para Universidades y Programas de Intercambio Internacional"
+    }
+  },
+  "gallery": {
+    "title": "Galería"
+  },
+  "map": {
+    "title": "Dónde Comienza la Experiencia de Tango",
+    "location": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.462819838926!2d-58.381158124283246!3d-34.603631557493536!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bccace8c3f9bad%3A0x8cda054767681b5e!2sAv.%20Corrientes%20838%2C%20C1043%20San%20Nicolas%2C%20Cdad.%20Aut%C3%B3noma%20de%20Buenos%20Aires!5e1!3m2!1ses!2sar!4v1769173596954!5m2!1ses!2sar"
+  },
+  "booking": {
+    "title": "Reserva Tu Tour",
+    "description": "Selecciona una fecha y hora que funcione para ti"
+  },
+  "ebook": {
+    "title": "Descubre el mundo interior del tango a través de mi libro Entre La Patagonia y el Tango",
+    "description": "Este libro nació espontáneamente—de una anécdota hilarante protagonizada por una querida amiga, del impulso irresistible de bailar tango día y noche, y sobre todo, de un profundo anhelo de estar en la milonga incluso cuando estaba a kilómetros de distancia, viviendo por un tiempo en la Patagonia.\n\nSumergirme en escribir estas historias se convirtió en una especie de placebo milonguero, calmando tanto mi mente como mis pies —que, mientras vagaban por las playas del Lago Nahuel Huapi en la Patagonia, se imaginaban atados a tacos altos, deslizándose por la pista de baile, arrastrados por la música y el abrazo del tango.",
+    "available": {
+      "amazon": "https://www.amazon.com/dp/B0DGTQRKTJ",
+      "google": "https://play.google.com/store/books/details?id=2SEhEQAAQBAJ&gl=ar",
+      "apple": "https://books.apple.com/ar/book/entre-la-patagonia-y-el-tango/id6677052575",
+      "editorialAutoresDeArgentina": "https://autoresdeargentina.com/product/entre-la-patagonia-y-el-tango-maria-ines-ocampos/"
+    },
+    "buyNow": "Comprar Ahora"
+  },
+  "contact": {
+    "title": "Contacto",
+    "form": {
+      "name": "Nombre",
+      "email": "Email",
+      "subject": "Asunto",
+      "message": "Mensaje",
+      "send": "Enviar"
+    },
+    "info": {
+      "email": "contact@theauthentictangoexperience.com",
+      "phone": "(+549) 11-5015-4342",
+      "instagram": "theauthentictangoexperience"
+    }
+  },
+  "footer": {
+    "quickLinks": "Enlaces Rápidos",
+    "legal": "Legal",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "copyright": "© 2024 Buenos Aires Tango Tours. Todos los derechos reservados."
+  }
+}
