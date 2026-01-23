@@ -20,6 +20,7 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  // Cargar mensajes explícitamente para el locale
   const messages = await getMessages({ locale });
 
   return (
