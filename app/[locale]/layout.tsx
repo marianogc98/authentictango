@@ -3,9 +3,8 @@ import { getMessages } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import { notFound } from 'next/navigation';
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }));
-}
+// Forzar renderizado dinámico para evitar prerendering estático
+export const dynamic = 'force-dynamic';
 
 export default async function LocaleLayout({
   children,
