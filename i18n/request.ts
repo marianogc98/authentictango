@@ -1,10 +1,11 @@
 import { getRequestConfig } from 'next-intl/server';
 import { routing } from './routing';
 
-export default getRequestConfig(async () => {
-  // Para exportación estática, no podemos usar requestLocale (usa headers())
-  // El locale se maneja completamente en el layout desde los parámetros de la ruta
-  const locale = routing.defaultLocale;
+export default getRequestConfig(async ({ locale }) => {
+  // Validar que el locale esté en la lista de locales permitidos
+  if (!routing.locales.includes(locale as any)) {
+    locale = routing.defaultLocale;
+  }
 
   return {
     locale,

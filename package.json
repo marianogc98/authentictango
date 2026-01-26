@@ -6,7 +6,7 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "eslint .",
-    "start": "npx serve@latest out"
+    "start": "next start"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
