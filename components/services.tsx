@@ -6,6 +6,11 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import useEmblaCarousel from 'embla-carousel-react'
 import { useState, useEffect, useCallback } from 'react'
+import { RichText } from '@/components/rich-text'
+
+const processDescription = (text: string): string => {
+  return text.replace(/\[BOLD\](.*?)\[\/BOLD\]/g, '<strong>$1</strong>')
+}
 
 const tourIcons = [User, Users]
 const tourKeys = ['private', 'group']
@@ -87,7 +92,10 @@ export function Services() {
             {t(`${key}.title`)}
           </CardTitle>
           <CardDescription className="text-muted-foreground whitespace-pre-line">
-            {t(`${key}.description`)}
+            <RichText 
+              content={processDescription(t(`${key}.description`))}
+              className="[&_strong]:font-bold"
+            />
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -138,7 +146,10 @@ export function Services() {
             {tCustomized(`${key}.title`)}
           </CardTitle>
           <CardDescription className="text-muted-foreground whitespace-pre-line">
-            {tCustomized(`${key}.description`)}
+            <RichText 
+              content={processDescription(tCustomized(`${key}.description`))}
+              className="[&_strong]:font-bold"
+            />
           </CardDescription>
         </CardHeader>
         <CardContent>

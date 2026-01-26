@@ -27,38 +27,44 @@ export function Booking() {
           </p>
         </div>
 
-        <div className="max-w-4xl mx-auto space-y-8">
-          {/* Cal.com Calendar */}
-          <div className="bg-card border border-border rounded-lg overflow-hidden">
-            <div className="relative min-h-[600px] w-full">
-              <Cal
-                namespace="tour"
-                calLink="mariano-caudevila-9hqkk0/tour"
-                style={{ width: "100%", height: "100%", overflow: "scroll" }}
-                config={{ "layout": "month_view" }}
-              />
+        <div className="max-w-7xl mx-auto">
+          <div className="grid lg:grid-cols-4 gap-8 lg:items-stretch">
+            {/* Map - 25% en desktop */}
+            <div className="lg:col-span-1">
+              <div className="bg-card border border-border rounded-lg overflow-hidden sticky top-8 h-full flex flex-col">
+                <div className="p-4 border-b border-border flex-shrink-0">
+                  <h3 className="font-serif text-lg font-bold text-foreground text-center">
+                    {tMap('title')}
+                  </h3>
+                </div>
+                <div className="relative flex-1 min-h-[600px]">
+                  <iframe
+                    src={`${tMap('location')}&t=k`}
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title={tMap('title')}
+                    className="absolute inset-0"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
 
-          {/* Map */}
-          <div className="bg-card border border-border rounded-lg overflow-hidden">
-            <div className="p-6 border-b border-border">
-              <h3 className="font-serif text-xl font-bold text-foreground text-center">
-                {tMap('title')}
-              </h3>
-            </div>
-            <div className="relative aspect-video w-full">
-              <iframe
-                src={`${tMap('location')}&t=k`}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                title={tMap('title')}
-                className="absolute inset-0"
-              />
+            {/* Cal.com Calendar - 75% en desktop */}
+            <div className="lg:col-span-3">
+              <div className="bg-card border border-border rounded-lg overflow-hidden h-full">
+                <div className="relative min-h-[600px] w-full h-full">
+                  <Cal
+                    namespace="tour"
+                    calLink="mariano-caudevila-9hqkk0/tour"
+                    style={{ width: "100%", height: "100%", overflow: "scroll" }}
+                    config={{ "layout": "month_view" }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>

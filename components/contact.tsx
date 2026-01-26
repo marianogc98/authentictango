@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Send, Instagram, Facebook } from "lucide-react"
+import { Send, Instagram, Facebook, Mail, Phone } from "lucide-react"
 
 export function Contact() {
   const t = useTranslations('contact')
@@ -41,85 +41,48 @@ export function Contact() {
           </h2>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-12 max-w-5xl mx-auto">
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-xl font-serif font-bold mb-6">
-                Email
-              </h3>
-              <a
-                href={`mailto:${t('info.email')}`}
-                className="text-primary hover:opacity-80 transition-opacity mb-6 block"
-              >
-                {t('info.email')}
-              </a>
-
-              <h3 className="text-xl font-serif font-bold mb-6">
-                Phone
-              </h3>
-              <a
-                href={`https://wa.me/${t('info.phone').replace(/[^0-9]/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:opacity-80 transition-opacity mb-6 block"
-              >
-                {t('info.phone')}
-              </a>
-
-              <h3 className="text-xl font-serif font-bold mb-4">
-                Instagram
-              </h3>
-              <a
-                href={`https://instagram.com/${t('info.instagram')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-primary hover:opacity-80 transition-opacity"
-              >
-                <Instagram className="h-5 w-5" />
-                <span>@{t('info.instagram')}</span>
-              </a>
-            </div>
-          </div>
-
+        <div className="max-w-5xl mx-auto space-y-12">
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
-                {t('form.name')}
-              </label>
-              <Input
-                id="name"
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                required
-                className="bg-card border-border"
-              />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
-                {t('form.email')}
-              </label>
-              <Input
-                id="email"
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                required
-                className="bg-card border-border"
-              />
-            </div>
-            <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
-                {t('form.subject')}
-              </label>
-              <Input
-                id="subject"
-                type="text"
-                value={formData.subject}
-                onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                required
-                className="bg-card border-border"
-              />
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
+                  {t('form.name')}
+                </label>
+                <Input
+                  id="name"
+                  type="text"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  className="!bg-white hover:!bg-white focus:!bg-white focus-visible:!bg-white border-border"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-foreground mb-2">
+                  {t('form.email')}
+                </label>
+                <Input
+                  id="email"
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="!bg-white hover:!bg-white focus:!bg-white focus-visible:!bg-white border-border"
+                />
+              </div>
+              <div>
+                <label htmlFor="subject" className="block text-sm font-medium text-foreground mb-2">
+                  {t('form.subject')}
+                </label>
+                <Input
+                  id="subject"
+                  type="text"
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  required
+                  className="!bg-white hover:!bg-white focus:!bg-white focus-visible:!bg-white border-border"
+                />
+              </div>
             </div>
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
@@ -131,22 +94,54 @@ export function Contact() {
                 value={formData.message}
                 onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                 required
-                className="bg-card border-border resize-none"
+                className="!bg-white hover:!bg-white focus:!bg-white focus-visible:!bg-white border-border resize-none"
               />
             </div>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
-              {isSubmitting ? (
-                "..."
-              ) : isSubmitted ? (
-                "✓"
-              ) : (
-                <>
-                  {t('form.send')}
-                  <Send className="ml-2 h-4 w-4" />
-                </>
-              )}
-            </Button>
+            <div className="flex justify-end">
+              <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
+                {isSubmitting ? (
+                  "..."
+                ) : isSubmitted ? (
+                  "✓"
+                ) : (
+                  <>
+                    {t('form.send')}
+                    <Send className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+            </div>
           </form>
+
+          <div className="flex flex-wrap items-center gap-6 md:gap-8 justify-center">
+            <a
+              href={`mailto:${t('info.email')}`}
+              className="flex items-center gap-2 text-foreground hover:opacity-80 transition-opacity"
+            >
+              <Mail className="h-5 w-5" />
+              <span>{t('info.email')}</span>
+            </a>
+
+            <a
+              href={`https://wa.me/${t('info.phone').replace(/[^0-9]/g, '')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-foreground hover:opacity-80 transition-opacity"
+            >
+              <Phone className="h-5 w-5" />
+              <span>{t('info.phone')}</span>
+            </a>
+
+            <a
+              href={`https://instagram.com/${t('info.instagram')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-foreground hover:opacity-80 transition-opacity"
+            >
+              <Instagram className="h-5 w-5" />
+              <span>@{t('info.instagram')}</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>
