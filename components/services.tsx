@@ -116,7 +116,7 @@ export function Services() {
 
     if (isMobile) {
       return (
-        <div key={key} className="flex-[0_0_calc(100%-0.25rem)] min-w-0 shrink-0">
+        <div key={key} className="flex-[0_0_calc(100%-0.5rem)] min-w-0 shrink-0">
           {cardContent}
         </div>
       )
@@ -156,7 +156,7 @@ export function Services() {
 
     if (isMobile) {
       return (
-        <div key={key} className="flex-[0_0_calc(100%-0.25rem)] min-w-0 shrink-0">
+        <div key={key} className="flex-[0_0_calc(100%-0.5rem)] min-w-0 shrink-0">
           {cardContent}
         </div>
       )
@@ -177,9 +177,9 @@ export function Services() {
 
           {/* Mobile Slider */}
           <div className="md:hidden pb-4">
-            <div className="px-1">
-              <div className="overflow-hidden pt-8 px-1" ref={emblaRef}>
-                <div className="flex gap-1">
+            <div className="px-2">
+              <div className="overflow-hidden pt-8 px-2" ref={emblaRef}>
+                <div className="flex gap-2">
                   {tourKeys.map((key, index) => renderTourCard(key, index, true))}
                 </div>
               </div>
@@ -219,9 +219,9 @@ export function Services() {
 
           {/* Mobile Slider */}
           <div className="md:hidden pb-4">
-            <div className="px-1">
-              <div className="overflow-hidden px-1" ref={emblaRefCustomized}>
-                <div className="flex gap-1">
+            <div className="px-2">
+              <div className="overflow-hidden px-2" ref={emblaRefCustomized}>
+                <div className="flex gap-2">
                   {customizedKeys.map((key, index) => renderCustomizedCard(key, index, true))}
                 </div>
               </div>
