@@ -103,5 +103,80 @@
     "privacy": "Privacidad",
     "terms": "Términos",
     "copyright": "© 2024 Buenos Aires Tango Tours. Todos los derechos reservados."
+  },
+  "reviews": {
+    "title": "Calificaciones",
+    "airbnb": {
+      "score": "4.9",
+      "total": "140+",
+      "reviews": [
+        {
+          "name": "Murray.",
+          "date": "Diciembre 2025",
+          "rating": 5,
+          "message": "Incluso si estás remotamente interesado en el baile, esto es algo que debes hacer. El conocimiento y la pasión de María brillan haciendo de esta la mejor experiencia que hemos tenido en las ciudades que hemos viajado hasta ahora. Muy auténtico, ya que aquí es donde están los locales, haciendo lo suyo en una tarde de día laboral, y así explicado por nuestra hermosa anfitriona."
+        },
+        {
+          "name": "Amanda.",
+          "date": "Diciembre 2025",
+          "rating": 5,
+          "message": "Marie es increíblemente conocedora de la historia y el origen del Tango de Buenos Aires y lo explicó de una manera cautivadora, humorística e interactiva. Tuvimos varias paradas donde aprendimos no solo sobre la historia del Tango sino también algunos movimientos básicos de tango - todo intercalado con información sobre el Distrito de Teatros y los bocadillos y pasteles argentinos favoritos y típicos. Terminamos en una Milonga (donde los locales van a bailar Tango) donde fuimos invitados a bailar y hacer nuevos amigos de Buenos Aires que pacientemente nos enseñaron algunos movimientos nuevos! ¡Experiencia increíble y totalmente recomendada. No necesitas tener experiencia en baile para disfrutarlo. Gracias Marie!"
+        },
+        {
+          "name": "Luca",
+          "date": "Noviembre 2025",
+          "rating": 5,
+          "message": "María es una excelente guía de tango. No solo tiene mucho conocimiento sobre la historia del tango, ella misma es una bailarina de tango experta y apasionada."
+        },
+        {
+          "name": "Xiaolei",
+          "date": "Agosto 2025",
+          "rating": 5,
+          "message": "Debido al clima, fui la única persona que participó en la experiencia hoy, así que se convirtió en un grupo privado. María es muy meticulosa sobre los orígenes históricos y el auge y caída del tango, y me dio mucha información, lo cual fue revelador. También disfruté mucho de los pasos de tango y el método que me enseñó en la calle. Finalmente, fuimos a bailar. Lo sorprendente es que, como principiante, recibí dos invitaciones, lo que hizo que mi experiencia general fuera muy completa. Gracias. Altamente recomendado."
+        },
+        {
+          "name": "Jane",
+          "date": "Marzo 2025",
+          "rating": 5,
+          "message": "María es muy conocedora y una gran guía. Recomiendo esta experiencia a todos los interesados en el tango y Buenos Aires. ¡La disfruté mucho!"
+        }
+      ]
+    },
+    "google": {
+      "score": "5.0",
+      "total": "10+",
+      "reviews": [
+        {
+          "name": "Heidi bech Geschwendtner",
+          "date": "Enero 2026",
+          "rating": 5,
+          "message": "Tuve un día increíble con María en un tour privado y aprendí mucho sobre el rico y fascinante mundo del tango. Su conocimiento es profundo y lo comparte de una manera tan natural y atractiva. Nos divertimos mucho, reímos mucho y realmente disfrutamos cada momento. María no solo es increíblemente conocedora sino también una persona maravillosa para ser guiada. Gracias por una experiencia fantástica — recomiendo mucho a María."
+        },
+        {
+          "name": "Thomas Obel",
+          "date": "Diciembre 2026",
+          "rating": 5,
+          "message": "Realmente disfruté nuestro día privado con María. Ella es muy conocedora, fácil de hablar, e hizo que la historia del tango cobrara vida con grandes historias. Una experiencia divertida, relajada y excelente. Mis más cálidas recomendaciones. Saludos cordiales, Thomas"
+        },
+        {
+          "name": "Flor Arbiser",
+          "date": "Abril 2025",
+          "rating": 5,
+          "message": "Me uní al Tour de Tango de María Inés solo para acompañar a turistas. Pero resultó ser increíblemente entretenido para mí, una nativa de Buenos Aires y apenas entusiasta del tango. María Inés conoce la historia del tango tan profundamente que te hace sentir como si fueras parte de sus orígenes, como si estuvieras en un bar en La Boca a principios del siglo pasado. Habla un inglés perfecto, casi musical. Para colmo, enseña algunos pasos con facilidad y encanto, y te lleva dentro de milongas auténticas. Allí, María Inés se pone sus tacos y demuestra ser una de las mejores bailarinas."
+        },
+        {
+          "name": "Lisa Bryzek",
+          "date": "Marzo 2025",
+          "rating": 5,
+          "message": "¡María fue una guía maravillosa! Traje a mi suegra y a mi hijo a Buenos Aires para bailar tango ya que mi hijo ha estado tomando clases de tango. Quería una experiencia más local pero estaba intimidada de entrar a una milonga por nuestra cuenta. Encontré a María en experiencias de Airbnb y fue muy fácil comunicarse con ella. Primero aprendimos sobre la historia del tango y luego nos llevó a una milonga y nos enseñó la etiqueta de la milonga. María llevó a mi hijo a la pista de baile para \"romper el hielo\" y desde ese momento mi hijo fue invitado a bailar toda la noche tanto por hombres como por mujeres y ¡se divirtió mucho! Gracias María por esta maravillosa experiencia local! ¡Recomiendo mucho!"
+        },
+        {
+          "name": "Tulip Order Office",
+          "date": "Marzo 2025",
+          "rating": 5,
+          "message": "El diciembre pasado mi familia tuvo una velada tan maravillosa con María Inés. Aprendimos todo sobre la historia del tango, luego visitamos un salón de tango para ver algunos bailes increíbles. Fue uno de los momentos más memorables para mí. Gracias y cariños de Bill, John, Milo, Teo y Otto"
+        }
+      ]
+    }
   }
 }

@@ -97,5 +97,80 @@
     "privacy": "Privacy",
     "terms": "Terms",
     "copyright": "© 2024 Buenos Aires Tango Tours. All rights reserved."
+  },
+  "reviews": {
+    "title": "Reviews",
+    "airbnb": {
+      "score": "4.9",
+      "total": "140+",
+      "reviews": [
+        {
+          "name": "Murray.",
+          "date": "December 2025",
+          "rating": 5,
+          "message": "Even if you are remotely interested in dance, this is a must do. Maria’s knowledge and passion shines through making it the best experience we have had in the cities we have traveled so far. Very authentic, as this is where the locals are, doing their thing on a weekday afternoon, and so explained by our beautiful host."
+        },
+        {
+          "name": "Amanda.",
+          "date": "December 2025",
+          "rating": 5,
+          "message": "Marie is incredibly knowledgeable about the history and origin of Buenos Aires Tango and explained this in a captivating, humorous and interactive way. We had several stops where we learnt not only about Tango history but also a few basic tango moves - all interspersed with information about the Theatre District and favourite & typical Argentinian snacks & cakes. We finished off at a Malinga (where locals go to Tango) where we were invited to dance and make some new Buenos Aires friends who patiently taught us some new moves! Unbelievable experience and thoroughly recommend. You do not need to have any dance experience to enjoy. Thank you Marie!"
+        },
+        {
+          "name": "Luca",
+          "date": "November 2025",
+          "rating": 5,
+          "message": "Maria is an excellent tango guide. Not only she is very knowledgeable about the history of tango, she is an expert and passionate tango dancer herself."
+        },
+        {
+          "name": "Xiaolei",
+          "date": "August 2025",
+          "rating": 5,
+          "message": "Due to the weather, I was the only person who participated in the experience today, so it became a private group. Maria is very meticulous about the historical origins and the rise and fall of tango, and she gave me a lot of information, which was eye-opening. I also really enjoyed the tango steps and the method she taught me on the street. Finally, we went dancing. The amazing thing is that, as a beginner, I received two invitations, which made my overall experience very complete. Thank you. Highly recommended."
+        },        
+        {
+          "name": "Jane",
+          "date": "March 2025",
+          "rating": 5,
+          "message": "Maria is so knowledgable and a great guide. I recommend this experience to everyone interested in tango and Buenos Aires. Throughly enjoyed it!"
+        }
+      ]
+    },
+    "google": {
+      "score": "5.0",
+      "total": "10+",
+      "reviews": [
+        {
+          "name": "Heidi bech Geschwendtner",
+          "date": "January 2026",
+          "rating": 5,
+          "message": "I had an amazing day with Maria on a private tour and learned so much about the rich and fascinating world of tango. Her knowledge is deep and shared in such a natural, engaging way. We had a lot of fun, laughed a lot, and truly enjoyed every moment. Maria is not only incredibly knowledgeable but also a wonderful person to be guided by. Thank you for a fantastic experience — I highly recommend Maria."
+        },
+        {
+          "name": "Thomas Obel",
+          "date": "December 2026",
+          "rating": 5,
+          "message": "I really enjoyed our private day with Maria. She is very knowledgeable, easy to talk to, and made tango history come alive with great stories. A fun, relaxed, and excellent experience. My warmest recommendations. Best Regards Thomas"
+        },
+        {
+          "name": "Flor Arbiser",
+          "date": "April 2025",
+          "rating": 5,
+          "message": "I joined María Inés's Tango Tour just to accompany tourists. But it turned out to be incredibly entertaining for me, a Buenos Aires native and hardly any tango enthusiast. María Inés knows the history of tango so deeply that she makes you feel like you're part of its origins, as if you were in a bar in La Boca at the beginning of the last century. She speaks perfect, almost musical English. To top it all off, she teaches a few steps with ease and charm, and takes you inside authentic milongas. There, María Inés puts on her heels and proves herself to be one of the best dancers."
+        },
+        {
+          "name": "Lisa Bryzek",
+          "date": "March 2025",
+          "rating": 5,
+          "message": "María was a wonderful guide! I brought my mother in law and son to Buenos Aires to dance tango since my son has been taking tango lessons. I wanted a more local experience but was intimidated to go into a milonga by ourselves. I found Maria on Airbnb experiences and she was very easy to communicate with. We first learned about the history of tango and then She brought us to a milonga and taught us the milonga etiquette. Maria took my son out on the dance floor to “break the ice” and from that moment on my son was asked to dance all night long by both men and women and had a blast! Thank you Maria for this wonderful local experience! I highly recommend!!"
+        },
+        {
+          "name": "Tulip Order Office",
+          "date": "March 2025",
+          "rating": 5,
+          "message": "Last December my family had such a wonderful evening with Maria Ines. We learnt all about the history of the tango, then visited a tango hall to watch some amazing dancing. It was one of the most memorable times for me. Thank you and love from Bill, John, Milo, Teo and Otto"
+        }
+      ]
+    }
   }
 }
