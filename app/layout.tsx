@@ -2,6 +2,7 @@ import React from "react"
 import type { Metadata } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { Umami } from '@/components/Umami'
 import './globals.css'
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-serif' });
@@ -39,6 +40,7 @@ export default function RootLayout({
     <html className={`${inter.variable} ${playfair.variable}`}>
       <body className={`font-sans antialiased`}>
         {children}
+        <Umami />
         <Analytics />
       </body>
     </html>

@@ -29,15 +29,16 @@ export function Booking() {
 
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-4 gap-8 lg:items-stretch">
-            {/* Map - 25% en desktop */}
-            <div className="lg:col-span-1">
+            {/* En móvil: booking primero (order-1), mapa después (order-2). En desktop: mapa izquierda (order-1), booking derecha (order-2). */}
+            {/* Map - 25% en desktop; en móvil va segundo y 20% menos alto */}
+            <div className="order-2 lg:order-1 lg:col-span-1">
               <div className="bg-card border border-border rounded-lg overflow-hidden sticky top-8 h-full flex flex-col">
                 <div className="p-4 border-b border-border flex-shrink-0">
                   <h3 className="font-serif text-lg font-bold text-foreground text-center">
                     {tMap('title')}
                   </h3>
                 </div>
-                <div className="relative flex-1 min-h-[600px]">
+                <div className="relative flex-1 min-h-[480px] lg:min-h-[600px]">
                   <iframe
                     src={`${tMap('location')}&t=k`}
                     width="100%"
@@ -53,8 +54,8 @@ export function Booking() {
               </div>
             </div>
 
-            {/* Cal.com Calendar - 75% en desktop */}
-            <div className="lg:col-span-3">
+            {/* Cal.com Calendar - 75% en desktop; en móvil va primero */}
+            <div className="order-1 lg:order-2 lg:col-span-3">
               <div className="bg-card border border-border rounded-lg overflow-hidden h-full">
                 <div className="relative min-h-[600px] w-full h-full">
                   <Cal
