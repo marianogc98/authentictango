@@ -76,8 +76,8 @@ export function Ebook() {
           </div>
 
           <div className="order-1 lg:order-2 relative flex items-center justify-center lg:col-span-1">
-            <div className="relative aspect-[3/4] w-full max-w-[288px] mx-auto">
-              <div className="relative aspect-[3/4] rounded-lg overflow-hidden shadow-2xl">
+            <div className="relative aspect-[3/4] w-full max-w-[331px] mx-auto">
+              <div className="relative aspect-[3/4] overflow-hidden">
                 <Image
                   src="/images/ebook-cover.png"
                   alt="Portada del ebook Entre La Patagonia y el Tango"

@@ -108,7 +108,7 @@ export function Reviews() {
         </div>
 
         {/* Carousel de reseñas */}
-        <div className="max-w-6xl mx-auto relative">
+        <div className="relative">
           <Carousel
             opts={{
               align: 'start',

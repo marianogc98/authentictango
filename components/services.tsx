@@ -1,6 +1,6 @@
 "use client"
 
-import { User, Users, GraduationCap, Building2, School, ArrowRight } from "lucide-react"
+import { User, Users, ArrowRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -15,23 +15,11 @@ const processDescription = (text: string): string => {
 const tourIcons = [User, Users]
 const tourKeys = ['private', 'group']
 
-const customizedIcons = [GraduationCap, Building2, School]
-const customizedKeys = ['educational', 'corporate', 'university']
-
 export function Services() {
   const t = useTranslations('services')
-  const tCustomized = useTranslations('customizedTours')
   const [selectedIndex, setSelectedIndex] = useState(0)
-  const [selectedIndexCustomized, setSelectedIndexCustomized] = useState(0)
-  
-  const [emblaRef, emblaApi] = useEmblaCarousel({ 
-    align: 'center',
-    slidesToScroll: 1,
-    breakpoints: {
-      '(min-width: 768px)': { active: false }
-    }
-  })
-  const [emblaRefCustomized, emblaApiCustomized] = useEmblaCarousel({ 
+
+  const [emblaRef, emblaApi] = useEmblaCarousel({
     align: 'center',
     slidesToScroll: 1,
     breakpoints: {
@@ -43,23 +31,12 @@ export function Services() {
     setSelectedIndex(emblaApi.selectedScrollSnap())
   }, [])
 
-  const onSelectCustomized = useCallback((emblaApi: any) => {
-    setSelectedIndexCustomized(emblaApi.selectedScrollSnap())
-  }, [])
-
   useEffect(() => {
     if (!emblaApi) return
     onSelect(emblaApi)
     emblaApi.on('reInit', onSelect)
     emblaApi.on('select', onSelect)
   }, [emblaApi, onSelect])
-
-  useEffect(() => {
-    if (!emblaApiCustomized) return
-    onSelectCustomized(emblaApiCustomized)
-    emblaApiCustomized.on('reInit', onSelectCustomized)
-    emblaApiCustomized.on('select', onSelectCustomized)
-  }, [emblaApiCustomized, onSelectCustomized])
 
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
@@ -110,11 +87,11 @@ export function Services() {
               {t(`${key}.price`)}
             </p>
             <Button 
-              onClick={() => scrollToSection('booking')} 
+              onClick={() => scrollToSection(key === 'group' ? 'contact' : 'booking')} 
               className="w-full" 
               variant={isPopular ? "default" : "outline"}
             >
-              {t('book')}
+              {t(`${key}.book`)}
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -132,53 +109,8 @@ export function Services() {
     return <div key={key}>{cardContent}</div>
   }
 
-  const renderCustomizedCard = (key: string, index: number, isMobile: boolean = false) => {
-    const Icon = customizedIcons[index]
-    const cardContent = (
-      <Card 
-        className="bg-card border-border hover:border-primary/50 transition-all duration-300"
-      >
-        <CardHeader>
-          <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-            <Icon className="h-6 w-6 text-primary" />
-          </div>
-          <CardTitle className="font-serif text-xl text-foreground">
-            {tCustomized(`${key}.title`)}
-          </CardTitle>
-          <CardDescription className="text-muted-foreground whitespace-pre-line">
-            <RichText 
-              content={processDescription(tCustomized(`${key}.description`))}
-              className="[&_strong]:font-bold"
-            />
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button 
-            onClick={() => scrollToSection('contact')} 
-            className="w-full" 
-            variant="outline"
-          >
-            Contact Us
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-        </CardContent>
-      </Card>
-    )
-
-    if (isMobile) {
-      return (
-        <div key={key} className="flex-[0_0_calc(100%-0.5rem)] min-w-0 shrink-0">
-          {cardContent}
-        </div>
-      )
-    }
-    return <div key={key}>{cardContent}</div>
-  }
-
   return (
-    <>
-      {/* The Tour Section */}
-      <section id="tours" className="py-20 lg:py-32">
+    <section id="tours" className="py-20 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
@@ -217,49 +149,6 @@ export function Services() {
             {tourKeys.map((key, index) => renderTourCard(key, index))}
           </div>
         </div>
-      </section>
-
-      {/* Customized Tours Section */}
-      <section id="customized-tours" className="py-20 lg:py-32 bg-secondary">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
-              {tCustomized('title')}
-            </h2>
-          </div>
-
-          {/* Mobile Slider */}
-          <div className="md:hidden pb-4">
-            <div className="px-2">
-              <div className="overflow-hidden px-2" ref={emblaRefCustomized}>
-                <div className="flex gap-2">
-                  {customizedKeys.map((key, index) => renderCustomizedCard(key, index, true))}
-                </div>
-              </div>
-            </div>
-            {/* Bullets */}
-            <div className="flex justify-center gap-2 mt-6">
-              {customizedKeys.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => emblaApiCustomized?.scrollTo(index)}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    index === selectedIndexCustomized 
-                      ? 'bg-primary w-6' 
-                      : 'bg-muted-foreground/30'
-                  }`}
-                  aria-label={`Go to slide ${index + 1}`}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Desktop Grid */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {customizedKeys.map((key, index) => renderCustomizedCard(key, index))}
-          </div>
-        </div>
-      </section>
-    </>
+    </section>
   )
 }

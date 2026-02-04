@@ -51,7 +51,7 @@ export function About() {
   }, [])
 
   const stats = [
-    { value: 15, suffix: '+', label: t('years') },
+    { value: 10, suffix: '+', label: t('years') },
     { value: 500, suffix: '+', label: t('tours') },
     { value: 4.9, suffix: '', label: t('reviews') },
   ]
@@ -65,7 +65,7 @@ export function About() {
           if (entry.isIntersecting && !hasAnimated) {
             setHasAnimated(true)
             
-            const targetValues = [15, 500, 4.9]
+            const targetValues = [10, 500, 4.9]
             const duration = 2000 // 2 segundos
             const steps = 60
             const stepDuration = duration / steps
@@ -128,7 +128,7 @@ export function About() {
               />
             </div>
             <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-6 rounded-lg hidden lg:block">
-              <p className="font-serif text-4xl font-bold">15+</p>
+              <p className="font-serif text-4xl font-bold">10+</p>
               <p className="text-sm opacity-90">{t('years')}</p>
             </div>
           </div>

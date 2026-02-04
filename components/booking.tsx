@@ -1,19 +1,12 @@
 "use client"
 
-import { useEffect } from "react"
 import { useTranslations } from 'next-intl'
-import Cal, { getCalApi } from "@calcom/embed-react"
+
+const CAL_EMBED_URL = 'https://cal.com/maria-ines-ocampos/'
 
 export function Booking() {
   const t = useTranslations('booking')
   const tMap = useTranslations('map')
-
-  useEffect(() => {
-    (async function () {
-      const cal = await getCalApi({ "namespace": "tour" })
-      cal("ui", { "hideEventTypeDetails": false, "layout": "month_view" })
-    })()
-  }, [])
 
   return (
     <section id="booking" className="py-20 lg:py-32 bg-secondary">
@@ -27,8 +20,7 @@ export function Booking() {
           </p>
         </div>
 
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-4 gap-8 lg:items-stretch">
+        <div className="grid lg:grid-cols-4 gap-8 lg:items-stretch">
             {/* En móvil: booking primero (order-1), mapa después (order-2). En desktop: mapa izquierda (order-1), booking derecha (order-2). */}
             {/* Map - 25% en desktop; en móvil va segundo y 20% menos alto */}
             <div className="order-2 lg:order-1 lg:col-span-1">
@@ -54,21 +46,20 @@ export function Booking() {
               </div>
             </div>
 
-            {/* Cal.com Calendar - 75% en desktop; en móvil va primero */}
+            {/* Cal.com - 75% en desktop; en móvil va primero */}
             <div className="order-1 lg:order-2 lg:col-span-3">
               <div className="bg-card border border-border rounded-lg overflow-hidden h-full">
                 <div className="relative min-h-[600px] w-full h-full">
-                  <Cal
-                    namespace="tour"
-                    calLink="mariano-caudevila-9hqkk0/tour"
-                    style={{ width: "100%", height: "100%", overflow: "scroll" }}
-                    config={{ "layout": "month_view" }}
+                  <iframe
+                    src={CAL_EMBED_URL}
+                    title={t('title')}
+                    className="absolute inset-0 w-full h-full border-0"
+                    loading="lazy"
                   />
                 </div>
               </div>
             </div>
           </div>
-        </div>
       </div>
     </section>
   )

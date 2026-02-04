@@ -1,11 +1,12 @@
 {
   "nav": {
     "about": "Sobre Mí",
-    "tours": "El Tour",
-    "Customized Tours": "Tours Personalizados",
-    "ebook": "Mi Libro",
+    "tours": "La Experiencia",
+    "reviews": "Reseñas",
+    "gallery": "Galería",
+    "ebook": "E-book",
     "contact": "Contacto",
-    "bookTour": "Reservar"
+    "bookTour": "Reserva Ahora"
   },
   "hero": {
     "title": "Tours de tango en Buenos Aires\nCultura, Historia y Pasión",
@@ -21,7 +22,7 @@
     "reviews": "+150 Calificaciones"
   },
   "services": {
-    "title": "El Tour",
+    "title": "La Experiencia",
     "private": {
       "title": "Recorrido cultural a pie sobre tango y visita a una milonga",
       "description": "Comenzamos [BOLD]caminando por las calles de Buenos Aires[/BOLD], donde nació el tango — descubriendo su [BOLD]historia[/BOLD], sus poetas, su música y los barrios que le dieron vida. A medida que exploramos la ciudad a pie, el tango se revela no solo como una danza, sino como una profunda expresión cultural arraigada en la vida cotidiana.\n\nEl recorrido culmina con la [BOLD]visita a una auténtica milonga[/BOLD], donde presenciamos el [BOLD]tango social[/BOLD] en su verdadera esencia: espontáneo, íntimo y lleno de códigos y tradiciones. Observar a los bailarines y descifrar la etiqueta con la [BOLD]guía de un experto[/BOLD] convierte la experiencia en algo [BOLD]profundamente revelador[/BOLD].\n\n[BOLD]Más que un espectáculo, se trata de una inmersión guiada y profunda en la cultura viva del tango.[/BOLD]",
@@ -32,27 +33,25 @@
     },
     "group": {
       "title": "Recorrido cultural a pie sobre tango y visita a una milonga + clase grupal",
-      "description": "Comenzamos [BOLD]caminando por las calles de Buenos Aires[/BOLD], donde nació el tango — descubriendo su historia, sus poetas, su música y los barrios que le dieron vida. A medida que exploramos la ciudad a pie, el tango se revela no solo como una danza, sino como una [BOLD]profunda expresión cultural arraigada en la vida cotidiana[/BOLD].\n\nEl recorrido continúa con la [BOLD]visita a una auténtica milonga[/BOLD], donde presenciamos el tango social en su verdadera esencia: espontáneo, íntimo y lleno de códigos y tradiciones. Al llegar, los participantes se unen a una [BOLD]clase grupal[/BOLD] junto con otros extranjeros o locales regulares — un momento divertido y único que les permite experimentar el tango a través de su propio cuerpo y movimiento. Durante la clase, el guía los acompañará como traductor, pareja y apoyo, asegurándose de que todos se sientan cómodos e incluidos.\n\nDespués de la clase, los invitados pueden elegir probar sus primeros pasos básicos en la pista de baile con milongueros reales o simplemente sentarse y [BOLD]observar el desarrollo de la milonga[/BOLD] mientras descubren los códigos no dichos y las ricas tradiciones de este ritual porteño por excelencia con la ayuda de su guía local y experto, quien proporciona contexto, historias e ideas para decodificar lo que está sucediendo dentro y fuera de la pista de baile.\n\nMás que un espectáculo, se trata de una inmersión guiada y profunda en la cultura viva del tango.",
+      "description": "Comenzamos [BOLD]caminando por las calles de Buenos Aires[/BOLD], donde nació el tango — descubriendo su [BOLD]historia[/BOLD], sus poetas, su música y los barrios que le dieron vida. A medida que exploramos la ciudad a pie, el tango se revela no solo como una danza, sino como una [BOLD]profunda expresión cultural arraigada en la vida cotidiana[/BOLD].\n\nEl recorrido continúa con la [BOLD]visita a una auténtica milonga[/BOLD], donde presenciamos el [BOLD]tango social[/BOLD] en su verdadera esencia: espontáneo, íntimo y lleno de códigos y tradiciones. Al llegar, los participantes se unen a una [BOLD]clase grupal[/BOLD] junto con otros extranjeros o locales regulares — un momento divertido y único que les permite experimentar el tango a través de su propio cuerpo y movimiento. Durante la clase, el guía los acompañará como traductor, pareja y apoyo.\n\nDespués de la clase, los invitados pueden elegir probar sus primeros pasos en la pista o simplemente sentarse y [BOLD]observar el desarrollo de la milonga[/BOLD] mientras descubren los códigos y tradiciones con la [BOLD]guía de un experto local[/BOLD].\n\n[BOLD]Más que un espectáculo, se trata de una inmersión guiada y profunda en la cultura viva del tango.[/BOLD]",
       "duration": "Duración: 4 horas",
-      "price": "Desde $150 USD",
+      "price": "",
       "includes": "Incluye: Guía en español e inglés, copa de vino/soda/café, entrada a la milonga, entrada grupal",
-      "book": "Reservar"
-    },
-    "book": "Reservar"
+      "book": "Contacto"
+    }
   },
   "customizedTours": {
     "title": "Tours Personalizados",
+    "description": "Una propuesta cultural inmersiva en Buenos Aires, centrada en el tango como una expresión social y cultural viva.\n\nLa experiencia invita a los participantes a descubrir uno de los íconos más representativos de la identidad porteña, a través de su contexto histórico y del contacto directo con espacios auténticos del tango: la milonga. Según los intereses del grupo, el programa puede incluir una clase de tango compartida o privada, como una forma cercana y memorable de vivir la experiencia.\n\nMás que una actividad turística, esta propuesta promueve el intercambio cultural, la conexión y la curiosidad, haciendo que el tango sea accesible y disfrutable, incluso para quienes no lo bailan.\n\nDiseñada para instituciones educativas, universidades, grupos corporativos, delegaciones internacionales y programas de intercambio cultural, la experiencia es flexible y adaptable en duración, profundidad y formato.\n\nUn encuentro cultural auténtico que permite a los participantes entender Buenos Aires desde adentro y conectar con el tango, su expresión más viva.",
+    "contactButton": "Contacto",
     "educational": {
-      "title": "Educativo",
-      "description": "[BOLD]El tango como experiencia educativa y cultural[/BOLD]\nPropuesta para colegios bilingües e internacionales\n\n[BOLD]La transmisión cultural[/BOLD] es uno de los principales objetivos de los colegios bilingües que promueven programas de intercambio con otros países. Esta propuesta ofrece una [BOLD]experiencia inmersiva[/BOLD] en uno de los íconos más representativos de la identidad porteña y argentina: [BOLD]el tango[/BOLD].\n\nLa actividad combina [BOLD]relato histórico, interacción directa con los espacios donde el tango sigue vivo[/BOLD] —milongas, exhibiciones, música en vivo— y, por qué no, un momento inolvidable: [BOLD]tomar una clase de tango entre amigos o con locales[/BOLD], como parte del recorrido por la ciudad.\n\nEste tour no es solo una salida educativa: es una [BOLD]puerta de entrada a una de las expresiones más auténticas del ser argentino[/BOLD], transmitida en un lenguaje accesible, dinámico y atractivo para jóvenes.\n\n[BOLD]Ideal para nivel secundario o superior[/BOLD], adaptable según las edades, el idioma y los objetivos pedagógicos de cada institución."
+      "title": "Educativo"
     },
     "corporate": {
-      "title": "Corporativo",
-      "description": "[BOLD]El tango como experiencia cultural para empresas y delegaciones internacionales[/BOLD]\nUna propuesta auténtica y memorable en el corazón de Buenos Aires\n\nEl valor de las [BOLD]experiencias culturales[/BOLD] es cada vez más apreciado por empresas que reciben visitantes internacionales, clientes o delegaciones extranjeras. Esta propuesta invita a descubrir el tango —uno de los íconos más representativos de la identidad porteña y argentina— desde una mirada [BOLD]auténtica, vivencial y cercana[/BOLD].\n\nEl recorrido incluye una [BOLD]introducción al contexto histórico y cultural del tango[/BOLD], visitas a espacios donde esta tradición sigue viva —como milongas, exhibiciones y presentaciones musicales— y la posibilidad de cerrar la jornada con un momento inolvidable: [BOLD]tomar una clase de tango compartida con locales[/BOLD], en un ambiente distendido y elegante.\n\nMás que un paseo turístico, se trata de una [BOLD]experiencia de inmersión cultural diseñada para generar conexión, inspiración y memoria[/BOLD]. Ideal como parte de un programa de hospitalidad corporativa, encuentros bilaterales o visitas protocolares.\n\n[BOLD]Adaptable en duración, idioma y estilo, según el perfil de la empresa o delegación[/BOLD]."
+      "title": "Corporativo"
     },
     "university": {
-      "title": "Universitario",
-      "description": "[BOLD]El tango como experiencia cultural y formativa[/BOLD]\nPropuesta para universidades y programas de intercambio internacional\n\nEn el marco de los [BOLD]programas de internacionalización y extensión cultural[/BOLD], esta propuesta invita a estudiantes universitarios a vivir una [BOLD]experiencia inmersiva en el tango[/BOLD], una de las [BOLD]manifestaciones más emblemáticas de la identidad porteña y argentina[/BOLD].\n\nEl recorrido incluye una [BOLD]introducción al contexto histórico y social del tango, visitas a espacios donde esta tradición sigue viva —milongas[/BOLD], exhibiciones, música en vivo— y la posibilidad de participar en una [BOLD]clase práctica de tango, como parte de una experiencia colectiva y reflexiva en la ciudad[/BOLD].\n\nMás que una actividad recreativa, se trata de una instancia de [BOLD]formación intercultural, que promueve el encuentro, el entendimiento de otras expresiones culturales[/BOLD] y la apreciación de las tradiciones locales desde una perspectiva crítica y vivencial.\n\n[BOLD]Diseñada especialmente para estudiantes universitarios internacionales o locales en programas de intercambio[/BOLD], adaptable en idioma, duración y profundidad según el perfil académico de cada grupo."
+      "title": "Universitario"
     }
   },
   "gallery": {
@@ -68,7 +67,7 @@
   },
   "ebook": {
     "title": "Descubre el mundo interior del tango a través de mi libro Entre La Patagonia y el Tango",
-    "description": "Este libro nació espontáneamente —de una anécdota cómica protagonizada por un amigo querido, de la irresistible tentación de bailar tango de día y de noche, y sobre todo, de un profundo anhelo de estar en la milonga incluso cuando estaba a miles de kilómetros, viviendo en Patagonia.\n\nMe sumergí en escribir estas historias como un tipo de placebo milonguero, tranquilizante tanto para mi mente como para mis pies —que, mientras caminaban por las playas del Lago Nahuel Huapi en Patagonia, se imaginaban envueltas en zapatos de punta, deslizándose sobre el escenario de baile, arrastradas por la música y el abrazo tanguero.",
+    "description": "Este libro nació de manera espontánea, a partir de una anécdota muy graciosa, de una necesidad incontenible de bailar tango y de una profunda añoranza por la milonga mientras vivía lejos, en la Patagonia. Escribir estos relatos se convirtió en mi salvavidas milonguero: mientras mis pies caminaban por las orillas del lago Nahuel Huapi, mi mente, en tacos altos, andaba por las pistas de baile de Buenos Aires, llevada por la música y el abrazo.",
     "availableOn": "Disponible en:",
     "available": {
       "amazon": "https://www.amazon.com/dp/B0DGTQRKTJ",
@@ -84,6 +83,12 @@
       "name": "Nombre",
       "email": "Email",
       "subject": "Asunto",
+      "interestType": "Tipo de interés (opcional)",
+      "interestOption_placeholder": "Seleccionar…",
+      "interestOption_educational": "Educativo",
+      "interestOption_university": "Universitario",
+      "interestOption_corporate": "Corporativo",
+      "interestOption_grupal": "Tour grupal",
       "message": "Mensaje",
       "send": "Enviar"
     },
@@ -95,14 +100,14 @@
     "legal": "Legal",
     "privacy": "Privacidad",
     "terms": "Términos",
-    "copyright": "© 2024 Buenos Aires Tango Tours. Todos los derechos reservados."
+    "copyright": "© 2024 The Authentic Tango Experience. Todos los derechos reservados."
   },
   "footer": {
     "quickLinks": "Enlaces Rápidos",
     "legal": "Legal",
     "privacy": "Privacidad",
     "terms": "Términos",
-    "copyright": "© 2024 Buenos Aires Tango Tours. Todos los derechos reservados."
+    "copyright": "© 2026 The Authentic Tango Experience. Todos los derechos reservados."
   },
   "reviews": {
     "title": "Calificaciones",
@@ -154,7 +159,7 @@
         },
         {
           "name": "Thomas Obel",
-          "date": "Diciembre 2026",
+          "date": "Diciembre 2025",
           "rating": 5,
           "message": "Realmente disfruté nuestro día privado con María. Ella es muy conocedora, fácil de hablar, e hizo que la historia del tango cobrara vida con grandes historias. Una experiencia divertida, relajada y excelente. Mis más cálidas recomendaciones. Saludos cordiales, Thomas"
         },

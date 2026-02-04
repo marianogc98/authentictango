@@ -38,7 +38,7 @@ export function Header() {
   const navLinks = [
     { id: 'about', label: t('about') },
     { id: 'tours', label: t('tours') },
-    { id: 'customized-tours', label: t('Customized Tours') },
+    { id: 'reviews', label: t('reviews') },
     { id: 'ebook', label: t('ebook') },
     { id: 'contact', label: t('contact') },
   ]

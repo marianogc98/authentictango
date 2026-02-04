@@ -9,25 +9,12 @@ const playfair = Playfair_Display({ subsets: ["latin"], variable: '--font-serif'
 const inter = Inter({ subsets: ["latin"], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'Buenos Aires Tango Tours | Experiencias Auténticas de Tango',
+  title: 'The Authentic Tango Experience',
   description: 'Descubre el alma del tango en Buenos Aires con tours privados y grupales. Experiencias educativas, corporativas y universitarias. Reserva tu tour ahora.',
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/icon.png',
+    apple: '/icon.png',
   },
 }
 
