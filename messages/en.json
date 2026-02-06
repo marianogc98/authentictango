@@ -33,7 +33,7 @@
     },
     "group": {
       "title": "Cultural tango walking tour and milonga experience + group class",
-      "description": "We begin by [BOLD]walking through the streets of Buenos Aires[/BOLD], where tango was born — discovering its [BOLD]history[/BOLD], its poets, its music, and the neighborhoods that gave it life. As we explore the city on foot, tango reveals itself not only as a dance, but as a [BOLD]profound cultural expression rooted in everyday life[/BOLD].\n\nThe tour continues with a [BOLD]visit to an authentic milonga[/BOLD], where we witness [BOLD]social tango[/BOLD] in its true essence: spontaneous, intimate, and rich in codes and traditions. Upon arrival, participants join a [BOLD]group class[/BOLD] alongside other foreigners or local regulars — a fun and unique moment that allows them to experience tango through their own body and movement. During the class, the guide will accompany them as translator, partner, and support.\n\nAfter the class, guests may choose to try their first steps on the dance floor or simply sit and [BOLD]observe the unfolding of the milonga[/BOLD] while they discover its codes and traditions with the [BOLD]guidance of a local expert[/BOLD].\n\n[BOLD]More than a show, this is a deep, guided immersion into the living culture of tango.[/BOLD]",
+      "description": "We begin by [BOLD]walking through the streets of Buenos Aires[/BOLD], where tango was born, discovering its [BOLD]history[/BOLD], music, poets, and the neighborhoods that shaped it. As we move through the city, tango reveals itself not just as a dance, but as a way of living and feeling Buenos Aires.\n\nThe experience continues with a [BOLD]visit to an authentic milonga[/BOLD] — the place where tango is truly alive. Here, participants are invited to step into a relaxed and fun group class, an easy and entertaining way to feel tango through movement and connection, no previous experience needed. After the class, [BOLD]social tango[/BOLD] unfolds in its most intimate and spontaneous form, full of codes, rituals, and unspoken rules that we learn to read with the [BOLD]help of a local expert[/BOLD].\n\n[BOLD]More than watching tango, this is a guided immersion into the living culture of tango.[/BOLD]",
       "duration": "Duration: 4 hours",
       "price": "",
       "includes": "Included: English & Spanish guide, Glass of wine/soda/coffee, milonga entry, group class",
@@ -42,7 +42,7 @@
   },
   "customizedTours": {
     "title": "Customized Tours",
-    "description": "An immersive cultural proposal in Buenos Aires, centered on tango as a living social and cultural expression.\n\nThe experience invites participants to discover one of the most representative expressions of porteño identity through historical context and direct contact with authentic tango spaces: the milongas. Depending on the group’s interests, the program may include a shared or private tango class, offering an approachable and memorable way to engage with the experience.\n\nMore than a tourist activity, this proposal encourages cultural exchange, curiosity, and connection, making tango accessible and enjoyable, even for those who do not dance.\n\nDesigned for educational institutions, universities, corporate groups, international delegations, and cultural exchange programs, the experience is flexible and adaptable in duration, depth, and format.\n\nAn authentic cultural encounter that allows participants to understand Buenos Aires from the inside and connect with tango, its most vibrant expression.",
+    "description": "An [BOLD]immersive cultural proposal[/BOLD] in Buenos Aires, centered on [BOLD]tango as a living social and cultural expression[/BOLD].\n\nThe experience invites participants to discover one of the most representative expressions of [BOLD]porteño identity[/BOLD] through historical context and direct contact with [BOLD]authentic tango spaces: the milongas[/BOLD]. Depending on the group’s interests, the program may include a [BOLD]shared or private tango class[/BOLD], offering an approachable and memorable way to engage with the experience.\n\nMore than a tourist activity, this proposal encourages [BOLD]cultural exchange[/BOLD], curiosity, and connection, making tango accessible and enjoyable, even for those who do not dance.\n\nDesigned for [BOLD]educational institutions, universities, corporate groups, international delegations, and cultural exchange programs[/BOLD], the experience is [BOLD]flexible and adaptable[/BOLD] in duration, depth, and format.\n\nAn [BOLD]authentic cultural encounter[/BOLD] that allows participants to understand Buenos Aires from the inside and connect with tango, its [BOLD]most vibrant expression[/BOLD].",
     "contactButton": "Contact Me",
     "educational": {
       "title": "Educational"
@@ -67,7 +67,7 @@
   },
   "ebook": {
     "title": "Discover the inner world of tango through my book Entre La Patagonia y el Tango",
-    "description": "Born from a hilarious anecdote, an uncontrollable need to dance tango, and a deep longing for the milonga while living far away in Patagonia, these stories became my milonguero survival kit: while my feet walked along Lake Nahuel Huapi, my mind, in high heels, lingered on the dance floors of Buenos Aires, carried by music and embrace.",
+      "description": "Born from a [BOLD]hilarious anecdote[/BOLD], an [BOLD]uncontrollable need to dance tango[/BOLD], and a [BOLD]deep longing for the milonga[/BOLD] while living far away in [BOLD]Patagonia[/BOLD], these stories became my [BOLD]milonguero survival kit[/BOLD]: while my feet walked along [BOLD]Lake Nahuel Huapi[/BOLD], my mind, in [BOLD]high heels[/BOLD], lingered on the [BOLD]dance floors of Buenos Aires[/BOLD], carried by [BOLD]music and embrace[/BOLD].",
     "availableOn": "Available on:",
     "available": {
       "amazon": "https://www.amazon.com/dp/B0DGTQRKTJ",
@@ -112,6 +112,12 @@
       "total": "140+",
       "reviews": [
         {
+          "name": "Ana",
+          "date": "January 2026",
+          "rating": 5,
+          "message": "Best experience we participated in Buenos Aires (better than the nice tourist tango shows, or nice estancia tours and cooking classes). The stories about how and why tango appeared and flourished were put in perspective by the real today's milonga - seeing how the locals live and breathe the tango today, with it's rituals and amazing atmosphere. I am a shy introverted person who never went to a dance class, and I can't wait to start learning tango when I go home. Highly recommend."
+        },
+        {
           "name": "Murray.",
           "date": "December 2025",
           "rating": 5,
@@ -134,13 +140,8 @@
           "date": "August 2025",
           "rating": 5,
           "message": "Due to the weather, I was the only person who participated in the experience today, so it became a private group. Maria is very meticulous about the historical origins and the rise and fall of tango, and she gave me a lot of information, which was eye-opening. I also really enjoyed the tango steps and the method she taught me on the street. Finally, we went dancing. The amazing thing is that, as a beginner, I received two invitations, which made my overall experience very complete. Thank you. Highly recommended."
-        },        
-        {
-          "name": "Jane",
-          "date": "March 2025",
-          "rating": 5,
-          "message": "Maria is so knowledgable and a great guide. I recommend this experience to everyone interested in tango and Buenos Aires. Throughly enjoyed it!"
-        }
+        }  
+
       ]
     },
     "google": {

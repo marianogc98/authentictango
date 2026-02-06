@@ -127,10 +127,6 @@ export function About() {
                 className="object-cover"
               />
             </div>
-            <div className="absolute -bottom-6 -right-6 bg-primary text-primary-foreground p-6 rounded-lg hidden lg:block">
-              <p className="font-serif text-4xl font-bold">10+</p>
-              <p className="text-sm opacity-90">{t('years')}</p>
-            </div>
           </div>
 
           <div>

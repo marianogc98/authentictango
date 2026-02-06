@@ -76,7 +76,12 @@ export function Reviews() {
 
         {/* Scores destacados */}
         <div className="flex flex-row items-center justify-center gap-4 md:gap-6 mb-16">
-          <div className="bg-card border border-border rounded-xl p-6 md:p-8 flex-1 md:flex-none md:min-w-[220px] hover:border-primary/50 transition-all duration-300 shadow-sm">
+          <a
+            href="https://www.airbnb.com.ar/experiences/35569"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-card border border-border rounded-xl p-6 md:p-8 flex-1 md:flex-none md:min-w-[220px] hover:border-primary/50 transition-all duration-300 shadow-sm cursor-pointer"
+          >
             <div className="flex items-center gap-4 mb-3">
               <FaAirbnb className="h-10 w-10 md:h-12 md:w-12 text-[#FF5A5F] flex-shrink-0" />
               <div className="flex flex-col items-start">
@@ -89,7 +94,7 @@ export function Reviews() {
                 <p className="text-xs md:text-sm text-muted-foreground mt-1">{airbnbData.total} reseñas</p>
               </div>
             </div>
-          </div>
+          </a>
 
           <div className="bg-card border border-border rounded-xl p-6 md:p-8 flex-1 md:flex-none md:min-w-[220px] hover:border-primary/50 transition-all duration-300 shadow-sm">
             <div className="flex items-center gap-4 mb-3">

@@ -1,6 +1,6 @@
 "use client"
 
-import { GraduationCap, Building2, School, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
 import { RichText } from '@/components/rich-text'
@@ -8,9 +8,6 @@ import { RichText } from '@/components/rich-text'
 const processDescription = (text: string): string => {
   return text.replace(/\[BOLD\](.*?)\[\/BOLD\]/g, '<strong>$1</strong>')
 }
-
-const customizedIcons = [GraduationCap, Building2, School]
-const customizedKeys = ['educational', 'corporate', 'university'] as const
 
 export function CustomizedTours() {
   const t = useTranslations('customizedTours')
@@ -37,29 +34,11 @@ export function CustomizedTours() {
           />
         </div>
 
-        <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center justify-between gap-6">
-          <div className="flex flex-wrap gap-4 sm:gap-6">
-            {customizedKeys.map((key, index) => {
-              const Icon = customizedIcons[index]
-              return (
-                <div
-                  key={key}
-                  className="flex items-center gap-3 px-5 py-3 rounded-lg bg-card border border-border hover:border-primary/50 transition-colors"
-                >
-                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                    <Icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <span className="font-serif text-lg font-semibold text-foreground">
-                    {t(`${key}.title`)}
-                  </span>
-                </div>
-              )
-            })}
-          </div>
+        <div className="flex justify-center">
           <Button
             onClick={() => scrollToSection('contact')}
             size="lg"
-            className="gap-2 shrink-0"
+            className="gap-2"
           >
             {t('contactButton')}
             <ArrowRight className="h-4 w-4" />

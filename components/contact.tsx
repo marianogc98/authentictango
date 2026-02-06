@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Send, Instagram, Facebook, Mail, Phone } from "lucide-react"
+import { FaAirbnb } from "react-icons/fa"
 
 export function Contact() {
   const t = useTranslations('contact')
@@ -160,6 +161,16 @@ export function Contact() {
             >
               <Instagram className="h-5 w-5" />
               <span>@{t('info.instagram')}</span>
+            </a>
+
+            <a
+              href="https://www.airbnb.com.ar/experiences/35569"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 text-foreground hover:opacity-80 transition-opacity"
+            >
+              <FaAirbnb className="h-5 w-5 " />
+              <span>Airbnb</span>
             </a>
           </div>
         </div>

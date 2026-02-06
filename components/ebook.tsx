@@ -6,6 +6,11 @@ import { Button } from "@/components/ui/button"
 import { FaAmazon } from "react-icons/fa"
 import { SiGoogleplay, SiAppstore } from "react-icons/si"
 import { Pencil } from "lucide-react"
+import { RichText } from '@/components/rich-text'
+
+const processDescription = (text: string): string => {
+  return text.replace(/\[BOLD\](.*?)\[\/BOLD\]/g, '<strong>$1</strong>')
+}
 
 export function Ebook() {
   const t = useTranslations('ebook')
@@ -20,9 +25,12 @@ export function Ebook() {
               {t('title')}
             </h2>
             
-            <p className="text-muted-foreground text-lg mb-8 whitespace-pre-line">
-              {t('description')}
-            </p>
+            <div className="text-muted-foreground text-lg mb-8 whitespace-pre-line">
+              <RichText
+                content={processDescription(t('description'))}
+                className="[&_strong]:font-bold"
+              />
+            </div>
 
             <div className="space-y-4">
               <h3 className="font-serif text-xl font-bold text-foreground mb-4">{t('availableOn')}</h3>
