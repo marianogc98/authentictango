@@ -69,7 +69,7 @@ export function Reviews() {
     <section id="reviews" className="py-20 lg:py-32">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
+          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
             {t('title')}
           </h2>
         </div>
@@ -87,7 +87,7 @@ export function Reviews() {
               <div className="flex flex-col items-start">
                 <div className="flex items-center gap-2">
                   <Star className="h-5 w-5 md:h-6 md:w-6 fill-primary text-primary" />
-                  <span className="font-serif text-2xl md:text-3xl font-bold text-foreground leading-none">
+                  <span className="font-sans text-2xl md:text-3xl font-bold text-foreground leading-none">
                     {airbnbData.score}
                   </span>
                 </div>
@@ -102,7 +102,7 @@ export function Reviews() {
               <div className="flex flex-col items-start">
                 <div className="flex items-center gap-2">
                   <Star className="h-5 w-5 md:h-6 md:w-6 fill-primary text-primary" />
-                  <span className="font-serif text-2xl md:text-3xl font-bold text-foreground leading-none">
+                  <span className="font-sans text-2xl md:text-3xl font-bold text-foreground leading-none">
                     {googleData.score}
                   </span>
                 </div>

@@ -17,7 +17,7 @@ export function MapSection() {
     <section id="map" className="py-20 lg:py-32">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
+          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
             {t('title')}
           </h2>
           <p className="text-muted-foreground text-lg">
@@ -36,7 +36,7 @@ export function MapSection() {
                   <MapPin className="h-5 w-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-serif font-bold text-foreground text-lg">{neighborhood}</h3>
+                  <h3 className="font-sans font-bold text-foreground text-lg">{neighborhood}</h3>
                 </div>
               </div>
             ))}

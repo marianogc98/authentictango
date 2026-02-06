@@ -65,7 +65,7 @@ export function Services() {
           <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
             <Icon className="h-6 w-6 text-primary" />
           </div>
-          <CardTitle className="font-serif text-xl text-foreground">
+          <CardTitle className="font-sans text-xl text-foreground">
             {t(`${key}.title`)}
           </CardTitle>
           <CardDescription className="text-muted-foreground whitespace-pre-line">
@@ -83,7 +83,7 @@ export function Services() {
             {t(`${key}.includes`)}
           </div>
           <div className="pt-4 border-t border-border">
-            <p className="text-lg font-serif font-bold text-primary mb-4">
+            <p className="text-lg font-sans font-bold text-primary mb-4">
               {t(`${key}.price`)}
             </p>
             <Button 
@@ -113,7 +113,7 @@ export function Services() {
     <section id="tours" className="py-20 lg:py-32">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
+            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
               {t('title')}
             </h2>
           </div>

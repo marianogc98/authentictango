@@ -21,7 +21,7 @@ export function Ebook() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-3 gap-12 lg:gap-20 items-center">
           <div className="order-2 lg:order-1 lg:col-span-2">
-            <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
+            <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
               {t('title')}
             </h2>
             
@@ -33,7 +33,7 @@ export function Ebook() {
             </div>
 
             <div className="space-y-4">
-              <h3 className="font-serif text-xl font-bold text-foreground mb-4">{t('availableOn')}</h3>
+              <h3 className="font-sans text-xl font-bold text-foreground mb-4">{t('availableOn')}</h3>
               <div className="flex flex-wrap gap-4">
                 {available.amazon && (
                   <a

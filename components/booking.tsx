@@ -12,7 +12,7 @@ export function Booking() {
     <section id="booking" className="py-20 lg:py-32 bg-secondary">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
+          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
             {t('title')}
           </h2>
           <p className="text-muted-foreground text-lg">
@@ -26,7 +26,7 @@ export function Booking() {
             <div className="order-2 lg:order-1 lg:col-span-1">
               <div className="bg-card border border-border rounded-lg overflow-hidden sticky top-8 h-full flex flex-col">
                 <div className="p-4 border-b border-border flex-shrink-0">
-                  <h3 className="font-serif text-lg font-bold text-foreground text-center">
+                  <h3 className="font-sans text-lg font-bold text-foreground text-center">
                     {tMap('title')}
                   </h3>
                 </div>

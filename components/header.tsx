@@ -52,7 +52,7 @@ export function Header() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           <Link href="/" className="flex items-center gap-2">
-            <span className={`font-serif text-xl lg:text-2xl font-bold tracking-tight transition-colors ${
+            <span className={`font-sans text-xl lg:text-2xl font-bold tracking-tight transition-colors ${
               isScrolled ? 'text-foreground' : 'text-white'
             }`}>
               The Authentic <span className={isScrolled ? 'text-primary' : 'text-white'}>Tango Experience</span>

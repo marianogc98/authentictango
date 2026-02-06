@@ -23,7 +23,7 @@ export function CustomizedTours() {
     <section id="customized-tours" className="py-20 lg:py-32 bg-secondary">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="font-serif text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
+          <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
             {t('title')}
           </h2>
         </div>
