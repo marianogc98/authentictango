@@ -123,7 +123,7 @@ export function Reviews() {
           >
             <CarouselContent className="-ml-2 md:-ml-4">
               {allReviews.map((review: any, index: number) => (
-                <CarouselItem key={index} className="pl-2 md:pl-4 md:basis-1/2">
+                <CarouselItem key={index} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                   <Card className="h-full border-border hover:border-primary/50 transition-all duration-300 shadow-sm hover:shadow-md">
                     <CardContent className="p-6 h-full flex flex-col">
                       {/* Icono de quote y plataforma */}
