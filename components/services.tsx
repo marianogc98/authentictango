@@ -50,8 +50,8 @@ export function Services() {
     const isPopular = key === 'private'
     const cardContent = (
       <Card 
-        className={`bg-card border-border hover:border-primary/50 transition-all duration-300 relative ${
-          isPopular ? "ring-2 ring-primary pt-6" : ""
+        className={`bg-card border-border transition-all duration-300 relative ${
+          isPopular ? "ring-2 ring-primary pt-6" : "border-2 border-primary/50"
         }`}
       >
         {isPopular && (
@@ -110,7 +110,7 @@ export function Services() {
   }
 
   return (
-    <section id="tours" className="py-20 lg:py-32">
+    <section id="tours" className="py-16 lg:py-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="font-sans text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">

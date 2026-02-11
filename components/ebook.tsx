@@ -17,7 +17,7 @@ export function Ebook() {
   const available = t.raw('available') as Record<string, string>
 
   return (
-    <section id="ebook" className="py-20 lg:py-32">
+    <section id="ebook" className="py-16 lg:py-24">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-3 gap-12 lg:gap-20 items-center">
           <div className="order-2 lg:order-1 lg:col-span-2">
