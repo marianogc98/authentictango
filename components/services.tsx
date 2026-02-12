@@ -1,6 +1,6 @@
 "use client"
 
-import { User, Users, ArrowRight } from "lucide-react"
+import { Users, ArrowRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -12,7 +12,6 @@ const processDescription = (text: string): string => {
   return text.replace(/\[BOLD\](.*?)\[\/BOLD\]/g, '<strong>$1</strong>')
 }
 
-const tourIcons = [User, Users]
 const tourKeys = ['private', 'group']
 
 export function Services() {
@@ -46,7 +45,7 @@ export function Services() {
   }
 
   const renderTourCard = (key: string, index: number, isMobile: boolean = false) => {
-    const Icon = tourIcons[index]
+    const Icon = Users
     const isPopular = key === 'private'
     const cardContent = (
       <Card 
