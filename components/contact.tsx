@@ -20,18 +20,34 @@ export function Contact() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    
-    setIsSubmitting(false)
-    setIsSubmitted(true)
-    setFormData({ name: "", email: "", subject: "", interestType: "", message: "" })
-    
-    setTimeout(() => setIsSubmitted(false), 5000)
+    setSubmitError(null)
+
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      const data = await res.json().catch(() => ({}))
+
+      if (!res.ok) {
+        setSubmitError(data.error || 'Error al enviar. Intenta de nuevo.')
+        return
+      }
+
+      setIsSubmitted(true)
+      setFormData({ name: "", email: "", subject: "", interestType: "", message: "" })
+      setTimeout(() => setIsSubmitted(false), 5000)
+    } catch {
+      setSubmitError('Error de conexión. Intenta de nuevo.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -118,6 +134,9 @@ export function Contact() {
                 />
               </div>
             </div>
+            {submitError && (
+              <p className="text-sm text-destructive">{submitError}</p>
+            )}
             <div className="flex justify-end">
               <Button type="submit" className="w-full md:w-auto" disabled={isSubmitting}>
                 {isSubmitting ? (
