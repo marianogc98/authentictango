@@ -2,7 +2,7 @@
 
 import { useTranslations } from 'next-intl'
 
-const CAL_EMBED_URL = 'https://cal.com/maria-ines-ocampos/'
+const CAL_EMBED_URL = 'https://cal.com/maria-ines-ocampos-yhkfwt/'
 
 export function Booking() {
   const t = useTranslations('booking')

@@ -140,7 +140,25 @@
           "date": "August 2025",
           "rating": 5,
           "message": "Due to the weather, I was the only person who participated in the experience today, so it became a private group. Maria is very meticulous about the historical origins and the rise and fall of tango, and she gave me a lot of information, which was eye-opening. I also really enjoyed the tango steps and the method she taught me on the street. Finally, we went dancing. The amazing thing is that, as a beginner, I received two invitations, which made my overall experience very complete. Thank you. Highly recommended."
-        }  
+        },
+        {
+          "name": "Cynthia",
+          "date": "February 2026",
+          "rating": 5,
+          "message": "A truly wonderful experience, I loved every moment of it. Maria is great and very knowledgeable about everything Tango. Dancing at the Milonga was the highlight of my time in Buenos Aires. I highly recommend this tour to anyone visiting BA as it is a truly unique experience."
+        },
+        {
+          "name": "Shahid",
+          "date": "February 2026",
+          "rating": 5,
+          "message": "the walking tour was great! Maria is a very knowledgeable host and is very passionate about tango and explained everything very well including the history, customs and even how to dance"
+        },
+        {
+          "name": "Oliver",
+          "date": "May 2026",
+          "rating": 5,
+          "message": "Maria provided a perfect introduction into Tango, its background and history, its development over time and its present. On top, there was this introduction to a Milonga in Buenos Aires with all the details and intricacies which you would never be available to discover without such a special  guide. I will repeat this tour with Maria next time I am in Buenos Aires, definitely!"
+        }
 
       ]
     },

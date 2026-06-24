@@ -67,7 +67,7 @@
   },
   "ebook": {
     "title": "Descubre el mundo interior del tango a través de mi libro Entre La Patagonia y el Tango",
-      "description": "Este libro nació de manera espontánea, a partir de una [BOLD]anécdota muy graciosa[/BOLD], de una [BOLD]necesidad incontenible de bailar tango[/BOLD] y de una [BOLD]profunda añoranza por la milonga[/BOLD] mientras vivía lejos, en la [BOLD]Patagonia[/BOLD]. Escribir estos relatos se convirtió en mi [BOLD]salvavidas milonguero[/BOLD]: mientras mis pies caminaban por las orillas del [BOLD]lago Nahuel Huapi[/BOLD], mi mente, en [BOLD]tacos altos[/BOLD], andaba por las [BOLD]pistas de baile de Buenos Aires[/BOLD], llevada por la [BOLD]música y el abrazo[/BOLD].",
+    "description": "Este libro nació de manera espontánea, a partir de una [BOLD]anécdota muy graciosa[/BOLD], de una [BOLD]necesidad incontenible de bailar tango[/BOLD] y de una [BOLD]profunda añoranza por la milonga[/BOLD] mientras vivía lejos, en la [BOLD]Patagonia[/BOLD]. Escribir estos relatos se convirtió en mi [BOLD]salvavidas milonguero[/BOLD]: mientras mis pies caminaban por las orillas del [BOLD]lago Nahuel Huapi[/BOLD], mi mente, en [BOLD]tacos altos[/BOLD], andaba por las [BOLD]pistas de baile de Buenos Aires[/BOLD], llevada por la [BOLD]música y el abrazo[/BOLD].",
     "availableOn": "Disponible en:",
     "available": {
       "amazon": "https://www.amazon.com/dp/B0DGTQRKTJ",
@@ -144,6 +144,24 @@
           "date": "Enero 2026",
           "rating": 5,
           "message": "La mejor experiencia en la que participamos en Buenos Aires (mejor que los agradables espectáculos de tango turístico, o agradables excursiones de estancia y clases de cocina). Las historias sobre cómo y por qué apareció y floreció el tango fueron puestas en perspectiva por la verdadera milonga de hoy, viendo cómo los lugareños viven y respiran el tango hoy, con sus rituales y su increíble atmósfera. Soy una persona tímida e introvertida que nunca fue a una clase de baile, y estoy ansioso por comenzar a aprender tango cuando regrese a casa. Muy recomendable."
+        },
+        {
+          "name": "Cynthia",
+          "date": "Febrero 2026",
+          "rating": 5,
+          "message": "Una experiencia verdaderamente maravillosa, me encantó cada momento. Maria es genial y muy bien informado sobre todo lo relacionado con el tango. Bailar en la milonga fue lo más destacado de mi estadía en Buenos Aires. Recomiendo encarecidamente este recorrido a cualquiera que visite BA, ya que es una experiencia verdaderamente única."
+        },
+        {
+          "name": "Shahid",
+          "date": "Febrero 2026",
+          "rating": 5,
+          "message": "¡El recorrido a pie fue genial! Maria es una anfitriona muy bien informada y le apasiona mucho el tango y explicó todo muy bien, incluida la historia, las costumbres e incluso cómo bailar"
+        },
+        {
+          "name": "Oliver",
+          "date": "Mayo 2026",
+          "rating": 5,
+          "message": "María brindó una introducción perfecta al tango, sus antecedentes e historia, su desarrollo a lo largo del tiempo y su presente. Además, hubo esta introducción a una milonga en Buenos Aires con todos los detalles y complejidades que nunca podrías descubrir sin una guía tan especial. ¡Sin duda voy a repetir este recorrido con María la próxima vez que esté en Buenos Aires!"
         }
       ]
     },
