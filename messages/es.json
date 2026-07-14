@@ -109,6 +109,13 @@
     "terms": "Términos",
     "copyright": "© 2026 The Authentic Tango Experience. Todos los derechos reservados."
   },
+  "thankYou": {
+    "badge": "Reserva confirmada",
+    "title": "¡Gracias por tu reserva!",
+    "message": "Gracias por elegir vivir esta experiencia con nosotros. Esperamos que disfrutes de una auténtica inmersión en la cultura del tango y en el espíritu de Buenos Aires. ¡Nos vemos muy pronto!",
+    "backHome": "Volver al inicio",
+    "viewExperience": "Explorar la experiencia"
+  },
   "reviews": {
     "title": "Calificaciones",
     "airbnb": {
