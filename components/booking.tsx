@@ -1,12 +1,62 @@
 "use client"
 
-import { useTranslations } from 'next-intl'
+import { useEffect } from 'react'
+import { useLocale, useTranslations } from 'next-intl'
+import Cal, { getCalApi } from '@calcom/embed-react'
+import { useRouter } from '@/i18n/navigation'
+import { trackGaEvent } from '@/lib/utils/gtag'
 
-const CAL_EMBED_URL = 'https://cal.com/maria-ines-ocampos-yhkfwt/'
+// Slug del calendario en Cal.com (antes: https://cal.com/<slug>/)
+const CAL_LINK = 'maria-ines-ocampos-yhkfwt'
+const CONVERSION_EVENT = 'booking_confirmed'
 
 export function Booking() {
   const t = useTranslations('booking')
   const tMap = useTranslations('map')
+  const locale = useLocale()
+  const router = useRouter()
+
+  useEffect(() => {
+    let cancelado = false
+
+    ;(async () => {
+      try {
+        const cal = await getCalApi()
+        if (cancelado) return
+
+        // Cal.com avisa desde el iframe cuando la reserva se confirmó.
+        // Reemplaza al "Redirect on booking" del plan pago: registramos la
+        // conversión y navegamos nosotros a la página de gracias.
+        cal('on', {
+          action: 'bookingSuccessfulV2',
+          callback: (e: CustomEvent<{ data?: Record<string, unknown> }>) => {
+            const d = e.detail?.data ?? {}
+
+            // Sin nombre ni email: GA4 no admite datos personales.
+            const payload = {
+              locale,
+              booking_uid: String(d.uid ?? ''),
+              event_type_id: String(d.eventTypeId ?? ''),
+              booking_status: String(d.status ?? ''),
+            }
+
+            trackGaEvent(CONVERSION_EVENT, payload).catch(() => {})
+
+            // next-intl resuelve el slug por idioma: /thank-you o /es/gracias
+            router.push('/thank-you')
+          },
+        })
+      } catch (err) {
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('[Cal.com] No se pudo suscribir a bookingSuccessfulV2:', err)
+        }
+      }
+    })()
+
+    return () => {
+      cancelado = true
+    }
+  }, [locale, router])
 
   return (
     <section id="booking" className="py-16 lg:py-24 bg-secondary">
@@ -49,14 +99,12 @@ export function Booking() {
             {/* Cal.com - 75% en desktop; en móvil va primero */}
             <div className="order-1 lg:order-2 lg:col-span-3">
               <div className="bg-card border border-border rounded-lg overflow-hidden h-full">
-                <div className="relative min-h-[600px] w-full h-full">
-                  <iframe
-                    src={CAL_EMBED_URL}
-                    title={t('title')}
-                    className="absolute inset-0 w-full h-full border-0"
-                    loading="lazy"
-                  />
-                </div>
+                <Cal
+                  calLink={CAL_LINK}
+                  className="w-full h-full min-h-[600px]"
+                  style={{ width: '100%', height: '100%', minHeight: 600, overflow: 'auto' }}
+                  config={{ layout: 'month_view' }}
+                />
               </div>
             </div>
           </div>

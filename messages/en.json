@@ -67,7 +67,7 @@
   },
   "ebook": {
     "title": "Discover the inner world of tango through my book Entre La Patagonia y el Tango",
-      "description": "Born from a [BOLD]hilarious anecdote[/BOLD], an [BOLD]uncontrollable need to dance tango[/BOLD], and a [BOLD]deep longing for the milonga[/BOLD] while living far away in [BOLD]Patagonia[/BOLD], these stories became my [BOLD]milonguero survival kit[/BOLD]: while my feet walked along [BOLD]Lake Nahuel Huapi[/BOLD], my mind, in [BOLD]high heels[/BOLD], lingered on the [BOLD]dance floors of Buenos Aires[/BOLD], carried by [BOLD]music and embrace[/BOLD].",
+    "description": "Born from a [BOLD]hilarious anecdote[/BOLD], an [BOLD]uncontrollable need to dance tango[/BOLD], and a [BOLD]deep longing for the milonga[/BOLD] while living far away in [BOLD]Patagonia[/BOLD], these stories became my [BOLD]milonguero survival kit[/BOLD]: while my feet walked along [BOLD]Lake Nahuel Huapi[/BOLD], my mind, in [BOLD]high heels[/BOLD], lingered on the [BOLD]dance floors of Buenos Aires[/BOLD], carried by [BOLD]music and embrace[/BOLD].",
     "availableOn": "Available on:",
     "available": {
       "amazon": "https://www.amazon.com/dp/B0DGTQRKTJ",
@@ -166,7 +166,6 @@
           "rating": 5,
           "message": "Maria provided a perfect introduction into Tango, its background and history, its development over time and its present. On top, there was this introduction to a Milonga in Buenos Aires with all the details and intricacies which you would never be available to discover without such a special  guide. I will repeat this tour with Maria next time I am in Buenos Aires, definitely!"
         }
-
       ]
     },
     "google": {
@@ -205,5 +204,10 @@
         }
       ]
     }
+  },
+  "seo": {
+    "title": "Tango Tours in Buenos Aires | The Authentic Tango Experience",
+    "description": "Live authentic Argentine tango in Buenos Aires. Private and group tours, plus educational, university and corporate experiences. Book your tour today.",
+    "ogAlt": "The Authentic Tango Experience — tango tours in Buenos Aires"
   }
 }

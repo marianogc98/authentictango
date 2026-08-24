@@ -208,5 +208,10 @@
         }
       ]
     }
+  },
+  "seo": {
+    "title": "Tours de Tango en Buenos Aires | The Authentic Tango Experience",
+    "description": "Viví el auténtico tango argentino en Buenos Aires. Tours privados y grupales, y experiencias educativas, universitarias y corporativas. Reservá tu tour.",
+    "ogAlt": "The Authentic Tango Experience — tours de tango en Buenos Aires"
   }
 }
