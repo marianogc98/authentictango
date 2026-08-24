@@ -5,7 +5,9 @@ import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { DiaDisponible } from '@/lib/booking/availability'
 import { detalleDia } from '@/lib/admin/dias'
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import {
+  Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle,
+} from '@/components/ui/sheet'
 import { PanelDia } from './panel-dia'
 
 const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto',
@@ -103,25 +105,38 @@ export function Calendario({
       </div>
 
       <Sheet open={abierto !== null} onOpenChange={(v) => !v && setAbierto(null)}>
-        <SheetContent className="w-full overflow-y-auto sm:max-w-lg">
-          <SheetHeader>
-            <SheetTitle className="capitalize">
-              {abierto && new Date(`${abierto.date}T12:00:00Z`).toLocaleDateString('es-AR', {
-                weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC',
-              })}
+        {/* Sin padding ni scroll propios: los maneja PanelDia, para que el encabezado
+            quede fijo y sólo se desplace el contenido. El pr-14 deja libre la X. */}
+        <SheetContent className="flex w-full flex-col gap-0 p-0 sm:max-w-lg">
+          <SheetHeader className="shrink-0 space-y-1 border-b border-border px-6 py-5 pr-14">
+            <SheetTitle className="text-base capitalize">
+              {abierto && fechaLarga(abierto.date)}
             </SheetTitle>
+            <SheetDescription>{abierto && resumenDia(abierto)}</SheetDescription>
           </SheetHeader>
-          {abierto && (
-            <PanelDia
-              detalle={abierto}
-              onCambio={(d) => setAbierto(d)}
-              onCerrar={() => setAbierto(null)}
-            />
-          )}
+          {abierto && <PanelDia detalle={abierto} onCambio={setAbierto} />}
         </SheetContent>
       </Sheet>
     </>
   )
+}
+
+function fechaLarga(date: string) {
+  return new Date(`${date}T12:00:00Z`).toLocaleDateString('es-AR', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+  })
+}
+
+/** Una línea con el estado del día, para no tener que leer todo el panel para saberlo. */
+function resumenDia(d: Detalle): string {
+  if (d.closed) return 'No trabajás este día'
+  if (d.slots.length === 0) return 'Sin horarios cargados'
+
+  const capacidad = d.slots.reduce((n, s) => n + s.seats, 0)
+  const vendidos = d.slots.reduce((n, s) => n + s.vendidos, 0)
+  const horarios = `${d.slots.length} horario${d.slots.length === 1 ? '' : 's'}`
+
+  return `${horarios} · ${vendidos} de ${capacidad} lugares vendidos`
 }
 
 function Leyenda({ clase, children }: { clase: string; children: React.ReactNode }) {
