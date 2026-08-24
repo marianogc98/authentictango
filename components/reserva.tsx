@@ -150,7 +150,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   const idioma = locale === 'es' ? 'es' : 'en'
 
   return (
-    <div className={embebido ? '' : 'mx-auto max-w-4xl'}>
+    <div className={embebido ? '' : 'mx-auto w-full'}>
       {!embebido && (
         <div className="mb-10 text-center">
           <h1 className="font-sans text-3xl font-bold text-foreground md:text-4xl">{t('title')}</h1>
@@ -160,7 +160,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
 
       {/* Dos columnas en desktop: el calendario tiene ancho propio y no se estira, y el
           checkout ocupa el resto. En móvil se apilan, calendario primero. */}
-      <div className="mx-auto grid max-w-4xl gap-6 rounded-lg border border-border bg-card p-4 sm:p-6 md:grid-cols-[24rem_1fr] md:gap-8">
+      <div className="grid w-full gap-6 rounded-lg border border-border bg-card p-4 sm:p-6 md:grid-cols-[22rem_1fr] md:gap-8 lg:grid-cols-[28rem_1fr] lg:gap-10">
 
         {/* ── Columna izquierda: el calendario ── */}
         <div className="md:border-r md:border-border md:pr-8">
@@ -204,7 +204,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
                     title={hayTurnos && libres === 0 ? t('soldOut') : undefined}
                     // Alto fijo en vez de aspect-square: así el alto no depende del ancho
                     // del contenedor y la celda no crece al ensancharse la columna.
-                    className={`flex h-12 items-center justify-center rounded-md text-[15px] transition-colors
+                    className={`flex h-12 items-center justify-center rounded-md text-[15px] transition-colors lg:h-14 lg:text-base
                       ${elegido ? 'bg-primary font-semibold text-primary-foreground' : ''}
                       ${disponible && !elegido ? 'font-medium hover:bg-accent' : ''}
                       ${!disponible ? 'cursor-not-allowed text-muted-foreground/35' : ''}
@@ -291,9 +291,13 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
 
                       <div className="space-y-3">
                         <Label>{t('yourDetails')}</Label>
-                        <Input name="name" placeholder={t('name')} required minLength={2} maxLength={120} autoComplete="name" />
-                        <Input name="email" type="email" placeholder={t('email')} required maxLength={200} autoComplete="email" />
-                        <Input name="phone" type="tel" placeholder={t('phone')} maxLength={40} autoComplete="tel" />
+                        {/* En pantallas anchas los campos van de a dos: en una sola columna
+                            de 650px quedaban inputs larguísimos con mucho aire alrededor. */}
+                        <div className="grid gap-3 lg:grid-cols-2">
+                          <Input name="name" placeholder={t('name')} required minLength={2} maxLength={120} autoComplete="name" />
+                          <Input name="email" type="email" placeholder={t('email')} required maxLength={200} autoComplete="email" />
+                          <Input name="phone" type="tel" placeholder={t('phone')} maxLength={40} autoComplete="tel" className="lg:col-span-2" />
+                        </div>
                       </div>
 
                       {metodosPosibles.length > 1 && (

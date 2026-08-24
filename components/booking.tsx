@@ -33,14 +33,15 @@ export function Booking() {
 
         <Reserva locale={locale} embebido />
 
-        <div className="mx-auto mt-8 max-w-4xl">
+        <div className="mt-8 w-full">
           <div className="overflow-hidden rounded-lg border border-border bg-card">
             <div className="border-b border-border p-3">
               <h3 className="text-center font-sans text-sm font-bold text-foreground">
                 {tMap('title')}
               </h3>
             </div>
-            <div className="relative h-64">
+            {/* Más alto en desktop: a 1200px de ancho, 256px de alto se veía como una franja. */}
+            <div className="relative h-64 lg:h-80">
               <iframe
                 src={`${tMap('location')}&t=k`}
                 width="100%"
