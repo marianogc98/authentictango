@@ -9,7 +9,10 @@
     "start": "next start",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
-    "db:studio": "drizzle-kit studio"
+    "db:studio": "drizzle-kit studio",
+    "db:migrate:prod": "node scripts/migrate.mjs",
+    "db:seed": "node scripts/seed.mjs",
+    "db:check": "node scripts/check-schema.mjs"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",
@@ -69,6 +72,7 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.7",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/pg": "^8.23.1",

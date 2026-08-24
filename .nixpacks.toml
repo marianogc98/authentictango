@@ -8,5 +8,7 @@ cmds = ["npm ci"]
 cmds = ["npm run build"]
 
 [start]
-cmd = "npm start"
-
+# Encadenado con ';' y no con '&&' a propósito: la base sólo es alcanzable desde adentro
+# de la red de Docker, así que esto corre acá y no en el build. Si la migración falla, se
+# ve en el log y las páginas de reserva rompen, pero el sitio de marketing sigue en pie.
+cmd = "npm run db:migrate:prod; npm run db:seed; npm start"
