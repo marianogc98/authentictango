@@ -213,5 +213,55 @@
     "title": "Tours de Tango en Buenos Aires | The Authentic Tango Experience",
     "description": "Viví el auténtico tango argentino en Buenos Aires. Tours privados y grupales, y experiencias educativas, universitarias y corporativas. Reservá tu tour.",
     "ogAlt": "The Authentic Tango Experience — tours de tango en Buenos Aires"
+  },
+  "book": {
+    "title": "Reservá tu experiencia de tango",
+    "subtitle": "Elegí la fecha, cuántos vienen, y asegurá tu lugar.",
+    "seo": {
+      "title": "Reservar un Tour de Tango en Buenos Aires | The Authentic Tango Experience",
+      "description": "Reservá tu lugar en una experiencia auténtica de tango en Buenos Aires. Elegí la fecha, pagá online y recibí la confirmación al instante."
+    },
+    "pickDate": "Elegí una fecha",
+    "pickTime": "Elegí un horario",
+    "noSlots": "No hay tours disponibles este día.",
+    "soldOut": "Completo",
+    "seatsLeft": "Quedan {n} lugares",
+    "lastSeats": "¡Quedan sólo {n}!",
+    "people": "¿Cuántas personas?",
+    "yourDetails": "Tus datos",
+    "name": "Nombre y apellido",
+    "email": "Email",
+    "phone": "Teléfono (opcional)",
+    "payWith": "Pagar con",
+    "total": "Total",
+    "continue": "Continuar al pago",
+    "working": "Reservando tu lugar…",
+    "loading": "Cargando disponibilidad…",
+    "prev": "Mes anterior",
+    "next": "Mes siguiente",
+    "holdNote": "Te guardamos el lugar 20 minutos mientras pagás.",
+    "errors": {
+      "sin_lugar": "No quedan lugares suficientes en ese horario. Elegí otro, por favor.",
+      "cerrado": "Ese día ya no está disponible.",
+      "sin_horario": "Ese horario ya no está disponible.",
+      "pasado": "Ese horario ya pasó.",
+      "sin_precio": "Ese horario todavía no está abierto para reservas.",
+      "demasiados": "Tenés demasiadas reservas sin pagar. Terminá alguna o esperá a que venzan.",
+      "generic": "Algo salió mal. Probá de nuevo."
+    }
+  },
+  "pay": {
+    "title": "Completá tu reserva",
+    "summary": "Tu reserva",
+    "people": "{n} personas",
+    "person": "1 persona",
+    "expiresIn": "Te guardamos el lugar {min} minutos más.",
+    "expired": "Esta reserva venció. Reservá de nuevo, por favor.",
+    "paid": "Pago recibido. ¡Nos vemos!",
+    "notFound": "No encontramos esa reserva.",
+    "payNow": "Pagar ahora",
+    "soon": "Estamos terminando de configurar el pago. Te vamos a mandar el link por email.",
+    "bookAgain": "Reservar de nuevo",
+    "backHome": "Volver al inicio"
   }
 }

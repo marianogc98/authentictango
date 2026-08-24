@@ -11,6 +11,16 @@ export const routing = defineRouting({
     '/thank-you': {
       en: '/thank-you',
       es: '/gracias'
+    },
+    '/book': {
+      en: '/book',
+      es: '/reservar'
+    },
+    // Paso de pago de una reserva ya creada. Lleva el uid público, no el id
+    // incremental: el id revelaría cuántas reservas hay en total.
+    '/book/[uid]': {
+      en: '/book/[uid]',
+      es: '/reservar/[uid]'
     }
   }
 });

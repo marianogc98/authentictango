@@ -73,6 +73,9 @@ export const bookings = pgTable(
     phone: text('phone'),
     locale: text('locale').notNull().default('en'),
 
+    /** Sólo para limitar abuso: un bot podría crear holds hasta llenar el calendario. */
+    ip: text('ip'),
+
     status: text('status').notNull().default('pending'),
 
     provider: text('provider'), // 'paypal' | 'mercadopago'

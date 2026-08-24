@@ -7,6 +7,9 @@ import { weekdayDe, yaPaso } from './tiempo'
 /** Minutos que los asientos quedan reservados esperando el pago. */
 export const HOLD_MINUTOS = 20
 
+/** Holds sin pagar que puede tener una misma IP a la vez. */
+const HOLDS_POR_IP = 5
+
 export type Moneda = 'USD' | 'ARS'
 
 export type HoldInput = {
@@ -18,11 +21,16 @@ export type HoldInput = {
   phone?: string | null
   locale: string
   currency: Moneda
+  ip?: string | null
 }
 
 export type HoldResult =
   | { ok: true; uid: string; amount: number; currency: Moneda }
-  | { ok: false; reason: 'cerrado' | 'sin_horario' | 'pasado' | 'sin_lugar'; seatsLeft?: number }
+  | {
+      ok: false
+      reason: 'cerrado' | 'sin_horario' | 'pasado' | 'sin_lugar' | 'sin_precio' | 'demasiados'
+      seatsLeft?: number
+    }
 
 /**
  * Toma asientos para una reserva y devuelve el importe a cobrar.
@@ -38,6 +46,20 @@ export type HoldResult =
 export async function holdSeats(input: HoldInput): Promise<HoldResult> {
   if (input.seats < 1) return { ok: false, reason: 'sin_lugar', seatsLeft: 0 }
   if (yaPaso(input.date, input.time)) return { ok: false, reason: 'pasado' }
+
+  // Un hold bloquea asientos 20 minutos sin haber pagado nada. Sin este freno, un script
+  // puede llenar el calendario y dejar el tour sin poder venderse.
+  if (input.ip) {
+    const [{ n }] = await db
+      .select({ n: sql<number>`COUNT(*)::int` })
+      .from(bookings)
+      .where(and(
+        eq(bookings.ip, input.ip),
+        eq(bookings.status, 'pending'),
+        sql`${bookings.expiresAt} > now()`,
+      ))
+    if (Number(n) >= HOLDS_POR_IP) return { ok: false, reason: 'demasiados' }
+  }
 
   return db.transaction(async (tx) => {
     // Serializa a todos los que compiten por este mismo slot, y sólo por éste.
@@ -60,6 +82,10 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
 
     if (!slot) return { ok: false, reason: 'sin_horario' as const }
 
+    const precioUnitario = input.currency === 'USD' ? slot.priceUsd : slot.priceArs
+    // Un horario sin precio no se vende. Es preferible no poder reservar a reservar gratis.
+    if (precioUnitario <= 0) return { ok: false, reason: 'sin_precio' as const }
+
     const [{ tomados }] = await tx
       .select({
         tomados: sql<number>`COALESCE(SUM(${bookings.seats}), 0)::int`,
@@ -76,7 +102,6 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
       return { ok: false, reason: 'sin_lugar' as const, seatsLeft: Math.max(0, libres) }
     }
 
-    const precioUnitario = input.currency === 'USD' ? slot.priceUsd : slot.priceArs
     const amount = precioUnitario * input.seats
     const uid = randomUUID()
 
@@ -89,6 +114,7 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
       email: input.email,
       phone: input.phone ?? null,
       locale: input.locale,
+      ip: input.ip ?? null,
       status: 'pending',
       amount,
       currency: input.currency,

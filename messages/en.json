@@ -209,5 +209,55 @@
     "title": "Tango Tours in Buenos Aires | The Authentic Tango Experience",
     "description": "Live authentic Argentine tango in Buenos Aires. Private and group tours, plus educational, university and corporate experiences. Book your tour today.",
     "ogAlt": "The Authentic Tango Experience — tango tours in Buenos Aires"
+  },
+  "book": {
+    "title": "Book your tango experience",
+    "subtitle": "Pick a date, choose how many of you are coming, and secure your spot.",
+    "seo": {
+      "title": "Book a Tango Tour in Buenos Aires | The Authentic Tango Experience",
+      "description": "Reserve your spot on an authentic tango experience in Buenos Aires. Pick your date, pay online and get instant confirmation."
+    },
+    "pickDate": "Choose a date",
+    "pickTime": "Choose a time",
+    "noSlots": "No tours available on this day.",
+    "soldOut": "Sold out",
+    "seatsLeft": "{n} spots left",
+    "lastSeats": "Only {n} left!",
+    "people": "How many people?",
+    "yourDetails": "Your details",
+    "name": "Full name",
+    "email": "Email",
+    "phone": "Phone (optional)",
+    "payWith": "Pay with",
+    "total": "Total",
+    "continue": "Continue to payment",
+    "working": "Reserving your spot…",
+    "loading": "Loading availability…",
+    "prev": "Previous month",
+    "next": "Next month",
+    "holdNote": "We hold your spot for 20 minutes while you pay.",
+    "errors": {
+      "sin_lugar": "Sorry, there are not enough spots left for that time. Please pick another.",
+      "cerrado": "That day is no longer available.",
+      "sin_horario": "That time is no longer available.",
+      "pasado": "That time has already passed.",
+      "sin_precio": "That time is not open for booking yet.",
+      "demasiados": "You have too many unpaid reservations. Please finish or wait for them to expire.",
+      "generic": "Something went wrong. Please try again."
+    }
+  },
+  "pay": {
+    "title": "Complete your booking",
+    "summary": "Your booking",
+    "people": "{n} people",
+    "person": "1 person",
+    "expiresIn": "Your spot is held for {min} more minutes.",
+    "expired": "This reservation expired. Please book again.",
+    "paid": "Payment received. See you soon!",
+    "notFound": "We could not find that reservation.",
+    "payNow": "Pay now",
+    "soon": "Payment is being set up. We will email you a payment link shortly.",
+    "bookAgain": "Book again",
+    "backHome": "Back to home"
   }
 }
