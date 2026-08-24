@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { DiaPublico, SlotPublico } from '@/lib/booking/tipos'
 import { useRouter } from '@/i18n/navigation'
 import { formatearPrecio, hhmm } from '@/lib/booking/dinero'
@@ -26,6 +26,12 @@ function mesVecino(mes: string, delta: number) {
   const [y, m] = mes.split('-').map(Number)
   const d = new Date(Date.UTC(y, m - 1 + delta, 1))
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
+}
+
+function fechaLarga(date: string, locale: string) {
+  return new Date(`${date}T12:00:00Z`).toLocaleDateString(locale === 'es' ? 'es-AR' : 'en-US', {
+    weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC',
+  })
 }
 
 export function Reserva({ locale, embebido = false }: { locale: string; embebido?: boolean }) {
@@ -144,195 +150,205 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   const idioma = locale === 'es' ? 'es' : 'en'
 
   return (
-    <div className={embebido ? '' : 'mx-auto max-w-3xl'}>
+    <div className={embebido ? '' : 'mx-auto max-w-4xl'}>
       {!embebido && (
         <div className="mb-10 text-center">
-        <h1 className="font-sans text-3xl font-bold text-foreground md:text-4xl">{t('title')}</h1>
-        <p className="mt-3 text-muted-foreground">{t('subtitle')}</p>
+          <h1 className="font-sans text-3xl font-bold text-foreground md:text-4xl">{t('title')}</h1>
+          <p className="mt-3 text-muted-foreground">{t('subtitle')}</p>
         </div>
       )}
 
-      {/* La card también se acota: con el calendario chico dentro de una columna ancha
-          quedaba mucho aire al costado, y un formulario angosto se lee mejor igual. */}
-      <div className="mx-auto max-w-xl rounded-lg border border-border bg-card p-4 sm:p-6">
-        {/* Paso 1: la fecha */}
-        <h2 className="mb-4 text-sm font-medium">{t('pickDate')}</h2>
+      {/* Dos columnas en desktop: el calendario tiene ancho propio y no se estira, y el
+          checkout ocupa el resto. En móvil se apilan, calendario primero. */}
+      <div className="mx-auto grid max-w-4xl gap-6 rounded-lg border border-border bg-card p-4 sm:p-6 md:grid-cols-[24rem_1fr] md:gap-8">
 
-        {/* El calendario se acota a un ancho fijo. Con la grilla al 100% del contenedor,
-            cada celda queda a 1/7 del ancho disponible y en desktop se vuelve enorme. */}
-        <div className="mx-auto w-full max-w-[19rem]">
-        <div className="mb-2 flex items-center justify-between">
-          <span className="text-sm font-medium capitalize">{MESES[idioma][numMes - 1]} {anio}</span>
-          <div className="flex gap-1">
-            <button type="button" aria-label={t('prev')} onClick={() => setMes((m) => mesVecino(m, -1))}
-              className="rounded border border-border p-1 hover:bg-accent">
-              <ChevronLeft className="h-3.5 w-3.5" />
-            </button>
-            <button type="button" aria-label={t('next')} onClick={() => setMes((m) => mesVecino(m, 1))}
-              className="rounded border border-border p-1 hover:bg-accent">
-              <ChevronRight className="h-3.5 w-3.5" />
-            </button>
+        {/* ── Columna izquierda: el calendario ── */}
+        <div className="md:border-r md:border-border md:pr-8">
+          <h2 className="mb-3 text-sm font-medium">{t('pickDate')}</h2>
+
+          <div className="mb-2 flex items-center justify-between">
+            <span className="text-sm font-medium capitalize">{MESES[idioma][numMes - 1]} {anio}</span>
+            <div className="flex gap-1">
+              <button type="button" aria-label={t('prev')} onClick={() => setMes((m) => mesVecino(m, -1))}
+                className="rounded border border-border p-1 hover:bg-accent">
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button type="button" aria-label={t('next')} onClick={() => setMes((m) => mesVecino(m, 1))}
+                className="rounded border border-border p-1 hover:bg-accent">
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
+
+          {dias === null ? (
+            <p className="py-12 text-center text-sm text-muted-foreground">{t('loading')}</p>
+          ) : (
+            <div className="grid grid-cols-7 gap-1">
+              {DIAS_CABECERA[idioma].map((c, i) => (
+                <div key={i} className="pb-1 text-center text-xs text-muted-foreground">{c}</div>
+              ))}
+              {Array.from({ length: huecos }, (_, i) => <div key={`h${i}`} />)}
+
+              {dias.map((d) => {
+                const libres = d.slots.reduce((n, s) => n + s.seatsLeft, 0)
+                const hayTurnos = d.slots.length > 0
+                const disponible = hayTurnos && libres > 0
+                const elegido = d.date === fecha
+
+                return (
+                  <button
+                    key={d.date}
+                    type="button"
+                    disabled={!disponible}
+                    onClick={() => elegirDia(d)}
+                    title={hayTurnos && libres === 0 ? t('soldOut') : undefined}
+                    // Alto fijo en vez de aspect-square: así el alto no depende del ancho
+                    // del contenedor y la celda no crece al ensancharse la columna.
+                    className={`flex h-12 items-center justify-center rounded-md text-[15px] transition-colors
+                      ${elegido ? 'bg-primary font-semibold text-primary-foreground' : ''}
+                      ${disponible && !elegido ? 'font-medium hover:bg-accent' : ''}
+                      ${!disponible ? 'cursor-not-allowed text-muted-foreground/35' : ''}
+                      ${hayTurnos && libres === 0 ? 'line-through' : ''}
+                      ${d.date === hoy && !elegido ? 'ring-1 ring-inset ring-foreground/40' : ''}`}
+                  >
+                    {Number(d.date.slice(-2))}
+                  </button>
+                )
+              })}
+            </div>
+          )}
         </div>
 
-        {dias === null ? (
-          <p className="py-10 text-center text-sm text-muted-foreground">{t('loading')}</p>
-        ) : (
-          <div className="grid grid-cols-7 gap-0.5">
-            {DIAS_CABECERA[idioma].map((c, i) => (
-              <div key={i} className="pb-1 text-center text-[10px] text-muted-foreground">{c}</div>
-            ))}
-            {Array.from({ length: huecos }, (_, i) => <div key={`h${i}`} />)}
-
-            {dias.map((d) => {
-              const libres = d.slots.reduce((n, s) => n + s.seatsLeft, 0)
-              const hayTurnos = d.slots.length > 0
-              const disponible = hayTurnos && libres > 0
-              const elegido = d.date === fecha
-
-              return (
-                <button
-                  key={d.date}
-                  type="button"
-                  disabled={!disponible}
-                  onClick={() => elegirDia(d)}
-                  // Altura fija en vez de aspect-square: así el alto no depende del ancho
-                  // del contenedor y la celda no crece al ensancharse la columna.
-                  title={hayTurnos && libres === 0 ? t('soldOut') : undefined}
-                  className={`flex h-9 items-center justify-center rounded text-[13px] transition-colors
-                    ${elegido ? 'bg-primary font-medium text-primary-foreground' : ''}
-                    ${disponible && !elegido ? 'hover:bg-accent' : ''}
-                    ${!disponible ? 'cursor-not-allowed text-muted-foreground/35' : ''}
-                    ${hayTurnos && libres === 0 ? 'line-through' : ''}
-                    ${d.date === hoy && !elegido ? 'ring-1 ring-inset ring-foreground/40' : ''}`}
-                >
-                  {Number(d.date.slice(-2))}
+        {/* ── Columna derecha: el checkout ── */}
+        <div className="min-w-0">
+          {!diaElegido ? (
+            <div className="flex h-full min-h-[16rem] flex-col items-center justify-center gap-3 text-center">
+              <CalendarDays className="h-8 w-8 text-muted-foreground/40" />
+              <p className="max-w-[16rem] text-sm text-muted-foreground">{t('pickDateFirst')}</p>
+            </div>
+          ) : (
+            <div className="space-y-5">
+              <div>
+                <p className="text-sm font-semibold capitalize">{fechaLarga(diaElegido.date, locale)}</p>
+                <button type="button" onClick={() => { setFecha(null); setSlot(null) }}
+                  className="text-xs text-muted-foreground underline underline-offset-2 hover:text-foreground">
+                  {t('changeDate')}
                 </button>
-              )
-            })}
-          </div>
-        )}
-        </div>
+              </div>
 
-        {/* Paso 2: el horario, sólo si hay más de uno */}
-        {diaElegido && (
-          <div className="mt-6 border-t border-border pt-6">
-            {diaElegido.slots.length === 0 ? (
-              <p className="text-sm text-muted-foreground">{t('noSlots')}</p>
-            ) : (
-              <>
-                <h2 className="mb-3 text-sm font-medium">{t('pickTime')}</h2>
-                <div className="flex flex-wrap gap-2">
-                  {diaElegido.slots.map((s) => {
-                    const agotado = s.seatsLeft === 0
-                    const activo = slot?.time === s.time
-                    return (
-                      <button
-                        key={s.time}
-                        type="button"
-                        disabled={agotado}
-                        onClick={() => { setSlot(s); setPersonas(1); setError(null) }}
-                        className={`rounded-md border px-4 py-2 text-sm transition-colors
-                          ${activo ? 'border-primary bg-primary text-primary-foreground' : 'border-border'}
-                          ${agotado ? 'cursor-not-allowed text-muted-foreground/40 line-through' : 'hover:bg-accent'}`}
-                      >
-                        {hhmm(s.time)}
-                        {!agotado && s.seatsLeft <= 3 && (
-                          <span className="ml-2 text-xs opacity-80">
-                            {t('lastSeats', { n: s.seatsLeft })}
+              {diaElegido.slots.length === 0 ? (
+                <p className="text-sm text-muted-foreground">{t('noSlots')}</p>
+              ) : (
+                <>
+                  <div className="space-y-2">
+                    <Label>{t('pickTime')}</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {diaElegido.slots.map((s) => {
+                        const agotado = s.seatsLeft === 0
+                        const activo = slot?.time === s.time
+                        return (
+                          <button
+                            key={s.time}
+                            type="button"
+                            disabled={agotado}
+                            onClick={() => { setSlot(s); setPersonas(1); setError(null) }}
+                            className={`rounded-md border px-3 py-1.5 text-sm transition-colors
+                              ${activo ? 'border-primary bg-primary text-primary-foreground' : 'border-border'}
+                              ${agotado ? 'cursor-not-allowed text-muted-foreground/40 line-through' : 'hover:bg-accent'}`}
+                          >
+                            {hhmm(s.time)}
+                            {!agotado && s.seatsLeft <= 3 && (
+                              <span className="ml-1.5 text-xs opacity-80">
+                                {t('lastSeats', { n: s.seatsLeft })}
+                              </span>
+                            )}
+                          </button>
+                        )
+                      })}
+                    </div>
+                  </div>
+
+                  {slot && slot.seatsLeft > 0 && (
+                    <form onSubmit={enviar} className="space-y-5">
+                      <div className="space-y-2">
+                        <Label htmlFor="personas">{t('people')}</Label>
+                        <div className="flex items-center gap-3">
+                          <select
+                            id="personas"
+                            value={personas}
+                            onChange={(e) => setPersonas(Number(e.target.value))}
+                            className="h-10 w-24 rounded-md border border-border bg-background px-3 text-sm"
+                          >
+                            {Array.from({ length: Math.min(slot.seatsLeft, 20) }, (_, i) => i + 1).map((n) => (
+                              <option key={n} value={n}>{n}</option>
+                            ))}
+                          </select>
+                          <span className="text-xs text-muted-foreground">
+                            {t('seatsLeft', { n: slot.seatsLeft })}
                           </span>
-                        )}
-                      </button>
-                    )
-                  })}
-                </div>
-              </>
-            )}
-          </div>
-        )}
+                        </div>
+                      </div>
 
-        {/* Paso 3: cuántos, datos y forma de pago */}
-        {slot && slot.seatsLeft > 0 && (
-          <form onSubmit={enviar} className="mt-6 space-y-6 border-t border-border pt-6">
-            <div className="space-y-2">
-              <Label htmlFor="personas">{t('people')}</Label>
-              <select
-                id="personas"
-                value={personas}
-                onChange={(e) => setPersonas(Number(e.target.value))}
-                className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm sm:w-40"
-              >
-                {Array.from({ length: Math.min(slot.seatsLeft, 20) }, (_, i) => i + 1).map((n) => (
-                  <option key={n} value={n}>{n}</option>
-                ))}
-              </select>
-              <p className="text-xs text-muted-foreground">{t('seatsLeft', { n: slot.seatsLeft })}</p>
+                      <div className="space-y-3">
+                        <Label>{t('yourDetails')}</Label>
+                        <Input name="name" placeholder={t('name')} required minLength={2} maxLength={120} autoComplete="name" />
+                        <Input name="email" type="email" placeholder={t('email')} required maxLength={200} autoComplete="email" />
+                        <Input name="phone" type="tel" placeholder={t('phone')} maxLength={40} autoComplete="tel" />
+                      </div>
+
+                      {metodosPosibles.length > 1 && (
+                        <div className="space-y-2">
+                          <Label>{t('payWith')}</Label>
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            {metodosPosibles.map((m) => (
+                              <button
+                                key={m}
+                                type="button"
+                                onClick={() => setMetodo(m)}
+                                className={`rounded-md border px-3 py-2 text-left text-sm transition-colors
+                                  ${metodo === m ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-accent'}`}
+                              >
+                                <span className="block font-medium">
+                                  {m === 'paypal' ? 'PayPal' : 'Mercado Pago'}
+                                </span>
+                                <span className="block text-xs opacity-80">
+                                  {formatearPrecio(m === 'paypal' ? slot.priceUsd : slot.priceArs,
+                                                   m === 'paypal' ? 'USD' : 'ARS', locale)}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {total !== null && metodo && (
+                        <div className="flex items-baseline justify-between border-t border-border pt-3">
+                          <span className="text-sm text-muted-foreground">{t('total')}</span>
+                          <span className="text-xl font-bold">
+                            {formatearPrecio(total, metodo === 'paypal' ? 'USD' : 'ARS', locale)}
+                          </span>
+                        </div>
+                      )}
+
+                      {error && (
+                        <p role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm">
+                          {error}
+                        </p>
+                      )}
+
+                      <div className="space-y-2">
+                        <Button type="submit" className="w-full" disabled={enviando || !metodo}>
+                          {enviando ? t('working') : t('continue')}
+                        </Button>
+                        <p className="text-center text-xs text-muted-foreground">{t('holdNote')}</p>
+                      </div>
+                    </form>
+                  )}
+                </>
+              )}
             </div>
-
-            <div className="space-y-4">
-              <h2 className="text-sm font-medium">{t('yourDetails')}</h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="name">{t('name')}</Label>
-                  <Input id="name" name="name" required minLength={2} maxLength={120} autoComplete="name" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="email">{t('email')}</Label>
-                  <Input id="email" name="email" type="email" required maxLength={200} autoComplete="email" />
-                </div>
-                <div className="space-y-2 sm:col-span-2">
-                  <Label htmlFor="phone">{t('phone')}</Label>
-                  <Input id="phone" name="phone" type="tel" maxLength={40} autoComplete="tel" />
-                </div>
-              </div>
-            </div>
-
-            {metodosPosibles.length > 1 && (
-              <div className="space-y-2">
-                <Label>{t('payWith')}</Label>
-                <div className="flex flex-wrap gap-2">
-                  {metodosPosibles.map((m) => (
-                    <button
-                      key={m}
-                      type="button"
-                      onClick={() => setMetodo(m)}
-                      className={`rounded-md border px-4 py-2 text-sm transition-colors
-                        ${metodo === m ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-accent'}`}
-                    >
-                      {m === 'paypal' ? 'PayPal' : 'Mercado Pago'}
-                      <span className="ml-2 text-xs opacity-80">
-                        {formatearPrecio(m === 'paypal' ? slot.priceUsd : slot.priceArs,
-                                         m === 'paypal' ? 'USD' : 'ARS', locale)}
-                      </span>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {total !== null && metodo && (
-              <div className="flex items-baseline justify-between border-t border-border pt-4">
-                <span className="text-sm text-muted-foreground">{t('total')}</span>
-                <span className="text-2xl font-bold">
-                  {formatearPrecio(total, metodo === 'paypal' ? 'USD' : 'ARS', locale)}
-                </span>
-              </div>
-            )}
-
-            {error && (
-              <p role="alert" className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm">
-                {error}
-              </p>
-            )}
-
-            <div className="space-y-2">
-              <Button type="submit" size="lg" className="w-full" disabled={enviando || !metodo}>
-                {enviando ? t('working') : t('continue')}
-              </Button>
-              <p className="text-center text-xs text-muted-foreground">{t('holdNote')}</p>
-            </div>
-          </form>
-        )}
+          )}
+        </div>
       </div>
     </div>
   )

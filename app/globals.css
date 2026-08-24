@@ -1,6 +1,15 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
+/* Tailwind 4 no le pone ancho máximo a .container: sin esto el sitio se estira a lo
+   ancho de la pantalla y en un monitor grande las líneas quedan larguísimas.
+   El padding lateral ya lo ponen las clases px-* del markup, así que acá va sólo el tope. */
+@utility container {
+  margin-inline: auto;
+  max-width: 80rem;
+}
+
+
 :root {
   --background: oklch(0.98 0 0);
   --foreground: oklch(0.1 0 0);

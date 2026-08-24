@@ -244,7 +244,9 @@
       "sin_precio": "That time is not open for booking yet.",
       "demasiados": "You have too many unpaid reservations. Please finish or wait for them to expire.",
       "generic": "Something went wrong. Please try again."
-    }
+    },
+    "pickDateFirst": "Pick a date on the calendar to continue.",
+    "changeDate": "Change date"
   },
   "pay": {
     "title": "Complete your booking",

@@ -248,7 +248,9 @@
       "sin_precio": "Ese horario todavía no está abierto para reservas.",
       "demasiados": "Tenés demasiadas reservas sin pagar. Terminá alguna o esperá a que venzan.",
       "generic": "Algo salió mal. Probá de nuevo."
-    }
+    },
+    "pickDateFirst": "Elegí una fecha en el calendario para continuar.",
+    "changeDate": "Cambiar fecha"
   },
   "pay": {
     "title": "Completá tu reserva",
