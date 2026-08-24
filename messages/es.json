@@ -264,6 +264,12 @@
     "payNow": "Pagar ahora",
     "soon": "Estamos terminando de configurar el pago. Te vamos a mandar el link por email.",
     "bookAgain": "Reservar de nuevo",
-    "backHome": "Volver al inicio"
+    "backHome": "Volver al inicio",
+    "payWithPaypal": "Pagar con PayPal o tarjeta",
+    "payError": "No se pudo completar el pago. Probá de nuevo.",
+    "payLoading": "Cargando el pago…",
+    "payDone": "Pago recibido, confirmando…",
+    "overbooked": "Tu pago se procesó, pero el lugar se ocupó mientras tanto. Te vamos a contactar para devolverte el dinero.",
+    "notConfigured": "El pago online todavía no está disponible. Te vamos a mandar un link de pago por email."
   }
 }

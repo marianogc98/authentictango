@@ -44,3 +44,13 @@ export async function getReserva(uid: string): Promise<ReservaPublica | null> {
     vencida: r.status === 'pending' && r.expiresAt.getTime() <= Date.now(),
   }
 }
+
+/**
+ * Versión completa, sólo para uso interno del servidor: incluye el teléfono, que la
+ * organizadora necesita en el aviso pero no tiene por qué viajar al navegador.
+ */
+export async function getReservaInterna(uid: string) {
+  if (!/^[0-9a-f-]{36}$/i.test(uid)) return null
+  const [r] = await db.select().from(bookings).where(eq(bookings.uid, uid))
+  return r ?? null
+}

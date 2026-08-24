@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Link } from '@/i18n/navigation'
 import { getReserva } from '@/lib/booking/consulta'
 import { formatearPrecio, hhmm } from '@/lib/booking/dinero'
+import { PaypalBotones } from '@/components/paypal-botones'
+import { PAYPAL_CLIENT_ID, paypalConfigurado } from '@/lib/payments/paypal'
 
 // Depende del estado de una reserva concreta: nunca se prerenderiza ni se cachea.
 export const dynamic = 'force-dynamic'
@@ -36,6 +38,10 @@ export default async function PagoPage({
   const minutos = reserva
     ? Math.max(0, Math.ceil((reserva.expiresAt.getTime() - Date.now()) / 60000))
     : 0
+
+  // Los dos precios son independientes: una reserva en pesos no se paga por PayPal.
+  const puedePagarConPaypal =
+    paypalConfigurado() && reserva?.currency === 'USD' && Boolean(reserva?.amount)
 
   return (
     <>
@@ -74,9 +80,28 @@ export default async function PagoPage({
                 </p>
               )}
 
-              <p className="mt-6 rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm">
-                {t('soon')}
-              </p>
+              <div className="mt-6">
+                {puedePagarConPaypal ? (
+                  <>
+                    <h2 className="mb-3 text-sm font-medium text-muted-foreground">
+                      {t('payWithPaypal')}
+                    </h2>
+                    {/* El Client ID es público —viaja en el SDK igual— pero se lee en el
+                        servidor y se pasa como prop: así no hace falta una NEXT_PUBLIC_*,
+                        que se congelaría en el build. */}
+                    <PaypalBotones
+                      uid={reserva.uid}
+                      clientId={PAYPAL_CLIENT_ID}
+                      locale={locale}
+                      seats={reserva.seats}
+                    />
+                  </>
+                ) : (
+                  <p className="rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm">
+                    {t('notConfigured')}
+                  </p>
+                )}
+              </div>
 
               <p className="mt-4 text-center text-xs text-muted-foreground">
                 {t('expiresIn', { min: minutos })}

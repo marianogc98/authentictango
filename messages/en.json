@@ -260,6 +260,12 @@
     "payNow": "Pay now",
     "soon": "Payment is being set up. We will email you a payment link shortly.",
     "bookAgain": "Book again",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "payWithPaypal": "Pay with PayPal or card",
+    "payError": "The payment could not be completed. Please try again.",
+    "payLoading": "Loading payment…",
+    "payDone": "Payment received, confirming…",
+    "overbooked": "Your payment went through, but the spot was taken in the meantime. We will contact you to refund you.",
+    "notConfigured": "Online payment is not available yet. We will email you a payment link shortly."
   }
 }
