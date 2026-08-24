@@ -153,7 +153,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
     <div className={embebido ? '' : 'mx-auto w-full'}>
       {!embebido && (
         <div className="mb-10 text-center">
-          <h1 className="font-sans text-3xl font-bold text-foreground md:text-4xl">{t('title')}</h1>
+          <h1 className="font-sans text-2xl font-bold text-foreground md:text-4xl">{t('title')}</h1>
           <p className="mt-3 text-muted-foreground">{t('subtitle')}</p>
         </div>
       )}

@@ -43,11 +43,11 @@ export function Hero() {
         <div className="lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center lg:min-h-screen">
           {/* Contenido - izquierda en desktop, centrado en móvil */}
           <div className="max-w-4xl mx-auto lg:max-w-none lg:mx-0 text-center lg:text-left">
-            <h1 className="font-sans text-4xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 text-balance">
+            <h1 className="font-sans text-3xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 text-balance">
               {t('title')}
             </h1>
             
-            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto lg:mx-0 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 text-pretty">
+            <p className="text-base md:text-xl text-white/90 max-w-2xl mx-auto lg:mx-0 mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 text-pretty">
               {t('subtitle')}
             </p>
 
