@@ -152,20 +152,25 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
         </div>
       )}
 
-      <div className="rounded-lg border border-border bg-card p-4 sm:p-6">
+      {/* La card también se acota: con el calendario chico dentro de una columna ancha
+          quedaba mucho aire al costado, y un formulario angosto se lee mejor igual. */}
+      <div className="mx-auto max-w-xl rounded-lg border border-border bg-card p-4 sm:p-6">
         {/* Paso 1: la fecha */}
         <h2 className="mb-4 text-sm font-medium">{t('pickDate')}</h2>
 
-        <div className="mb-3 flex items-center justify-between">
-          <span className="font-medium capitalize">{MESES[idioma][numMes - 1]} {anio}</span>
+        {/* El calendario se acota a un ancho fijo. Con la grilla al 100% del contenedor,
+            cada celda queda a 1/7 del ancho disponible y en desktop se vuelve enorme. */}
+        <div className="mx-auto w-full max-w-[19rem]">
+        <div className="mb-2 flex items-center justify-between">
+          <span className="text-sm font-medium capitalize">{MESES[idioma][numMes - 1]} {anio}</span>
           <div className="flex gap-1">
             <button type="button" aria-label={t('prev')} onClick={() => setMes((m) => mesVecino(m, -1))}
-              className="rounded-md border border-border p-2 hover:bg-accent">
-              <ChevronLeft className="h-4 w-4" />
+              className="rounded border border-border p-1 hover:bg-accent">
+              <ChevronLeft className="h-3.5 w-3.5" />
             </button>
             <button type="button" aria-label={t('next')} onClick={() => setMes((m) => mesVecino(m, 1))}
-              className="rounded-md border border-border p-2 hover:bg-accent">
-              <ChevronRight className="h-4 w-4" />
+              className="rounded border border-border p-1 hover:bg-accent">
+              <ChevronRight className="h-3.5 w-3.5" />
             </button>
           </div>
         </div>
@@ -173,9 +178,9 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
         {dias === null ? (
           <p className="py-10 text-center text-sm text-muted-foreground">{t('loading')}</p>
         ) : (
-          <div className="grid grid-cols-7 gap-1 sm:gap-2">
+          <div className="grid grid-cols-7 gap-0.5">
             {DIAS_CABECERA[idioma].map((c, i) => (
-              <div key={i} className="pb-1 text-center text-xs text-muted-foreground">{c}</div>
+              <div key={i} className="pb-1 text-center text-[10px] text-muted-foreground">{c}</div>
             ))}
             {Array.from({ length: huecos }, (_, i) => <div key={`h${i}`} />)}
 
@@ -191,21 +196,23 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
                   type="button"
                   disabled={!disponible}
                   onClick={() => elegirDia(d)}
-                  className={`flex aspect-square flex-col items-center justify-center rounded-md border text-sm transition-colors
-                    ${elegido ? 'border-primary bg-primary text-primary-foreground' : 'border-border'}
+                  // Altura fija en vez de aspect-square: así el alto no depende del ancho
+                  // del contenedor y la celda no crece al ensancharse la columna.
+                  title={hayTurnos && libres === 0 ? t('soldOut') : undefined}
+                  className={`flex h-9 items-center justify-center rounded text-[13px] transition-colors
+                    ${elegido ? 'bg-primary font-medium text-primary-foreground' : ''}
                     ${disponible && !elegido ? 'hover:bg-accent' : ''}
-                    ${!disponible ? 'cursor-not-allowed text-muted-foreground/40' : ''}
-                    ${d.date === hoy && !elegido ? 'ring-1 ring-foreground/40' : ''}`}
+                    ${!disponible ? 'cursor-not-allowed text-muted-foreground/35' : ''}
+                    ${hayTurnos && libres === 0 ? 'line-through' : ''}
+                    ${d.date === hoy && !elegido ? 'ring-1 ring-inset ring-foreground/40' : ''}`}
                 >
-                  <span>{Number(d.date.slice(-2))}</span>
-                  {hayTurnos && libres === 0 && (
-                    <span className="text-[9px] leading-none">{t('soldOut')}</span>
-                  )}
+                  {Number(d.date.slice(-2))}
                 </button>
               )
             })}
           </div>
         )}
+        </div>
 
         {/* Paso 2: el horario, sólo si hay más de uno */}
         {diaElegido && (
