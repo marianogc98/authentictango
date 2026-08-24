@@ -1,62 +1,23 @@
 "use client"
 
-import { useEffect } from 'react'
 import { useLocale, useTranslations } from 'next-intl'
-import Cal, { getCalApi } from '@calcom/embed-react'
-import { useRouter } from '@/i18n/navigation'
-import { trackGaEvent } from '@/lib/utils/gtag'
+import { Reserva } from '@/components/reserva'
 
-// Slug del calendario en Cal.com (antes: https://cal.com/<slug>/)
-const CAL_LINK = 'maria-ines-ocampos-yhkfwt'
-const CONVERSION_EVENT = 'booking_confirmed'
-
+/**
+ * Sección de reservas del home.
+ *
+ * Antes embebía el calendario de Cal.com. Se reemplazó por el flujo propio: Cal obligaba
+ * a los clientes a iniciar sesión en PayPal para pagar, y su app de pagos no permite
+ * integrar Mercado Pago, que es la vía que sí acepta tarjetas sin cuenta.
+ *
+ * El flujo va embebido y no como link a /book para no sumar un click: el CTA del hero
+ * baja hasta acá y el visitante reserva sin salir de la página. /book sigue existiendo
+ * como página propia, indexable y linkeable.
+ */
 export function Booking() {
   const t = useTranslations('booking')
   const tMap = useTranslations('map')
   const locale = useLocale()
-  const router = useRouter()
-
-  useEffect(() => {
-    let cancelado = false
-
-    ;(async () => {
-      try {
-        const cal = await getCalApi()
-        if (cancelado) return
-
-        // Cal.com avisa desde el iframe cuando la reserva se confirmó.
-        // Reemplaza al "Redirect on booking" del plan pago: registramos la
-        // conversión y navegamos nosotros a la página de gracias.
-        cal('on', {
-          action: 'bookingSuccessfulV2',
-          callback: (e: CustomEvent<{ data?: Record<string, unknown> }>) => {
-            const d = e.detail?.data ?? {}
-
-            // Sin nombre ni email: GA4 no admite datos personales.
-            const payload = {
-              locale,
-              booking_uid: String(d.uid ?? ''),
-              event_type_id: String(d.eventTypeId ?? ''),
-              booking_status: String(d.status ?? ''),
-            }
-
-            trackGaEvent(CONVERSION_EVENT, payload).catch(() => {})
-
-            // next-intl resuelve el slug por idioma: /thank-you o /es/gracias
-            router.push('/thank-you')
-          },
-        })
-      } catch (err) {
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('[Cal.com] No se pudo suscribir a bookingSuccessfulV2:', err)
-        }
-      }
-    })()
-
-    return () => {
-      cancelado = true
-    }
-  }, [locale, router])
 
   return (
     <section id="booking" className="py-16 lg:py-24 bg-secondary">
@@ -70,44 +31,35 @@ export function Booking() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-4 gap-8 lg:items-stretch">
-            {/* En móvil: booking primero (order-1), mapa después (order-2). En desktop: mapa izquierda (order-1), booking derecha (order-2). */}
-            {/* Map - 25% en desktop; en móvil va segundo y 20% menos alto */}
-            <div className="order-2 lg:order-1 lg:col-span-1">
-              <div className="bg-card border border-border rounded-lg overflow-hidden sticky top-8 h-full flex flex-col">
-                <div className="p-4 border-b border-border flex-shrink-0">
-                  <h3 className="font-sans text-lg font-bold text-foreground text-center">
-                    {tMap('title')}
-                  </h3>
-                </div>
-                <div className="relative flex-1 min-h-[480px] lg:min-h-[600px]">
-                  <iframe
-                    src={`${tMap('location')}&t=k`}
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0 }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                    title={tMap('title')}
-                    className="absolute inset-0"
-                  />
-                </div>
+        <div className="grid lg:grid-cols-4 gap-8 lg:items-start">
+          {/* En móvil: reserva primero (order-1), mapa después. En desktop: mapa a la izquierda. */}
+          <div className="order-2 lg:order-1 lg:col-span-1">
+            <div className="bg-card border border-border rounded-lg overflow-hidden sticky top-8 flex flex-col">
+              <div className="p-4 border-b border-border flex-shrink-0">
+                <h3 className="font-sans text-lg font-bold text-foreground text-center">
+                  {tMap('title')}
+                </h3>
               </div>
-            </div>
-
-            {/* Cal.com - 75% en desktop; en móvil va primero */}
-            <div className="order-1 lg:order-2 lg:col-span-3">
-              <div className="bg-card border border-border rounded-lg overflow-hidden h-full">
-                <Cal
-                  calLink={CAL_LINK}
-                  className="w-full h-full min-h-[600px]"
-                  style={{ width: '100%', height: '100%', minHeight: 600, overflow: 'auto' }}
-                  config={{ layout: 'month_view' }}
+              <div className="relative min-h-[380px] lg:min-h-[480px]">
+                <iframe
+                  src={`${tMap('location')}&t=k`}
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title={tMap('title')}
+                  className="absolute inset-0"
                 />
               </div>
             </div>
           </div>
+
+          <div className="order-1 lg:order-2 lg:col-span-3">
+            <Reserva locale={locale} embebido />
+          </div>
+        </div>
       </div>
     </section>
   )

@@ -3,7 +3,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { alternatesFor } from '@/lib/seo/alternates'
-import { Reserva } from './reserva'
+import { Reserva } from '@/components/reserva'
 
 export async function generateMetadata({
   params,

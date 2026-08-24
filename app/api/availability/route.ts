@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getMonthAvailability } from '@/lib/booking/availability'
 import { hoyBA } from '@/lib/booking/tiempo'
+import type { DiaPublico } from '@/lib/booking/tipos'
 
 // La disponibilidad cambia con cada reserva: nunca se cachea.
 export const dynamic = 'force-dynamic'
@@ -8,17 +9,6 @@ export const dynamic = 'force-dynamic'
 /** Meses hacia adelante que se pueden consultar. Evita que un script pida el año 9999. */
 const MESES_ADELANTE = 18
 
-export type SlotPublico = {
-  time: string
-  seatsLeft: number
-  priceUsd: number
-  priceArs: number
-}
-
-export type DiaPublico = {
-  date: string
-  slots: SlotPublico[]
-}
 
 /**
  * GET /api/availability?m=YYYY-MM

@@ -3,9 +3,10 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslations } from 'next-intl'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import type { DiaPublico, SlotPublico } from '@/app/api/availability/route'
+import type { DiaPublico, SlotPublico } from '@/lib/booking/tipos'
 import { useRouter } from '@/i18n/navigation'
 import { formatearPrecio, hhmm } from '@/lib/booking/dinero'
+import { trackGaEvent } from '@/lib/utils/gtag'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -27,7 +28,7 @@ function mesVecino(mes: string, delta: number) {
   return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`
 }
 
-export function Reserva({ locale }: { locale: string }) {
+export function Reserva({ locale, embebido = false }: { locale: string; embebido?: boolean }) {
   const t = useTranslations('book')
   const router = useRouter()
 
@@ -121,6 +122,15 @@ export function Reserva({ locale }: { locale: string }) {
         return
       }
 
+      // Sin nombre ni email: GA4 no admite datos personales. El evento
+      // booking_confirmed queda para cuando el pago se acredite de verdad.
+      trackGaEvent('booking_started', {
+        locale,
+        method: metodo,
+        seats: String(personas),
+        currency: cuerpo.currency,
+      }).catch(() => {})
+
       router.push({ pathname: '/book/[uid]', params: { uid: cuerpo.uid } })
     } catch {
       setError(t('errors.generic'))
@@ -134,11 +144,13 @@ export function Reserva({ locale }: { locale: string }) {
   const idioma = locale === 'es' ? 'es' : 'en'
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <div className="mb-10 text-center">
+    <div className={embebido ? '' : 'mx-auto max-w-3xl'}>
+      {!embebido && (
+        <div className="mb-10 text-center">
         <h1 className="font-sans text-3xl font-bold text-foreground md:text-4xl">{t('title')}</h1>
         <p className="mt-3 text-muted-foreground">{t('subtitle')}</p>
-      </div>
+        </div>
+      )}
 
       <div className="rounded-lg border border-border bg-card p-4 sm:p-6">
         {/* Paso 1: la fecha */}
