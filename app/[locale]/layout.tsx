@@ -8,6 +8,7 @@ import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { JsonLd } from '@/components/JsonLd'
 import { negocioSchema } from '@/lib/seo/schema'
 import { SITE_URL } from '@/lib/site'
+import { urlFor } from '@/lib/seo/alternates'
 import { routing } from '@/i18n/routing'
 import '../globals.css'
 
@@ -39,6 +40,7 @@ export async function generateMetadata({
       type: 'website',
       siteName: 'The Authentic Tango Experience',
       locale: locale === 'es' ? 'es_AR' : 'en_US',
+      url: urlFor(locale, '/'),
       title,
       description,
       images: [{ url: '/og.png', width: 1200, height: 630, alt: t('ogAlt') }],

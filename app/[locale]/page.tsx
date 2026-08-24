@@ -11,7 +11,7 @@ import { Ebook } from "@/components/ebook"
 import { Booking } from "@/components/booking"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
-import { alternatesFor, urlFor } from '@/lib/seo/alternates'
+import { alternatesFor } from '@/lib/seo/alternates'
 
 export async function generateMetadata({
   params,
@@ -24,7 +24,6 @@ export async function generateMetadata({
   // escribir a mano, al duplicar una página quedaría apuntando a la anterior.
   return {
     alternates: alternatesFor(locale, '/'),
-    openGraph: { url: urlFor(locale, '/') },
   }
 }
 
