@@ -1,7 +1,7 @@
 import { db } from '@/lib/db/client'
 import { weeklySlots } from '@/lib/db/schema'
 import { aTexto, hhmm } from '@/lib/booking/dinero'
-import { AdminNav } from '../nav'
+import { AdminNav } from '../../nav'
 import { EditorSemana, type SlotUI } from './editor'
 
 // Nunca prerenderizar: depende de la base, que en el build ni siquiera es alcanzable.

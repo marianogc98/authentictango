@@ -1,6 +1,6 @@
 import { getMonthAvailability } from '@/lib/booking/availability'
 import { hoyBA } from '@/lib/booking/tiempo'
-import { AdminNav } from './nav'
+import { AdminNav } from '../nav'
 import { Calendario } from './calendario'
 
 export const dynamic = 'force-dynamic'

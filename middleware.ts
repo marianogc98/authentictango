@@ -22,6 +22,10 @@ export default async function middleware(request: NextRequest) {
 
   // El panel queda fuera del ruteo por idioma: es para una sola persona y sólo en
   // español, así que no tiene sentido que arrastre prefijos de locale.
+  //
+  // Este chequeo es una conveniencia —evita renderizar el panel para después mandarlo
+  // al login—, NO la barrera de seguridad. La barrera está en el layout de
+  // app/admin/(panel), que corre siempre. Ver el comentario del matcher.
   if (pathname.startsWith('/admin')) {
     if (pathname === '/admin/login') return NextResponse.next();
 
@@ -39,8 +43,12 @@ export default async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  // Match all pathnames except for
-  // - … if they start with `/api`, `/_next` or `/_vercel`
-  // - … the ones containing a dot (e.g. `favicon.ico`)
-  matcher: ['/((?!api|_next|_vercel|.*\..*).*)']
+  // Excluye /api, /_next, /_vercel y cualquier ruta con punto (archivos estáticos).
+  //
+  // Ojo con el escapado: hacen falta DOS barras invertidas para que el regex reciba
+  // `\.`. Con una sola, '\.' se colapsa a '.', el patrón queda `.*..*` —que matchea
+  // cualquier ruta no vacía—, el lookahead negativo falla siempre, y el middleware
+  // deja de correr en todas las rutas salvo `/`. Es una falla silenciosa: no rompe
+  // nada, simplemente deja de ejecutarse.
+  matcher: ['/((?!api|_next|_vercel|.*\\..*).*)'],
 };
