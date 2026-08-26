@@ -1,6 +1,6 @@
 'use server'
 
-import { and, asc, eq, inArray, sql } from 'drizzle-orm'
+import { and, asc, eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db/client'
 import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
@@ -20,7 +20,11 @@ async function reservasVivas(date: string) {
     .from(bookings)
     .where(and(
       eq(bookings.date, date),
-      inArray(bookings.status, ['paid', 'pending']),
+      // Un hold vencido no es una reserva: sin este filtro, el manifiesto del día se
+      // llenaba de fantasmas en "Esperando pago" que nunca iban a llegar. El estado
+      // 'expired' no se escribe en ningún lado, así que el vencimiento se calcula acá,
+      // igual que en la disponibilidad.
+      sql`(${bookings.status} = 'paid' OR (${bookings.status} = 'pending' AND ${bookings.expiresAt} > now()))`,
     ))
     .orderBy(asc(bookings.time), asc(bookings.createdAt))
 }
