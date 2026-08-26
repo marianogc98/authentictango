@@ -9,6 +9,8 @@ import { getReserva } from '@/lib/booking/consulta'
 import { formatearPrecio, hhmm } from '@/lib/booking/dinero'
 import { PaypalBotones } from '@/components/paypal-botones'
 import { PAYPAL_CLIENT_ID, paypalConfigurado } from '@/lib/payments/paypal'
+import { MercadoPagoBoton } from '@/components/mercadopago-boton'
+import { mpConfigurado } from '@/lib/payments/mercadopago'
 
 // Depende del estado de una reserva concreta: nunca se prerenderiza ni se cachea.
 export const dynamic = 'force-dynamic'
@@ -42,6 +44,8 @@ export default async function PagoPage({
   // Los dos precios son independientes: una reserva en pesos no se paga por PayPal.
   const puedePagarConPaypal =
     paypalConfigurado() && reserva?.currency === 'USD' && Boolean(reserva?.amount)
+  const puedePagarConMp =
+    mpConfigurado() && reserva?.currency === 'ARS' && Boolean(reserva?.amount)
 
   return (
     <>
@@ -54,6 +58,10 @@ export default async function PagoPage({
             </Aviso>
           ) : reserva.status === 'paid' ? (
             <Aviso texto={t('paid')} tono="ok">
+              <Button asChild variant="outline"><Link href="/">{t('backHome')}</Link></Button>
+            </Aviso>
+          ) : reserva.status === 'overbooked' ? (
+            <Aviso texto={t('overbookedPage')}>
               <Button asChild variant="outline"><Link href="/">{t('backHome')}</Link></Button>
             </Aviso>
           ) : reserva.vencida || reserva.status === 'expired' ? (
@@ -80,6 +88,8 @@ export default async function PagoPage({
                 </p>
               )}
 
+              {/* El método lo decide la moneda de la reserva, que se fijó al reservar:
+                  los dos precios son independientes y no hay conversión entre ellos. */}
               <div className="mt-6">
                 {puedePagarConPaypal ? (
                   <>
@@ -96,6 +106,8 @@ export default async function PagoPage({
                       seats={reserva.seats}
                     />
                   </>
+                ) : puedePagarConMp ? (
+                  <MercadoPagoBoton uid={reserva.uid} />
                 ) : (
                   <p className="rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm">
                     {t('notConfigured')}

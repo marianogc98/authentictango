@@ -270,6 +270,9 @@
     "payLoading": "Cargando el pago…",
     "payDone": "Pago recibido, confirmando…",
     "overbooked": "Tu pago se procesó, pero el lugar se ocupó mientras tanto. Te vamos a contactar para devolverte el dinero.",
-    "notConfigured": "El pago online todavía no está disponible. Te vamos a mandar un link de pago por email."
+    "notConfigured": "El pago online todavía no está disponible. Te vamos a mandar un link de pago por email.",
+    "payWithMp": "Pagar con Mercado Pago",
+    "mpRedirect": "Te llevamos a Mercado Pago…",
+    "overbookedPage": "Tu pago se procesó, pero el lugar se ocupó mientras se acreditaba. Te estamos devolviendo el dinero y te escribimos por email. Perdón por eso."
   }
 }

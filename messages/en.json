@@ -266,6 +266,9 @@
     "payLoading": "Loading payment…",
     "payDone": "Payment received, confirming…",
     "overbooked": "Your payment went through, but the spot was taken in the meantime. We will contact you to refund you.",
-    "notConfigured": "Online payment is not available yet. We will email you a payment link shortly."
+    "notConfigured": "Online payment is not available yet. We will email you a payment link shortly.",
+    "payWithMp": "Pay with Mercado Pago",
+    "mpRedirect": "Taking you to Mercado Pago…",
+    "overbookedPage": "Your payment went through, but the spot was taken while it was processing. We are refunding you and will email you shortly. Sorry about that."
   }
 }
