@@ -247,7 +247,10 @@
       "pasado": "Ese horario ya pasó.",
       "sin_precio": "Ese horario todavía no está abierto para reservas.",
       "demasiados": "Tenés demasiadas reservas sin pagar. Terminá alguna o esperá a que venzan.",
-      "generic": "Algo salió mal. Probá de nuevo."
+      "generic": "Algo salió mal. Probá de nuevo.",
+      "servidor": "Tuvimos un problema de nuestro lado. Probá de nuevo en un momento.",
+      "datos_invalidos": "Revisá los datos del formulario y probá de nuevo.",
+      "ya_pagada": "Esta reserva ya está paga."
     },
     "pickDateFirst": "Elegí una fecha en el calendario para continuar.",
     "changeDate": "Cambiar fecha"

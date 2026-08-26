@@ -13,6 +13,14 @@ import { Label } from '@/components/ui/label'
 
 type Metodo = 'paypal' | 'mercadopago'
 
+// Sólo estas claves existen en los mensajes. Si el servidor devuelve otra, se cae a
+// la genérica: sin esto, un código nuevo se le muestra al visitante como
+// "book.errors.loquesea", que es lo que pasó con "servidor".
+const CLAVES_ERROR = new Set([
+  'sin_lugar', 'cerrado', 'sin_horario', 'pasado', 'sin_precio', 'demasiados',
+  'servidor', 'datos_invalidos', 'ya_pagada',
+])
+
 const MESES: Record<string, string[]> = {
   es: ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'],
   en: ['January','February','March','April','May','June','July','August','September','October','November','December'],
@@ -121,7 +129,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
       const cuerpo = await res.json()
 
       if (!res.ok) {
-        setError(t(`errors.${cuerpo.error}` as never) || t('errors.generic'))
+        setError(t((CLAVES_ERROR.has(cuerpo.error) ? `errors.${cuerpo.error}` : 'errors.generic') as never))
         // El estado del slot cambió mientras completaba: hay que recargar.
         setMes((m) => m)
         setEnviando(false)

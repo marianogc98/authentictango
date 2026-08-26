@@ -243,7 +243,10 @@
       "pasado": "That time has already passed.",
       "sin_precio": "That time is not open for booking yet.",
       "demasiados": "You have too many unpaid reservations. Please finish or wait for them to expire.",
-      "generic": "Something went wrong. Please try again."
+      "generic": "Something went wrong. Please try again.",
+      "servidor": "Something went wrong on our side. Please try again in a moment.",
+      "datos_invalidos": "Please check the form and try again.",
+      "ya_pagada": "This booking is already paid."
     },
     "pickDateFirst": "Pick a date on the calendar to continue.",
     "changeDate": "Change date"
