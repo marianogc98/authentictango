@@ -18,7 +18,7 @@ type Metodo = 'paypal' | 'mercadopago'
 // "book.errors.loquesea", que es lo que pasó con "servidor".
 const CLAVES_ERROR = new Set([
   'sin_lugar', 'cerrado', 'sin_horario', 'pasado', 'sin_precio', 'demasiados',
-  'servidor', 'datos_invalidos', 'ya_pagada',
+  'fuera_de_ventana', 'servidor', 'datos_invalidos', 'ya_pagada',
 ])
 
 const MESES: Record<string, string[]> = {
@@ -49,6 +49,9 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   const [mes, setMes] = useState(() => new Date().toISOString().slice(0, 7))
   const [dias, setDias] = useState<DiaPublico[] | null>(null)
   const [hoy, setHoy] = useState<string>('')
+  // Hasta dónde tiene sentido navegar. Lo decide el servidor, que es el que conoce el
+  // período de reservas: sin esto las flechas llevan a meses que siempre están vacíos.
+  const [limites, setLimites] = useState<{ min: string; max: string } | null>(null)
 
   const [fecha, setFecha] = useState<string | null>(null)
   const [slot, setSlot] = useState<SlotPublico | null>(null)
@@ -67,6 +70,10 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
         if (cancelado) return
         setDias(d.days ?? [])
         setHoy(d.today ?? '')
+        if (d.minMonth && d.maxMonth) setLimites({ min: d.minMonth, max: d.maxMonth })
+        // El servidor recorta el mes pedido al período. Si recortó, el encabezado tiene
+        // que decir el mes que se está mostrando y no el que se pidió.
+        if (d.month && d.month !== mes) setMes(d.month)
       })
       .catch(() => !cancelado && setDias([]))
     return () => { cancelado = true }
@@ -153,6 +160,8 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   }
 
   const [anio, numMes] = mes.split('-').map(Number)
+  const hayAnterior = !limites || mes > limites.min
+  const haySiguiente = !limites || mes < limites.max
   const primerDia = new Date(Date.UTC(anio, numMes - 1, 1)).getUTCDay()
   const huecos = (primerDia + 6) % 7
   const idioma = locale === 'es' ? 'es' : 'en'
@@ -177,12 +186,14 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
           <div className="mb-2 flex items-center justify-between">
             <span className="text-sm font-medium capitalize">{MESES[idioma][numMes - 1]} {anio}</span>
             <div className="flex gap-1">
-              <button type="button" aria-label={t('prev')} onClick={() => setMes((m) => mesVecino(m, -1))}
-                className="rounded border border-border p-1 hover:bg-accent">
+              <button type="button" aria-label={t('prev')} disabled={!hayAnterior}
+                onClick={() => setMes((m) => mesVecino(m, -1))}
+                className="rounded border border-border p-1 hover:bg-accent disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-transparent">
                 <ChevronLeft className="h-4 w-4" />
               </button>
-              <button type="button" aria-label={t('next')} onClick={() => setMes((m) => mesVecino(m, 1))}
-                className="rounded border border-border p-1 hover:bg-accent">
+              <button type="button" aria-label={t('next')} disabled={!haySiguiente}
+                onClick={() => setMes((m) => mesVecino(m, 1))}
+                className="rounded border border-border p-1 hover:bg-accent disabled:cursor-not-allowed disabled:opacity-35 disabled:hover:bg-transparent">
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>

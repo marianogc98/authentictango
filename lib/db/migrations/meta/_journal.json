@@ -15,6 +15,13 @@
       "when": 1787582206351,
       "tag": "0001_lucky_vivisector",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1787918522226,
+      "tag": "0002_green_mojo",
+      "breakpoints": true
     }
   ]
 }

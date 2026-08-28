@@ -247,6 +247,7 @@
       "pasado": "Ese horario ya pasó.",
       "sin_precio": "Ese horario todavía no está abierto para reservas.",
       "demasiados": "Tenés demasiadas reservas sin pagar. Terminá alguna o esperá a que venzan.",
+      "fuera_de_ventana": "Esa fecha está fuera del período en el que aceptamos reservas.",
       "generic": "Algo salió mal. Probá de nuevo.",
       "servidor": "Tuvimos un problema de nuestro lado. Probá de nuevo en un momento.",
       "datos_invalidos": "Revisá los datos del formulario y probá de nuevo.",

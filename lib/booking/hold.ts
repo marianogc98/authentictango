@@ -3,6 +3,7 @@ import { and, eq, sql } from 'drizzle-orm'
 import { db } from '@/lib/db/client'
 import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
 import { weekdayDe, yaPaso } from './tiempo'
+import { dentroDeVentana, getVentana } from './ventana'
 
 /** Minutos que los asientos quedan reservados esperando el pago. */
 export const HOLD_MINUTOS = 20
@@ -28,7 +29,9 @@ export type HoldResult =
   | { ok: true; uid: string; amount: number; currency: Moneda }
   | {
       ok: false
-      reason: 'cerrado' | 'sin_horario' | 'pasado' | 'sin_lugar' | 'sin_precio' | 'demasiados'
+      reason:
+        | 'cerrado' | 'sin_horario' | 'pasado' | 'sin_lugar' | 'sin_precio'
+        | 'demasiados' | 'fuera_de_ventana'
       seatsLeft?: number
     }
 
@@ -46,6 +49,12 @@ export type HoldResult =
 export async function holdSeats(input: HoldInput): Promise<HoldResult> {
   if (input.seats < 1) return { ok: false, reason: 'sin_lugar', seatsLeft: 0 }
   if (yaPaso(input.date, input.time)) return { ok: false, reason: 'pasado' }
+
+  // La ventana se chequea acá y no sólo en el calendario público: el POST se puede armar
+  // a mano, y una fecha fuera de la ventana tiene que rebotar igual que un día cerrado.
+  if (!dentroDeVentana(input.date, await getVentana())) {
+    return { ok: false, reason: 'fuera_de_ventana' }
+  }
 
   // Un hold bloquea asientos 20 minutos sin haber pagado nada. Sin este freno, un script
   // puede llenar el calendario y dejar el tour sin poder venderse.

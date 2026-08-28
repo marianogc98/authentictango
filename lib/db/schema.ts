@@ -105,3 +105,21 @@ export const asientosTomados = sql`
   COALESCE(SUM(CASE WHEN status = 'paid' OR (status = 'pending' AND expires_at > now())
                     THEN seats ELSE 0 END), 0)
 `
+
+/**
+ * La ventana de reservas: entre qué fechas se acepta reservar desde la web.
+ *
+ * Es una sola fila: siempre se escribe con id = 1 y un upsert sobre esa clave, así que
+ * no hay forma de que existan dos ventanas compitiendo. Si no hay fila, o las dos
+ * columnas están en null, no hay ventana y vale la regla de siempre.
+ *
+ * Es independiente de la plantilla semanal a propósito: apagar la venta hasta marzo no
+ * tiene por qué hacerle perder los horarios que ya tenía cargados. `start_date` en null
+ * significa "desde hoy", y `end_date` en null, "sin fecha de corte".
+ */
+export const bookingWindow = pgTable('booking_window', {
+  id: integer('id').primaryKey().default(1),
+  startDate: date('start_date'),
+  endDate: date('end_date'),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+})

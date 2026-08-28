@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { DiaDisponible } from '@/lib/booking/availability'
 import { detalleDia } from '@/lib/admin/dias'
+import { dentroDeVentana, type Ventana } from '@/lib/booking/tipos'
 import {
   Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle,
 } from '@/components/ui/sheet'
@@ -35,9 +36,9 @@ function mesVecino(year: number, month: number, delta: number) {
 }
 
 export function Calendario({
-  year, month, dias, hoy,
+  year, month, dias, hoy, ventana,
 }: {
-  year: number; month: number; dias: DiaDisponible[]; hoy: string
+  year: number; month: number; dias: DiaDisponible[]; hoy: string; ventana: Ventana
 }) {
   const [abierto, setAbierto] = useState<Detalle | null>(null)
   const [cargando, startTransition] = useTransition()
@@ -77,20 +78,25 @@ export function Calendario({
           const dia = Number(d.date.slice(-2))
           const esHoy = d.date === hoy
           const pasado = d.date < hoy
+          // Un día fuera del período no se ofrece en la web, aunque acá tenga horarios.
+          const afuera = !pasado && !dentroDeVentana(d.date, ventana)
 
           return (
             <button
               key={d.date}
               onClick={() => abrir(d.date)}
               disabled={cargando}
+              title={afuera ? 'Fuera del período de reservas' : undefined}
               className={`flex min-h-[68px] flex-col items-start rounded-md border p-1.5 text-left transition-colors sm:p-2
                 ${clase}
-                ${esHoy ? 'border-foreground' : 'border-transparent'}
+                ${esHoy ? 'border-foreground' : afuera ? 'border-dashed border-border' : 'border-transparent'}
                 ${d.custom ? 'ring-1 ring-blue-500/60' : ''}
-                ${pasado ? 'opacity-45' : 'hover:brightness-95'}`}
+                ${pasado || afuera ? 'opacity-45' : 'hover:brightness-95'}`}
             >
               <span className="text-sm font-semibold">{dia}</span>
-              <span className="mt-auto text-[10px] leading-tight sm:text-xs">{nota}</span>
+              <span className="mt-auto text-[10px] leading-tight sm:text-xs">
+                {afuera ? 'Sin reservas' : nota}
+              </span>
             </button>
           )
         })}
@@ -102,6 +108,7 @@ export function Calendario({
         <Leyenda clase="bg-red-500/30">Completo</Leyenda>
         <Leyenda clase="bg-muted">No trabaja</Leyenda>
         <Leyenda clase="ring-1 ring-blue-500/60">Horario distinto al habitual</Leyenda>
+        <Leyenda clase="border border-dashed border-border">Fuera del período</Leyenda>
       </div>
 
       <Sheet open={abierto !== null} onOpenChange={(v) => !v && setAbierto(null)}>

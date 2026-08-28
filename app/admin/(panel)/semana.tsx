@@ -1,13 +1,16 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { Plus, Trash2 } from 'lucide-react'
+import { ChevronRight, Plus, Trash2 } from 'lucide-react'
 import { guardarSemana } from '@/lib/admin/semana'
 import { Button } from '@/components/ui/button'
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 
 export type SlotUI = { time: string; seats: number; priceUsd: string; priceArs: string }
+
+type Semana = Record<number, SlotUI[]>
 
 // Se muestra arrancando en lunes, que es como se piensa una semana de trabajo.
 // El número es el weekday que guarda la base (0 = domingo).
@@ -16,10 +19,72 @@ const DIAS: Array<[number, string]> = [
   [5, 'Viernes'], [6, 'Sábado'], [0, 'Domingo'],
 ]
 
+const CORTOS: Record<number, string> = {
+  1: 'Lun', 2: 'Mar', 3: 'Mié', 4: 'Jue', 5: 'Vie', 6: 'Sáb', 0: 'Dom',
+}
+
 const NUEVO = (): SlotUI => ({ time: '15:00', seats: 10, priceUsd: '0.00', priceArs: '0.00' })
 
-export function EditorSemana({ inicial }: { inicial: Record<number, SlotUI[]> }) {
+/**
+ * Una línea con la semana entera, para leerla sin abrir la sección.
+ *
+ * Si todos los días trabajan a las mismas horas —que es el caso normal— se listan las
+ * horas. Si no, listarlas mezcladas mentiría, así que se cuenta cuántas son.
+ */
+function resumen(semana: Semana): string {
+  const activos = DIAS.filter(([d]) => (semana[d] ?? []).length > 0)
+  if (activos.length === 0) return 'Ningún día configurado'
+
+  const dias = activos.map(([d]) => CORTOS[d]).join(', ')
+  const horarios = activos.map(([d]) => semana[d].map((s) => s.time).sort().join('|'))
+  const total = activos.reduce((n, [d]) => n + semana[d].length, 0)
+
+  if (new Set(horarios).size > 1) {
+    return `${dias} · ${total} horario${total === 1 ? '' : 's'}`
+  }
+
+  const horas = horarios[0].split('|')
+  const lista = horas.length === 1
+    ? horas[0]
+    : `${horas.slice(0, -1).join(', ')} y ${horas[horas.length - 1]}`
+  return `${dias} · ${lista}`
+}
+
+/** La sección plegable del panel: encabezado con el resumen, y adentro el editor. */
+export function SeccionSemana({ inicial }: { inicial: Semana }) {
   const [semana, setSemana] = useState(inicial)
+  const [abierta, setAbierta] = useState(false)
+
+  return (
+    <Collapsible open={abierta} onOpenChange={setAbierta}
+      className="rounded-lg border border-border">
+      <CollapsibleTrigger className="flex w-full items-center gap-3 p-4 text-left hover:bg-accent/40">
+        <ChevronRight className={`h-4 w-4 shrink-0 text-muted-foreground transition-transform ${abierta ? 'rotate-90' : ''}`} />
+        <span className="font-medium">Mi semana</span>
+        <span className="ml-auto truncate text-sm text-muted-foreground">{resumen(semana)}</span>
+      </CollapsibleTrigger>
+
+      <CollapsibleContent className="border-t border-border p-4">
+        <p className="mb-4 text-sm text-muted-foreground">
+          Los horarios habituales. Se configura una vez y después sólo cargás las
+          excepciones en el calendario, día por día.
+        </p>
+        <EditorSemana semana={semana} onCambio={setSemana} />
+      </CollapsibleContent>
+    </Collapsible>
+  )
+}
+
+/**
+ * El editor propiamente dicho. El estado vive afuera para que el encabezado plegado
+ * muestre el resumen de lo que se está editando, y no el de lo último guardado.
+ */
+function EditorSemana({
+  semana, onCambio: setSemana,
+}: {
+  semana: Semana
+  onCambio: React.Dispatch<React.SetStateAction<Semana>>
+}) {
   const [guardando, startTransition] = useTransition()
   const [mensaje, setMensaje] = useState<string | null>(null)
 

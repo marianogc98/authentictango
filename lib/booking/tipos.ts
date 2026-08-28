@@ -15,3 +15,18 @@ export type DiaPublico = {
   date: string
   slots: SlotPublico[]
 }
+
+/**
+ * La ventana de reservas ya resuelta: entre qué fechas se acepta reservar.
+ *
+ * `desde` siempre tiene valor, porque el pasado nunca es reservable. `hasta` en null
+ * es "sin fecha de corte".
+ */
+export type Ventana = { desde: string; hasta: string | null }
+
+/** ¿La fecha "YYYY-MM-DD" cae dentro de la ventana? */
+export function dentroDeVentana(date: string, v: Ventana): boolean {
+  if (date < v.desde) return false
+  if (v.hasta && date > v.hasta) return false
+  return true
+}
