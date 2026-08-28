@@ -58,7 +58,7 @@ export default async function AdminPage({
 
   return (
     <>
-      <AdminNav />
+      <AdminNav activo="calendario" />
       <main className="mx-auto max-w-5xl space-y-8 px-4 py-8">
         <Calendario year={year} month={month} dias={dias} hoy={hoy} ventana={ventana} />
         <SeccionVentana inicial={guardada} hoy={hoy} />
