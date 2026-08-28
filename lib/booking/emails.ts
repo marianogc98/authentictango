@@ -89,6 +89,8 @@ export async function enviarConfirmacion(r: DatosReserva): Promise<void> {
       <p style="color:#999;font-size:12px">${r.uid}</p>
     </div>`
 
+  const aviso = process.env.CONTACT_EMAIL?.trim()
+
   const envios: Array<Promise<unknown>> = [
     resend.emails.send({
       from,
@@ -97,10 +99,13 @@ export async function enviarConfirmacion(r: DatosReserva): Promise<void> {
         ? `Reserva confirmada · ${fecha}`
         : `Booking confirmed · ${fecha}`,
       html: alCliente,
+      // El mail invita a responder, y la dirección del `from` no es un buzón real:
+      // Resend firma en nombre del dominio, pero nadie lee reservas@. Sin este
+      // replyTo, cada respuesta de un cliente se perdería.
+      ...(aviso ? { replyTo: aviso } : {}),
     }),
   ]
 
-  const aviso = process.env.CONTACT_EMAIL?.trim()
   if (aviso) {
     envios.push(resend.emails.send({
       from,
