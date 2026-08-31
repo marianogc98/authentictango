@@ -298,5 +298,12 @@
     "mpRedirect": "Te llevamos a Mercado Pago…",
     "overbookedPage": "Tu pago se procesó, pero el lugar se ocupó mientras se acreditaba. Te estamos devolviendo el dinero y te escribimos por email. Perdón por eso.",
     "withClass": "Con clase grupal"
+  },
+  "notFound": {
+    "badge": "Error 404",
+    "title": "Esta página no existe",
+    "message": "Puede que el link esté mal escrito o que la página se haya mudado. Volvé al inicio, o mirá las fechas disponibles para vivir la experiencia.",
+    "backHome": "Volver al inicio",
+    "book": "Ver fechas"
   }
 }

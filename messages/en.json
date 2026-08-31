@@ -294,5 +294,12 @@
     "mpRedirect": "Taking you to Mercado Pago…",
     "overbookedPage": "Your payment went through, but the spot was taken while it was processing. We are refunding you and will email you shortly. Sorry about that.",
     "withClass": "With group class"
+  },
+  "notFound": {
+    "badge": "Error 404",
+    "title": "This page doesn't exist",
+    "message": "The link may be mistyped, or the page may have moved. Head back home, or take a look at the dates available for the experience.",
+    "backHome": "Back home",
+    "book": "See available dates"
   }
 }
