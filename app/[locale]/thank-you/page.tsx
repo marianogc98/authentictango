@@ -5,7 +5,12 @@ import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { Footer } from '@/components/footer'
+import { getReserva } from '@/lib/booking/consulta'
+import { hhmm } from '@/lib/booking/dinero'
 import { ArrowLeft, Check, Sparkles } from 'lucide-react'
+
+// Muestra el detalle de una reserva concreta: no se prerenderiza ni se cachea.
+export const dynamic = 'force-dynamic'
 
 export async function generateMetadata({
   params,
@@ -23,11 +28,28 @@ export async function generateMetadata({
 
 export default async function ThankYouPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>
+  searchParams: Promise<{ uid?: string }>
 }) {
   const { locale } = await params
+  const { uid } = await searchParams
   const t = await getTranslations({ locale, namespace: 'thankYou' })
+
+  // El uid lo agrega la vuelta del pago. Es opcional a propósito: si alguien llega a
+  // /gracias a mano, o el uid no existe, la página sigue funcionando sin la tarjeta.
+  // Sólo se muestra el detalle si la reserva está paga: en cualquier otro estado el
+  // cliente no tiene nada que celebrar y la pantalla de la reserva lo explica mejor.
+  const reserva = uid ? await getReserva(uid) : null
+  const confirmada = reserva?.status === 'paid' ? reserva : null
+
+  const fecha = confirmada
+    ? new Date(`${confirmada.date}T12:00:00Z`).toLocaleDateString(
+        locale === 'es' ? 'es-AR' : 'en-US',
+        { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' },
+      )
+    : null
 
   // Enlace a la sección "La Experiencia" del home, respetando el idioma
   const localePrefix = locale === routing.defaultLocale ? '' : `/${locale}`
@@ -86,6 +108,27 @@ export default async function ThankYouPage({
             {t('message')}
           </p>
 
+          {/* Detalle de la reserva. La confirmación también va por mail, pero mucha
+              gente cierra el navegador antes de que llegue: esto se ve al instante. */}
+          {confirmada && (
+            <div className="mb-10 w-full max-w-md rounded-xl border border-white/15 bg-white/5 p-6 text-left backdrop-blur-sm animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+              <h2 className="mb-4 text-xs font-medium uppercase tracking-wider text-white/60">
+                {t('details')}
+              </h2>
+
+              <dl className="space-y-3 text-sm">
+                <Dato etiqueta={t('date')} valor={fecha!} capitalizar />
+                <Dato etiqueta={t('time')} valor={`${hhmm(confirmada.time)} (Buenos Aires)`} />
+                <Dato etiqueta={t('guests')} valor={String(confirmada.seats)} />
+                <Dato etiqueta={t('code')} valor={confirmada.uid.slice(0, 8)} />
+              </dl>
+
+              <p className="mt-5 border-t border-white/10 pt-4 text-xs text-white/60">
+                {t('sentTo', { email: confirmada.email })}
+              </p>
+            </div>
+          )}
+
           {/* Acciones */}
           <div className="flex flex-col items-center gap-4 sm:flex-row animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
             <Button asChild size="lg" className="px-8 text-base">
@@ -107,6 +150,22 @@ export default async function ThankYouPage({
       </main>
 
       <Footer />
+    </div>
+  )
+}
+
+/** Una fila del detalle: etiqueta a la izquierda, valor a la derecha. */
+function Dato({
+  etiqueta, valor, capitalizar = false,
+}: {
+  etiqueta: string; valor: string; capitalizar?: boolean
+}) {
+  return (
+    <div className="flex items-baseline justify-between gap-4">
+      <dt className="shrink-0 text-white/60">{etiqueta}</dt>
+      <dd className={`text-right font-medium text-white ${capitalizar ? 'capitalize' : ''}`}>
+        {valor}
+      </dd>
     </div>
   )
 }

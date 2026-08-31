@@ -113,6 +113,12 @@
     "badge": "Reserva confirmada",
     "title": "¡Gracias por tu reserva!",
     "message": "Gracias por elegir vivir esta experiencia con nosotros. Esperamos que disfrutes de una auténtica inmersión en la cultura del tango y en el espíritu de Buenos Aires. ¡Nos vemos muy pronto!",
+    "details": "Tu reserva",
+    "date": "Fecha",
+    "time": "Hora",
+    "guests": "Personas",
+    "code": "Código de reserva",
+    "sentTo": "Te enviamos la confirmación a {email}",
     "backHome": "Volver al inicio",
     "viewExperience": "Explorar la experiencia"
   },

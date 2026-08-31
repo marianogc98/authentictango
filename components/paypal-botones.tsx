@@ -101,7 +101,7 @@ export function PaypalBotones({
           currency: 'USD',
         }).catch(() => {})
 
-        router.push('/thank-you')
+        router.push({ pathname: '/thank-you', query: { uid } })
       },
 
       onCancel: () => {

@@ -109,6 +109,12 @@
     "badge": "Booking confirmed",
     "title": "Thank you for your booking!",
     "message": "We're delighted to welcome you to The Authentic Tango Experience. We look forward to sharing the true spirit of Buenos Aires and its tango culture with you. See you soon for an unforgettable experience!",
+    "details": "Your booking",
+    "date": "Date",
+    "time": "Time",
+    "guests": "People",
+    "code": "Booking code",
+    "sentTo": "We sent the confirmation to {email}",
     "backHome": "Back to home",
     "viewExperience": "Explore the experience"
   },

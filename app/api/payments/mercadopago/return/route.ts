@@ -10,7 +10,10 @@ export const dynamic = 'force-dynamic'
 /** Las rutas tienen slug propio por idioma, así que se arman a mano. */
 function destino(locale: string, tipo: 'gracias' | 'reserva', uid?: string): string {
   const es = locale === 'es'
-  if (tipo === 'gracias') return `${SITE_URL}${es ? '/es/gracias' : '/thank-you'}`
+  // El uid va en el querystring: la página de gracias lo usa para mostrar el detalle.
+  if (tipo === 'gracias') {
+    return `${SITE_URL}${es ? '/es/gracias' : '/thank-you'}${uid ? `?uid=${uid}` : ''}`
+  }
   return `${SITE_URL}${es ? `/es/reservar/${uid}` : `/book/${uid}`}`
 }
 
@@ -40,7 +43,7 @@ export async function GET(request: Request) {
 
   // Ya confirmada por el webhook o por una vuelta anterior.
   if (reserva.status === 'paid') {
-    return NextResponse.redirect(destino(reserva.locale, 'gracias'))
+    return NextResponse.redirect(destino(reserva.locale, 'gracias', uid))
   }
 
   if (!mpConfigurado() || !pagoId || pagoId === 'null') {
@@ -90,7 +93,7 @@ export async function GET(request: Request) {
 
     // Si se cobró pero el lugar ya no estaba, la página de la reserva lo explica.
     return NextResponse.redirect(
-      r.overbooked ? volverAlPago : destino(reserva.locale, 'gracias'),
+      r.overbooked ? volverAlPago : destino(reserva.locale, 'gracias', uid),
     )
   } catch (err) {
     console.error('[mp/return]', err instanceof Error ? err.message : err)
