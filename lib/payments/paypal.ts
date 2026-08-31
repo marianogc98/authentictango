@@ -156,3 +156,60 @@ export async function capturarOrden(orderId: string): Promise<CapturaResultado> 
 export async function verOrden(orderId: string): Promise<CapturaResultado> {
   return llamar<CapturaResultado>(`/v2/checkout/orders/${orderId}`, { method: 'GET' })
 }
+
+/* ── Webhooks ─────────────────────────────────────────────────────────────────── */
+
+const PAYPAL_WEBHOOK_ID = process.env.PAYPAL_WEBHOOK_ID?.trim() ?? ''
+
+export function webhookConfigurado(): boolean {
+  return Boolean(PAYPAL_WEBHOOK_ID)
+}
+
+/**
+ * Verifica que un evento venga realmente de PayPal.
+ *
+ * A diferencia de Mercado Pago, acá no hay un secreto compartido para calcular un HMAC
+ * localmente: PayPal firma con un certificado propio y la verificación se delega en su
+ * API. Es una llamada de red extra por evento, pero es el único camino soportado.
+ *
+ * Sin esto, cualquiera que conozca la URL podría marcar una reserva como pagada: este
+ * webhook confía en el importe que trae el evento —validado después contra la reserva—
+ * y no vuelve a consultar el cobro contra la API.
+ */
+export async function firmaWebhookValida(raw: string, h: Headers): Promise<boolean> {
+  if (!PAYPAL_WEBHOOK_ID) return false
+
+  const campos = {
+    auth_algo: h.get('paypal-auth-algo') ?? '',
+    cert_url: h.get('paypal-cert-url') ?? '',
+    transmission_id: h.get('paypal-transmission-id') ?? '',
+    transmission_sig: h.get('paypal-transmission-sig') ?? '',
+    transmission_time: h.get('paypal-transmission-time') ?? '',
+    webhook_id: PAYPAL_WEBHOOK_ID,
+  }
+
+  if (Object.values(campos).some((v) => !v)) return false
+
+  // El evento se inserta tal cual llegó, sin volver a serializarlo: la firma se calculó
+  // sobre esos bytes exactos y un JSON.parse + stringify puede reordenar claves o cambiar
+  // el espaciado, lo que da FAILURE sobre un evento perfectamente legítimo.
+  const cuerpo =
+    '{' +
+    Object.entries(campos)
+      .map(([k, v]) => `${JSON.stringify(k)}:${JSON.stringify(v)}`)
+      .join(',') +
+    `,"webhook_event":${raw}}`
+
+  try {
+    const r = await llamar<{ verification_status?: string }>(
+      '/v1/notifications/verify-webhook-signature',
+      { method: 'POST', body: cuerpo },
+    )
+    return r.verification_status === 'SUCCESS'
+  } catch (err) {
+    // Un fallo de red acá no prueba que el evento sea falso, pero tampoco que sea real:
+    // se rechaza y PayPal reintenta.
+    console.error('[paypal] verificar firma:', err instanceof Error ? err.message : err)
+    return false
+  }
+}
