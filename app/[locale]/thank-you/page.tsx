@@ -120,6 +120,10 @@ export default async function ThankYouPage({
                 <Dato etiqueta={t('date')} valor={fecha!} capitalizar />
                 <Dato etiqueta={t('time')} valor={`${hhmm(confirmada.time)} (Buenos Aires)`} />
                 <Dato etiqueta={t('guests')} valor={String(confirmada.seats)} />
+                <Dato
+                  etiqueta={t('withClass')}
+                  valor={confirmada.withClass ? t('withClassYes') : t('withClassNo')}
+                />
                 <Dato etiqueta={t('code')} valor={confirmada.uid.slice(0, 8)} />
               </dl>
 

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
-import { CalendarDays, Clock, Users } from 'lucide-react'
+import { CalendarDays, Clock, GraduationCap, Users } from 'lucide-react'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Button } from '@/components/ui/button'
@@ -80,6 +80,9 @@ export default async function PagoPage({
                   icono={<Users className="h-4 w-4" />}
                   valor={reserva.seats === 1 ? t('person') : t('people', { n: reserva.seats })}
                 />
+                {reserva.withClass && (
+                  <Fila icono={<GraduationCap className="h-4 w-4" />} valor={t('withClass')} />
+                )}
               </dl>
 
               {reserva.amount != null && reserva.currency && (

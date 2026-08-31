@@ -112,6 +112,7 @@ const COLUMNAS = {
   date: bookings.date,
   time: bookings.time,
   seats: bookings.seats,
+  withClass: bookings.withClass,
   name: bookings.name,
   email: bookings.email,
   phone: bookings.phone,
@@ -129,6 +130,7 @@ export type Reserva = {
   date: string
   time: string
   seats: number
+  withClass: boolean
   name: string
   email: string
   phone: string | null

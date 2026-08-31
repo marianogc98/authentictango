@@ -8,7 +8,10 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 
-export type SlotUI = { time: string; seats: number; priceUsd: string; priceArs: string }
+export type SlotUI = {
+  time: string; seats: number; priceUsd: string; priceArs: string
+  classPriceUsd: string; classPriceArs: string
+}
 
 type Semana = Record<number, SlotUI[]>
 
@@ -23,7 +26,10 @@ const CORTOS: Record<number, string> = {
   1: 'Lun', 2: 'Mar', 3: 'Mié', 4: 'Jue', 5: 'Vie', 6: 'Sáb', 0: 'Dom',
 }
 
-const NUEVO = (): SlotUI => ({ time: '15:00', seats: 10, priceUsd: '0.00', priceArs: '0.00' })
+const NUEVO = (): SlotUI => ({
+  time: '15:00', seats: 10, priceUsd: '0.00', priceArs: '0.00',
+  classPriceUsd: '0.00', classPriceArs: '0.00',
+})
 
 /**
  * Una línea con la semana entera, para leerla sin abrir la sección.
@@ -140,19 +146,35 @@ function EditorSemana({
                 </div>
 
                 {slots.map((slot, i) => (
-                  <div key={i} className="grid grid-cols-2 gap-3 sm:grid-cols-[100px_90px_1fr_1fr_40px]">
-                    <Input type="time" value={slot.time}
-                      onChange={(e) => editar(dia, i, 'time', e.target.value)} />
-                    <Input type="number" min={1} max={200} value={slot.seats}
-                      onChange={(e) => editar(dia, i, 'seats', e.target.value)} />
-                    <Input inputMode="decimal" placeholder="USD" value={slot.priceUsd}
-                      onChange={(e) => editar(dia, i, 'priceUsd', e.target.value)} />
-                    <Input inputMode="decimal" placeholder="ARS" value={slot.priceArs}
-                      onChange={(e) => editar(dia, i, 'priceArs', e.target.value)} />
-                    <Button type="button" variant="ghost" size="icon" aria-label="Quitar horario"
-                      onClick={() => quitar(dia, i)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                  <div key={i} className="space-y-2 rounded-md border border-border/60 p-3 sm:rounded-none sm:border-0 sm:p-0">
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-[100px_90px_1fr_1fr_40px]">
+                      <Input type="time" value={slot.time}
+                        onChange={(e) => editar(dia, i, 'time', e.target.value)} />
+                      <Input type="number" min={1} max={200} value={slot.seats}
+                        onChange={(e) => editar(dia, i, 'seats', e.target.value)} />
+                      <Input inputMode="decimal" placeholder="USD" value={slot.priceUsd}
+                        onChange={(e) => editar(dia, i, 'priceUsd', e.target.value)} />
+                      <Input inputMode="decimal" placeholder="ARS" value={slot.priceArs}
+                        onChange={(e) => editar(dia, i, 'priceArs', e.target.value)} />
+                      <Button type="button" variant="ghost" size="icon" aria-label="Quitar horario"
+                        onClick={() => quitar(dia, i)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+
+                    {/* El adicional de la clase, no el precio del combo: se suma al de
+                        arriba y se cobra por persona. En cero, ese horario se vende sin
+                        clase y la opcion ni siquiera aparece en la web. */}
+                    <div className="grid grid-cols-2 gap-3 sm:grid-cols-[190px_1fr_1fr_40px]">
+                      <span className="col-span-2 self-center text-xs text-muted-foreground sm:col-span-1">
+                        + clase grupal, por persona
+                      </span>
+                      <Input inputMode="decimal" placeholder="USD" value={slot.classPriceUsd}
+                        onChange={(e) => editar(dia, i, 'classPriceUsd', e.target.value)} />
+                      <Input inputMode="decimal" placeholder="ARS" value={slot.classPriceArs}
+                        onChange={(e) => editar(dia, i, 'classPriceArs', e.target.value)} />
+                      <span className="hidden sm:block" />
+                    </div>
                   </div>
                 ))}
 

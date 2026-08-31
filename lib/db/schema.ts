@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm'
 import {
-  pgTable, serial, integer, text, date, time, timestamp,
+  pgTable, serial, integer, boolean, text, date, time, timestamp,
   primaryKey, index, uniqueIndex,
 } from 'drizzle-orm/pg-core'
 
@@ -15,6 +15,11 @@ import {
  *
  * Los precios van en centavos como enteros. Nunca float: 0.1 + 0.2 !== 0.3 y con plata
  * eso termina en un centavo que no cierra.
+ *
+ * La clase grupal es un adicional del mismo tour, no otro producto: viaja como un precio
+ * más del slot y no como una fila aparte. Si fuera un slot propio tendría su propia cuenta
+ * de asientos y el mismo horario se vendería dos veces. `class_price = 0` significa que
+ * ese horario no ofrece clase, igual que un precio en cero significa que no se vende.
  */
 
 /** La semana habitual. Varias filas por día si hay más de un horario. */
@@ -26,6 +31,9 @@ export const weeklySlots = pgTable(
     seats: integer('seats').notNull().default(10),
     priceUsd: integer('price_usd').notNull().default(0),
     priceArs: integer('price_ars').notNull().default(0),
+    /** Lo que se suma POR PERSONA si eligen el tour con clase grupal. 0 = no se ofrece. */
+    classPriceUsd: integer('class_price_usd').notNull().default(0),
+    classPriceArs: integer('class_price_ars').notNull().default(0),
   },
   (t) => [primaryKey({ columns: [t.weekday, t.time] })],
 )
@@ -45,6 +53,8 @@ export const dateSlots = pgTable(
     seats: integer('seats').notNull(),
     priceUsd: integer('price_usd').notNull(),
     priceArs: integer('price_ars').notNull(),
+    classPriceUsd: integer('class_price_usd').notNull().default(0),
+    classPriceArs: integer('class_price_ars').notNull().default(0),
   },
   (t) => [primaryKey({ columns: [t.date, t.time] })],
 )
@@ -67,6 +77,10 @@ export const bookings = pgTable(
     date: date('date').notNull(),
     time: time('time').notNull(),
     seats: integer('seats').notNull(),
+
+    /** Compraron el tour con la clase grupal. El precio ya está dentro de `amount`; esto
+     *  queda para saber qué compraron: el mail, el panel y cuánta gente espera la clase. */
+    withClass: boolean('with_class').notNull().default(false),
 
     name: text('name').notNull(),
     email: text('email').notNull(),

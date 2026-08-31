@@ -17,8 +17,8 @@ type Metodo = 'paypal' | 'mercadopago'
 // la genérica: sin esto, un código nuevo se le muestra al visitante como
 // "book.errors.loquesea", que es lo que pasó con "servidor".
 const CLAVES_ERROR = new Set([
-  'sin_lugar', 'cerrado', 'sin_horario', 'pasado', 'sin_precio', 'demasiados',
-  'fuera_de_ventana', 'servidor', 'datos_invalidos', 'ya_pagada',
+  'sin_lugar', 'cerrado', 'sin_horario', 'pasado', 'sin_precio', 'sin_clase',
+  'demasiados', 'fuera_de_ventana', 'servidor', 'datos_invalidos', 'ya_pagada',
 ])
 
 const MESES: Record<string, string[]> = {
@@ -56,6 +56,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   const [fecha, setFecha] = useState<string | null>(null)
   const [slot, setSlot] = useState<SlotPublico | null>(null)
   const [personas, setPersonas] = useState(1)
+  const [conClase, setConClase] = useState(false)
   const [metodo, setMetodo] = useState<Metodo | null>(null)
 
   const [enviando, setEnviando] = useState(false)
@@ -85,19 +86,43 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
     setFecha(d.date)
     setError(null)
     setPersonas(1)
+    setConClase(false)
     // Con un solo horario no hay nada que elegir: se selecciona solo.
     setSlot(d.slots.length === 1 && d.slots[0].seatsLeft > 0 ? d.slots[0] : null)
   }
 
   const diaElegido = dias?.find((d) => d.date === fecha) ?? null
 
+  // Cada moneda tiene su propio precio de clase: si el horario la ofrece en dólares pero
+  // no en pesos, con la clase elegida Mercado Pago deja de ser una forma de pago posible.
+  // Sin este filtro se cobraría el tour solo por haber elegido la otra moneda.
   const metodosPosibles = useMemo<Metodo[]>(() => {
     if (!slot) return []
     const m: Metodo[] = []
-    if (slot.priceUsd > 0) m.push('paypal')
-    if (slot.priceArs > 0) m.push('mercadopago')
+    if (slot.priceUsd > 0 && (!conClase || slot.classPriceUsd > 0)) m.push('paypal')
+    if (slot.priceArs > 0 && (!conClase || slot.classPriceArs > 0)) m.push('mercadopago')
     return m
-  }, [slot])
+  }, [slot, conClase])
+
+  // La opción se ofrece sólo si queda alguna forma de pago con la que comprarla: con el
+  // adicional cargado en una sola moneda, elegirla dejaba el formulario sin método y sin
+  // explicación.
+  const hayClase = Boolean(slot && (
+    (slot.priceUsd > 0 && slot.classPriceUsd > 0) || (slot.priceArs > 0 && slot.classPriceArs > 0)
+  ))
+
+  /** El precio por persona de una opción, en todas las monedas en que se puede pagar. */
+  const precioPorPersona = (clase: boolean) => {
+    if (!slot) return ''
+    const partes: string[] = []
+    if (slot.priceUsd > 0 && (!clase || slot.classPriceUsd > 0)) {
+      partes.push(formatearPrecio(slot.priceUsd + (clase ? slot.classPriceUsd : 0), 'USD', locale))
+    }
+    if (slot.priceArs > 0 && (!clase || slot.classPriceArs > 0)) {
+      partes.push(formatearPrecio(slot.priceArs + (clase ? slot.classPriceArs : 0), 'ARS', locale))
+    }
+    return partes.join(' · ')
+  }
 
   // Si sólo hay una forma de pago, no se pregunta.
   useEffect(() => {
@@ -105,7 +130,8 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   }, [metodosPosibles])
 
   const total = slot && metodo
-    ? (metodo === 'paypal' ? slot.priceUsd : slot.priceArs) * personas
+    ? ((metodo === 'paypal' ? slot.priceUsd : slot.priceArs)
+       + (conClase ? (metodo === 'paypal' ? slot.classPriceUsd : slot.classPriceArs) : 0)) * personas
     : null
 
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
@@ -129,6 +155,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
           email: String(datos.get('email') ?? ''),
           phone: String(datos.get('phone') ?? '') || null,
           locale,
+          withClass: conClase,
           method: metodo,
         }),
       })
@@ -149,6 +176,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
         locale,
         method: metodo,
         seats: String(personas),
+        con_clase: conClase ? 'si' : 'no',
         currency: cuerpo.currency,
       }).catch(() => {})
 
@@ -270,7 +298,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
                             key={s.time}
                             type="button"
                             disabled={agotado}
-                            onClick={() => { setSlot(s); setPersonas(1); setError(null) }}
+                            onClick={() => { setSlot(s); setPersonas(1); setConClase(false); setError(null) }}
                             className={`rounded-md border px-3 py-1.5 text-sm transition-colors
                               ${activo ? 'border-primary bg-primary text-primary-foreground' : 'border-border'}
                               ${agotado ? 'cursor-not-allowed text-muted-foreground/40 line-through' : 'hover:bg-accent'}`}
@@ -289,6 +317,33 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
 
                   {slot && slot.seatsLeft > 0 && (
                     <form onSubmit={enviar} className="space-y-5">
+                      {hayClase && (
+                        <div className="space-y-2">
+                          <Label>{t('pickOption')}</Label>
+                          <div className="grid gap-2 sm:grid-cols-2">
+                            {[false, true].map((clase) => (
+                              <button
+                                key={String(clase)}
+                                type="button"
+                                onClick={() => setConClase(clase)}
+                                className={`rounded-md border px-3 py-2 text-left text-sm transition-colors
+                                  ${conClase === clase ? 'border-primary bg-primary text-primary-foreground' : 'border-border hover:bg-accent'}`}
+                              >
+                                <span className="block font-medium">
+                                  {clase ? t('optionWithClass') : t('optionTour')}
+                                </span>
+                                <span className="block text-xs opacity-80">
+                                  {precioPorPersona(clase)} {t('perPerson')}
+                                </span>
+                              </button>
+                            ))}
+                          </div>
+                          <p className="text-xs text-muted-foreground">
+                            {conClase ? t('optionWithClassNote') : t('optionTourNote')}
+                          </p>
+                        </div>
+                      )}
+
                       <div className="space-y-2">
                         <Label htmlFor="personas">{t('people')}</Label>
                         <div className="flex items-center gap-3">
@@ -335,8 +390,11 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
                                   {m === 'paypal' ? 'PayPal' : 'Mercado Pago'}
                                 </span>
                                 <span className="block text-xs opacity-80">
-                                  {formatearPrecio(m === 'paypal' ? slot.priceUsd : slot.priceArs,
-                                                   m === 'paypal' ? 'USD' : 'ARS', locale)}
+                                  {formatearPrecio(
+                                    m === 'paypal'
+                                      ? slot.priceUsd + (conClase ? slot.classPriceUsd : 0)
+                                      : slot.priceArs + (conClase ? slot.classPriceArs : 0),
+                                    m === 'paypal' ? 'USD' : 'ARS', locale)}
                                 </span>
                               </button>
                             ))}

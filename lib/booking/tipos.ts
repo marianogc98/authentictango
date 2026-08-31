@@ -9,6 +9,9 @@ export type SlotPublico = {
   seatsLeft: number
   priceUsd: number
   priceArs: number
+  /** Lo que se suma por persona al elegir el tour con clase grupal. 0 = no se ofrece. */
+  classPriceUsd: number
+  classPriceArs: number
 }
 
 export type DiaPublico = {

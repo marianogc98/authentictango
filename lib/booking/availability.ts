@@ -10,6 +10,8 @@ export type Slot = {
   seatsLeft: number
   priceUsd: number
   priceArs: number
+  classPriceUsd: number
+  classPriceArs: number
   past: boolean
 }
 
@@ -85,6 +87,8 @@ export async function getMonthAvailability(year: number, month: number): Promise
           seatsLeft: Math.max(0, s.seats - seatsTaken),
           priceUsd: s.priceUsd,
           priceArs: s.priceArs,
+          classPriceUsd: s.classPriceUsd,
+          classPriceArs: s.classPriceArs,
           past: yaPaso(date, s.time),
         }
       })

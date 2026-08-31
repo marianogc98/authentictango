@@ -64,6 +64,8 @@ export async function GET(request: Request) {
               seatsLeft: s.seatsLeft,
               priceUsd: s.priceUsd,
               priceArs: s.priceArs,
+              classPriceUsd: s.classPriceUsd,
+              classPriceArs: s.classPriceArs,
             })),
     }))
 

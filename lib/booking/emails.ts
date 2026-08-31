@@ -24,6 +24,7 @@ export type DatosReserva = {
   date: string
   time: string
   seats: number
+  withClass: boolean
   amount: number
   currency: string
   locale: string
@@ -60,6 +61,10 @@ export async function enviarConfirmacion(r: DatosReserva): Promise<void> {
           <td style="padding:4px 0"><strong>${hhmm(r.time)}</strong> (Buenos Aires)</td></tr>
       <tr><td style="padding:4px 16px 4px 0;color:#666">${es ? 'Personas' : 'People'}</td>
           <td style="padding:4px 0"><strong>${r.seats}</strong></td></tr>
+      <tr><td style="padding:4px 16px 4px 0;color:#666">${es ? 'Experiencia' : 'Experience'}</td>
+          <td style="padding:4px 0"><strong>${r.withClass
+            ? (es ? 'Tour + clase grupal' : 'Tour + group class')
+            : (es ? 'Tour' : 'Tour')}</strong></td></tr>
       <tr><td style="padding:4px 16px 4px 0;color:#666">${es ? 'Total' : 'Total'}</td>
           <td style="padding:4px 0"><strong>${escapar(importe)}</strong></td></tr>
       <tr><td style="padding:4px 16px 4px 0;color:#666">${es ? 'Dónde' : 'Where'}</td>

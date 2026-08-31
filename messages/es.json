@@ -123,7 +123,10 @@
     "code": "Código de reserva",
     "sentTo": "Te enviamos la confirmación a {email}",
     "backHome": "Volver al inicio",
-    "viewExperience": "Explorar la experiencia"
+    "viewExperience": "Explorar la experiencia",
+    "withClass": "Experiencia",
+    "withClassYes": "Tour + clase grupal",
+    "withClassNo": "Tour"
   },
   "reviews": {
     "title": "Calificaciones",
@@ -260,10 +263,17 @@
       "generic": "Algo salió mal. Probá de nuevo.",
       "servidor": "Tuvimos un problema de nuestro lado. Probá de nuevo en un momento.",
       "datos_invalidos": "Revisá los datos del formulario y probá de nuevo.",
-      "ya_pagada": "Esta reserva ya está paga."
+      "ya_pagada": "Esta reserva ya está paga.",
+      "sin_clase": "Ese horario no tiene clase grupal. Elegí el tour solo, u otro horario."
     },
     "pickDateFirst": "Elegí una fecha en el calendario para continuar.",
-    "changeDate": "Cambiar fecha"
+    "changeDate": "Cambiar fecha",
+    "pickOption": "Elegí la experiencia",
+    "optionTour": "Tour",
+    "optionWithClass": "Tour + clase grupal",
+    "perPerson": "por persona",
+    "optionTourNote": "La experiencia completa: la milonga, sus códigos, su música y su historia.",
+    "optionWithClassNote": "Suma una clase grupal antes de la milonga, para animarte a bailar."
   },
   "pay": {
     "title": "Completá tu reserva",
@@ -286,6 +296,7 @@
     "notConfigured": "El pago online todavía no está disponible. Te vamos a mandar un link de pago por email.",
     "payWithMp": "Pagar con Mercado Pago",
     "mpRedirect": "Te llevamos a Mercado Pago…",
-    "overbookedPage": "Tu pago se procesó, pero el lugar se ocupó mientras se acreditaba. Te estamos devolviendo el dinero y te escribimos por email. Perdón por eso."
+    "overbookedPage": "Tu pago se procesó, pero el lugar se ocupó mientras se acreditaba. Te estamos devolviendo el dinero y te escribimos por email. Perdón por eso.",
+    "withClass": "Con clase grupal"
   }
 }

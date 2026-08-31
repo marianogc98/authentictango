@@ -10,9 +10,15 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 
 type Detalle = Awaited<ReturnType<typeof detalleDia>>
-type SlotUI = { time: string; seats: number; priceUsd: string; priceArs: string }
+type SlotUI = {
+  time: string; seats: number; priceUsd: string; priceArs: string
+  classPriceUsd: string; classPriceArs: string
+}
 
-const NUEVO = (): SlotUI => ({ time: '15:00', seats: 10, priceUsd: '0.00', priceArs: '0.00' })
+const NUEVO = (): SlotUI => ({
+  time: '15:00', seats: 10, priceUsd: '0.00', priceArs: '0.00',
+  classPriceUsd: '0.00', classPriceArs: '0.00',
+})
 
 const desdeDetalle = (d: Detalle): SlotUI[] =>
   d.slots.map((s) => ({
@@ -20,6 +26,8 @@ const desdeDetalle = (d: Detalle): SlotUI[] =>
     seats: s.seats,
     priceUsd: aTexto(s.priceUsd),
     priceArs: aTexto(s.priceArs),
+    classPriceUsd: aTexto(s.classPriceUsd),
+    classPriceArs: aTexto(s.classPriceArs),
   }))
 
 function mensajeError(r: Record<string, unknown>): string {
@@ -156,6 +164,25 @@ export function PanelDia({
                     </div>
                   </div>
 
+                  {/* Lo que se suma por persona si eligen el tour con clase grupal.
+                      En cero, este horario se vende sin clase. */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="space-y-1.5">
+                      <Label htmlFor={`clase-usd-${i}`} className="text-xs text-muted-foreground">
+                        + Clase USD
+                      </Label>
+                      <Input id={`clase-usd-${i}`} inputMode="decimal" value={s.classPriceUsd}
+                        onChange={(e) => editar(i, 'classPriceUsd', e.target.value)} />
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label htmlFor={`clase-ars-${i}`} className="text-xs text-muted-foreground">
+                        + Clase ARS
+                      </Label>
+                      <Input id={`clase-ars-${i}`} inputMode="decimal" value={s.classPriceArs}
+                        onChange={(e) => editar(i, 'classPriceArs', e.target.value)} />
+                    </div>
+                  </div>
+
                   {vendidos > 0 && (
                     <p className="rounded bg-muted px-2.5 py-1.5 text-xs text-muted-foreground">
                       {vendidos} lugar(es) vendido(s): no se puede quitar este horario ni bajar de
@@ -199,6 +226,7 @@ export function PanelDia({
 
                   <p className="mt-1.5 text-xs text-muted-foreground">
                     {hhmm(r.time)} · {r.seats} lugar(es)
+                    {r.withClass ? ' · con clase' : ''}
                     {r.amount != null && r.currency
                       ? ` · ${formatearPrecio(r.amount, r.currency as 'USD' | 'ARS')}`
                       : ''}

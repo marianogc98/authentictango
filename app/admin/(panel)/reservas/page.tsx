@@ -174,7 +174,13 @@ function Fila({ r }: { r: Reserva }) {
         )}
       </Td>
 
-      <Td className="text-right tabular-nums">{r.seats}</Td>
+      <Td className="text-right tabular-nums">
+        {r.seats}
+        {/* Solo cuando la llevan: marcar tambien las que no, llenaria la tabla de ruido. */}
+        {r.withClass && (
+          <span className="block text-[11px] font-normal text-muted-foreground">+ clase</span>
+        )}
+      </Td>
 
       <Td className="text-right tabular-nums">
         {r.amount != null && r.currency

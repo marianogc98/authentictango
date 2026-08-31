@@ -9,6 +9,9 @@ export type SlotEntrada = {
   seats: number
   priceUsd: string  // tal como se tipeó
   priceArs: string
+  /** El adicional por persona de la clase grupal. En cero, ese horario no la ofrece. */
+  classPriceUsd: string
+  classPriceArs: string
 }
 
 export type SemanaEntrada = Record<number, SlotEntrada[]>
@@ -30,6 +33,8 @@ export async function guardarSemana(semana: SemanaEntrada) {
         seats: Math.max(1, Math.min(200, Math.trunc(s.seats) || 1)),
         priceUsd: aCentavos(s.priceUsd),
         priceArs: aCentavos(s.priceArs),
+        classPriceUsd: aCentavos(s.classPriceUsd),
+        classPriceArs: aCentavos(s.classPriceArs),
       })),
   )
 

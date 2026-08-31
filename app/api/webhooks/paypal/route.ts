@@ -110,6 +110,7 @@ export async function POST(request: Request) {
         date: reserva.date,
         time: reserva.time,
         seats: reserva.seats,
+        withClass: reserva.withClass,
         amount: centavos,
         currency: moneda,
         locale: reserva.locale,

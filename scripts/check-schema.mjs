@@ -24,8 +24,8 @@ for (const f of readdirSync(dir).filter((f) => f.endsWith('.sql')).sort()) {
 const tablas = await db.query(
   `SELECT table_name FROM information_schema.tables WHERE table_schema='public' ORDER BY 1`,
 )
-ok('la migración crea las 4 tablas', tablas.rows.map((r) => r.table_name),
-   ['bookings', 'closed_dates', 'date_slots', 'weekly_slots'])
+ok('la migración crea las 5 tablas', tablas.rows.map((r) => r.table_name),
+   ['booking_window', 'bookings', 'closed_dates', 'date_slots', 'weekly_slots'])
 
 // --- 2. El seed es idempotente ---
 const seed = `INSERT INTO weekly_slots (weekday, "time", seats, price_usd, price_ars)
@@ -73,6 +73,15 @@ ok('provider_ref duplicado es rechazado', choco, true)
 const sinPago = await db.query(
   `SELECT COUNT(*)::int AS n FROM bookings WHERE provider_ref IS NULL`)
 ok('varias reservas sin provider_ref conviven', sinPago.rows[0].n >= 2, true)
+
+// --- 8. La clase grupal no cambia nada de lo que ya estaba cargado ---
+const clase = await db.query(
+  `SELECT COUNT(*)::int AS n FROM weekly_slots WHERE class_price_usd = 0 AND class_price_ars = 0`)
+ok('los horarios que ya existían quedan sin clase', clase.rows[0].n, 7)
+
+const sinClase = await db.query(
+  `SELECT COUNT(*)::int AS n FROM bookings WHERE with_class = false`)
+ok('las reservas que ya existían quedan sin clase', sinClase.rows[0].n, 5)
 
 console.log(fallos === 0 ? '\nTodo OK' : `\n${fallos} fallo(s)`)
 process.exit(fallos === 0 ? 0 : 1)

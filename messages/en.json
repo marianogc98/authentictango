@@ -119,7 +119,10 @@
     "code": "Booking code",
     "sentTo": "We sent the confirmation to {email}",
     "backHome": "Back to home",
-    "viewExperience": "Explore the experience"
+    "viewExperience": "Explore the experience",
+    "withClass": "Experience",
+    "withClassYes": "Tour + group class",
+    "withClassNo": "Tour"
   },
   "reviews": {
     "title": "Reviews",
@@ -256,10 +259,17 @@
       "generic": "Something went wrong. Please try again.",
       "servidor": "Something went wrong on our side. Please try again in a moment.",
       "datos_invalidos": "Please check the form and try again.",
-      "ya_pagada": "This booking is already paid."
+      "ya_pagada": "This booking is already paid.",
+      "sin_clase": "That time slot has no group class. Pick the tour on its own, or another time."
     },
     "pickDateFirst": "Pick a date on the calendar to continue.",
-    "changeDate": "Change date"
+    "changeDate": "Change date",
+    "pickOption": "Choose your experience",
+    "optionTour": "Tour",
+    "optionWithClass": "Tour + group class",
+    "perPerson": "per person",
+    "optionTourNote": "The full experience: the milonga, its codes, its music and its history.",
+    "optionWithClassNote": "Adds a group class before the milonga, so you dare to dance."
   },
   "pay": {
     "title": "Complete your booking",
@@ -282,6 +292,7 @@
     "notConfigured": "Online payment is not available yet. We will email you a payment link shortly.",
     "payWithMp": "Pay with Mercado Pago",
     "mpRedirect": "Taking you to Mercado Pago…",
-    "overbookedPage": "Your payment went through, but the spot was taken while it was processing. We are refunding you and will email you shortly. Sorry about that."
+    "overbookedPage": "Your payment went through, but the spot was taken while it was processing. We are refunding you and will email you shortly. Sorry about that.",
+    "withClass": "With group class"
   }
 }

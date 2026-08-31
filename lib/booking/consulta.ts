@@ -7,6 +7,7 @@ export type ReservaPublica = {
   date: string
   time: string
   seats: number
+  withClass: boolean
   name: string
   email: string
   status: string
@@ -30,6 +31,7 @@ export async function getReserva(uid: string): Promise<ReservaPublica | null> {
   const [r] = await db
     .select({
       uid: bookings.uid, date: bookings.date, time: bookings.time, seats: bookings.seats,
+      withClass: bookings.withClass,
       name: bookings.name, email: bookings.email, status: bookings.status,
       amount: bookings.amount, currency: bookings.currency,
       expiresAt: bookings.expiresAt, locale: bookings.locale,

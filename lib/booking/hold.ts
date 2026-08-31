@@ -22,6 +22,8 @@ export type HoldInput = {
   phone?: string | null
   locale: string
   currency: Moneda
+  /** El tour con la clase grupal. El extra se cobra por persona. */
+  withClass?: boolean
   ip?: string | null
 }
 
@@ -31,7 +33,7 @@ export type HoldResult =
       ok: false
       reason:
         | 'cerrado' | 'sin_horario' | 'pasado' | 'sin_lugar' | 'sin_precio'
-        | 'demasiados' | 'fuera_de_ventana'
+        | 'sin_clase' | 'demasiados' | 'fuera_de_ventana'
       seatsLeft?: number
     }
 
@@ -91,9 +93,17 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
 
     if (!slot) return { ok: false, reason: 'sin_horario' as const }
 
-    const precioUnitario = input.currency === 'USD' ? slot.priceUsd : slot.priceArs
+    const precioTour = input.currency === 'USD' ? slot.priceUsd : slot.priceArs
     // Un horario sin precio no se vende. Es preferible no poder reservar a reservar gratis.
-    if (precioUnitario <= 0) return { ok: false, reason: 'sin_precio' as const }
+    if (precioTour <= 0) return { ok: false, reason: 'sin_precio' as const }
+
+    // El extra sale del slot, nunca del cliente: lo único que manda el navegador es el
+    // booleano. Si pidió clase en un horario que no la ofrece, rebota en vez de cobrarle
+    // el tour solo: pediría una cosa y compraría otra.
+    const precioClase = input.currency === 'USD' ? slot.classPriceUsd : slot.classPriceArs
+    if (input.withClass && precioClase <= 0) return { ok: false, reason: 'sin_clase' as const }
+
+    const precioUnitario = precioTour + (input.withClass ? precioClase : 0)
 
     const [{ tomados }] = await tx
       .select({
@@ -123,6 +133,7 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
       email: input.email,
       phone: input.phone ?? null,
       locale: input.locale,
+      withClass: Boolean(input.withClass),
       ip: input.ip ?? null,
       status: 'pending',
       amount,

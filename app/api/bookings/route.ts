@@ -12,6 +12,8 @@ const Cuerpo = z.object({
   email: z.string().trim().email().max(200),
   phone: z.string().trim().max(40).optional().nullable(),
   locale: z.enum(['en', 'es']),
+  // Sólo el booleano: el precio del adicional lo pone el servidor desde el slot.
+  withClass: z.boolean().optional().default(false),
   // El método elegido decide la moneda: los dos precios son independientes, así que
   // no hay conversión posible entre uno y otro.
   method: z.enum(['paypal', 'mercadopago']),
@@ -50,6 +52,7 @@ export async function POST(request: Request) {
       email: datos.email,
       phone: datos.phone ?? null,
       locale: datos.locale,
+      withClass: datos.withClass,
       currency: MONEDA[datos.method],
       ip: ipDe(request),
     })

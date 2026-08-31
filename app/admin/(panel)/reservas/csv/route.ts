@@ -15,7 +15,7 @@ export const dynamic = 'force-dynamic'
 const SEP = ';'
 
 const CABECERA = [
-  'uid', 'fecha_tour', 'hora', 'nombre', 'email', 'telefono', 'lugares',
+  'uid', 'fecha_tour', 'hora', 'nombre', 'email', 'telefono', 'lugares', 'clase_grupal',
   'estado', 'metodo', 'importe', 'moneda', 'creada', 'pagada', 'ref_pasarela',
 ]
 
@@ -66,6 +66,7 @@ export async function GET(request: Request) {
       CABECERA.join(SEP),
       ...filas.map((r) => [
         r.uid, r.date, hhmm(r.time), r.name, r.email, r.phone ?? '', r.seats,
+        r.withClass ? 'si' : 'no',
         r.estado, r.provider ?? '', importe(r.amount), r.currency ?? '',
         momento(r.createdAt), momento(r.paidAt), r.providerRef ?? '',
       ].map(celda).join(SEP)),

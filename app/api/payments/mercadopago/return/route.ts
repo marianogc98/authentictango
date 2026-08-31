@@ -85,6 +85,7 @@ export async function GET(request: Request) {
         date: reserva.date,
         time: reserva.time,
         seats: reserva.seats,
+        withClass: reserva.withClass,
         amount: centavos,
         currency: pago.currency_id ?? 'ARS',
         locale: reserva.locale,

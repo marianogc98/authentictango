@@ -7,13 +7,17 @@ import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
 import { aCentavos } from '@/lib/booking/dinero'
 import { weekdayDe } from '@/lib/booking/tiempo'
 
-export type SlotEntrada = { time: string; seats: number; priceUsd: string; priceArs: string }
+export type SlotEntrada = {
+  time: string; seats: number; priceUsd: string; priceArs: string
+  classPriceUsd: string; classPriceArs: string
+}
 
 /** Reservas vivas de una fecha: las que hay que respetar sí o sí. */
 async function reservasVivas(date: string) {
   return db
     .select({
       uid: bookings.uid, time: bookings.time, seats: bookings.seats,
+      withClass: bookings.withClass,
       name: bookings.name, email: bookings.email, phone: bookings.phone,
       status: bookings.status, amount: bookings.amount, currency: bookings.currency,
     })
@@ -49,6 +53,8 @@ export async function detalleDia(date: string) {
         seats: s.seats,
         priceUsd: s.priceUsd,
         priceArs: s.priceArs,
+        classPriceUsd: s.classPriceUsd,
+        classPriceArs: s.classPriceArs,
         vendidos: reservas
           .filter((r) => r.time === s.time && r.status === 'paid')
           .reduce((n, r) => n + r.seats, 0),
@@ -110,6 +116,8 @@ export async function guardarDia(date: string, slots: SlotEntrada[]) {
       seats: Math.max(1, Math.min(200, Math.trunc(s.seats) || 1)),
       priceUsd: aCentavos(s.priceUsd),
       priceArs: aCentavos(s.priceArs),
+      classPriceUsd: aCentavos(s.classPriceUsd),
+      classPriceArs: aCentavos(s.classPriceArs),
     }))
 
   const vendidosPorHora = new Map<string, number>()

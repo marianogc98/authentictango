@@ -22,6 +22,13 @@
       "when": 1787918522226,
       "tag": "0002_green_mojo",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1788205788967,
+      "tag": "0003_dear_veda",
+      "breakpoints": true
     }
   ]
 }

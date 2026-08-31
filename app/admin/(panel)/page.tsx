@@ -22,6 +22,8 @@ async function semanaParaEditor(): Promise<Record<number, SlotUI[]>> {
       seats: f.seats,
       priceUsd: aTexto(f.priceUsd),
       priceArs: aTexto(f.priceArs),
+      classPriceUsd: aTexto(f.classPriceUsd),
+      classPriceArs: aTexto(f.classPriceArs),
     })
   }
   for (const d of Object.keys(semana)) {
