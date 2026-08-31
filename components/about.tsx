@@ -120,9 +120,11 @@ export function About() {
     <section id="about" className="py-16 lg:py-24 bg-secondary" ref={sectionRef}>
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* El video no se autorreproduce: hasta que no lo piden se muestra la miniatura,
+          {/* Es un Short: va en vertical (9:16) y con la miniatura `oardefault`, que es
+              el cuadro original; `maxresdefault` es el recorte 16:9 y sale cortado.
+              No se autorreproduce: hasta que no lo piden solo se ve la miniatura,
               así el reproductor de YouTube tampoco se descarga de entrada. */}
-          <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
+          <div className="relative mx-auto w-full max-w-[320px] aspect-[9/16] rounded-lg overflow-hidden bg-black">
             {videoActivo ? (
               <iframe
                 src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
@@ -139,7 +141,7 @@ export function About() {
                 className="group absolute inset-0 w-full h-full"
               >
                 <img
-                  src={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
+                  src={`https://i.ytimg.com/vi/${VIDEO_ID}/oardefault.jpg`}
                   alt={t('videoTitle')}
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover"
