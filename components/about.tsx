@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { CheckCircle } from "lucide-react"
+import { CheckCircle, Play } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { RichText } from '@/components/rich-text'
 import { useEffect, useState, useRef } from 'react'
@@ -13,9 +13,12 @@ const processDescription = (text: string): string => {
     .replace(/\[PHOTO_LINK\](.*?)\[\/PHOTO_LINK\]/g, '<a href="https://instagram.com/miofotosba" target="_blank" rel="noopener noreferrer" class="text-primary hover:opacity-80 transition-opacity underline">$1</a>')
 }
 
+const VIDEO_ID = 'yNpuM482hfo'
+
 export function About() {
   const t = useTranslations('about')
   const [animatedValues, setAnimatedValues] = useState([0, 0, 0])
+  const [videoActivo, setVideoActivo] = useState(false)
   const [hasAnimated, setHasAnimated] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
 
@@ -158,6 +161,42 @@ export function About() {
                 </div>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* El video no se autorreproduce: hasta que no lo piden se muestra la miniatura,
+            así el reproductor de YouTube tampoco se descarga de entrada. */}
+        <div className="mt-12 lg:mt-20 max-w-4xl mx-auto">
+          <div className="relative aspect-video rounded-lg overflow-hidden bg-black">
+            {videoActivo ? (
+              <iframe
+                src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                title={t('videoTitle')}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 w-full h-full border-0"
+              />
+            ) : (
+              <button
+                type="button"
+                onClick={() => setVideoActivo(true)}
+                aria-label={t('playVideo')}
+                className="group absolute inset-0 w-full h-full"
+              >
+                <img
+                  src={`https://img.youtube.com/vi/${VIDEO_ID}/maxresdefault.jpg`}
+                  alt={t('videoTitle')}
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <span className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40" />
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
+                    <Play className="h-7 w-7 translate-x-0.5" fill="currentColor" />
+                  </span>
+                </span>
+              </button>
+            )}
           </div>
         </div>
       </div>

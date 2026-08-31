@@ -19,7 +19,9 @@
     "description": "Mi nombre es [BOLD]María Inés[/BOLD]. Soy bailarina de tango y creadora de [BOLD]The Authentic Tango Experience, una inmersión cultural que desarrollo desde hace casi diez años.[/BOLD]\n\nMe enamoré del tango la primera noche que entré a una milonga, y desde entonces se convirtió en una parte esencial de mi vida. [BOOK_LINK]He escrito un libro de relatos ambientados en milongas,[/BOOK_LINK] documentado este mundo a través de la [PHOTO_LINK]fotografía[/PHOTO_LINK] y creado esta experiencia para mostrar el tango desde adentro: como una expresión cultural viva y auténtica.\n\nDurante la experiencia, [BOLD]te guiaré al mundo del tango y a la milonga, el espacio donde se baila socialmente. De forma clara, cercana y divertida, te ayudaré a comprender sus códigos, su música y su historia, para que el tango se vuelva accesible, humano y profundamente disfrutable.[/BOLD]",
     "years": "Años de Experiencia",
     "tours": "Tours Realizados",
-    "reviews": "+150 Calificaciones"
+    "reviews": "+150 Calificaciones",
+    "videoTitle": "The Authentic Tango Experience",
+    "playVideo": "Reproducir video"
   },
   "services": {
     "title": "La Experiencia",
@@ -100,7 +102,8 @@
     "legal": "Legal",
     "privacy": "Privacidad",
     "terms": "Términos",
-    "copyright": "© 2024 The Authentic Tango Experience. Todos los derechos reservados."
+    "copyright": "© 2024 The Authentic Tango Experience. Todos los derechos reservados.",
+    "whatsapp": "Escribinos por WhatsApp"
   },
   "footer": {
     "quickLinks": "Enlaces Rápidos",

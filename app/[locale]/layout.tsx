@@ -6,6 +6,7 @@ import { getMessages, getTranslations, setRequestLocale } from 'next-intl/server
 import { notFound } from 'next/navigation'
 import { GoogleAnalytics } from '@/components/GoogleAnalytics'
 import { JsonLd } from '@/components/JsonLd'
+import { WhatsappFlotante } from '@/components/whatsapp-flotante'
 import { negocioSchema } from '@/lib/seo/schema'
 import { SITE_URL } from '@/lib/site'
 import { urlFor } from '@/lib/seo/alternates'
@@ -78,6 +79,7 @@ export default async function LocaleLayout({
       <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages} locale={locale}>
           {children}
+          <WhatsappFlotante />
         </NextIntlClientProvider>
         <JsonLd data={negocioSchema(locale)} />
         <GoogleAnalytics />
