@@ -1,6 +1,6 @@
 {
   "nav": {
-    "about": "Sobre Mí",
+    "about": "Sobre María",
     "tours": "La Experiencia",
     "reviews": "Reseñas",
     "gallery": "Galería",
@@ -15,8 +15,8 @@
     "viewTours": "Leer Más"
   },
   "about": {
-    "title": "Sobre Mí",
-    "description": "Mi nombre es [BOLD]María Inés[/BOLD]. Soy bailarina de tango y creadora de [BOLD]The Authentic Tango Experience, una inmersión cultural que desarrollo desde hace casi diez años.[/BOLD]\n\nMe enamoré del tango la primera noche que entré a una milonga, y desde entonces se convirtió en una parte esencial de mi vida. [BOOK_LINK]He escrito un libro de relatos ambientados en milongas,[/BOOK_LINK] documentado este mundo a través de la [PHOTO_LINK]fotografía[/PHOTO_LINK] y creado esta experiencia para mostrar el tango desde adentro: como una expresión cultural viva y auténtica.\n\nDurante la experiencia, [BOLD]te guiaré al mundo del tango y a la milonga, el espacio donde se baila socialmente. De forma clara, cercana y divertida, te ayudaré a comprender sus códigos, su música y su historia, para que el tango se vuelva accesible, humano y profundamente disfrutable.[/BOLD]",
+    "title": "Sobre María",
+    "description": "Soy bailarina de tango y creadora de [BOLD]The Authentic Tango Experience, una inmersión cultural que desarrollo desde hace casi diez años.[/BOLD]\n\nMe enamoré del tango la primera noche que entré a una milonga, y desde entonces se convirtió en una parte esencial de mi vida. [BOOK_LINK]He escrito un libro de relatos ambientados en milongas,[/BOOK_LINK] documentado este mundo a través de la [PHOTO_LINK]fotografía[/PHOTO_LINK] y creado esta experiencia para mostrar el tango desde adentro: como una expresión cultural viva y auténtica.\n\nDurante la experiencia, [BOLD]te guiaré al mundo del tango y a la milonga, el espacio donde se baila socialmente. De forma clara, cercana y divertida, te ayudaré a comprender sus códigos, su música y su historia, para que el tango se vuelva accesible, humano y profundamente disfrutable.[/BOLD]",
     "years": "Años de Experiencia",
     "tours": "Tours Realizados",
     "reviews": "+150 Calificaciones",
@@ -85,18 +85,12 @@
       "name": "Nombre",
       "email": "Email",
       "subject": "Asunto",
-      "interestType": "Tipo de interés (opcional)",
-      "interestOption_placeholder": "Seleccionar…",
-      "interestOption_educational": "Educativo",
-      "interestOption_university": "Universitario",
-      "interestOption_corporate": "Corporativo",
-      "interestOption_grupal": "Tour grupal",
       "message": "Mensaje",
       "send": "Enviar"
     },
     "info": {
       "email": "contact@theauthentictangoexperience.com",
-      "phone": "(+549) 11-5015-4342",
+      "phone": "(+549) 11-7063-2395",
       "instagram": "theauthentictangoexperience"
     },
     "legal": "Legal",
@@ -244,7 +238,7 @@
     "name": "Nombre y apellido",
     "email": "Email",
     "phone": "Teléfono (opcional)",
-    "payWith": "Pagar con",
+    "payWith": "Pagar a través de:",
     "total": "Total",
     "continue": "Continuar al pago",
     "working": "Reservando tu lugar…",

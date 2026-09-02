@@ -4,7 +4,7 @@ import { SITE_URL } from '@/lib/site'
 const limpiar = <T extends Record<string, unknown>>(obj: T): T =>
   Object.fromEntries(Object.entries(obj).filter(([, v]) => v != null && v !== '')) as T
 
-const TELEFONO = '+5491150154342'
+const TELEFONO = '+5491170632395'
 const EMAIL = 'contact@theauthentictangoexperience.com'
 const INSTAGRAM = 'https://www.instagram.com/theauthentictangoexperience'
 

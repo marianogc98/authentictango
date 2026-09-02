@@ -15,7 +15,6 @@ export function Contact() {
     name: "",
     email: "",
     subject: "",
-    interestType: "",
     message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -41,7 +40,7 @@ export function Contact() {
       }
 
       setIsSubmitted(true)
-      setFormData({ name: "", email: "", subject: "", interestType: "", message: "" })
+      setFormData({ name: "", email: "", subject: "", message: "" })
       setTimeout(() => setIsSubmitted(false), 5000)
     } catch {
       setSubmitError('Error de conexión. Intenta de nuevo.')
@@ -102,37 +101,18 @@ export function Contact() {
                 />
               </div>
             </div>
-            <div className="grid md:grid-cols-3 gap-4">
-              <div>
-                <label htmlFor="interestType" className="block text-sm font-medium text-foreground mb-2">
-                  {t('form.interestType')}
-                </label>
-                <select
-                  id="interestType"
-                  value={formData.interestType}
-                  onChange={(e) => setFormData({ ...formData, interestType: e.target.value })}
-                  className="flex h-9 w-full rounded-md border border-input bg-white px-3 py-2 text-sm shadow-xs transition-[color,box-shadow] outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:border-ring hover:bg-white focus:bg-white border-border"
-                >
-                  <option value="">{t('form.interestOption_placeholder')}</option>
-                  <option value="educational">{t('form.interestOption_educational')}</option>
-                  <option value="university">{t('form.interestOption_university')}</option>
-                  <option value="corporate">{t('form.interestOption_corporate')}</option>
-                  <option value="grupal">{t('form.interestOption_grupal')}</option>
-                </select>
-              </div>
-              <div className="md:col-span-2">
-                <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
-                  {t('form.message')}
-                </label>
-                <Textarea
-                  id="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  required
-                  className="!bg-white hover:!bg-white focus:!bg-white focus-visible:!bg-white border-border resize-none"
-                />
-              </div>
+            <div>
+              <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
+                {t('form.message')}
+              </label>
+              <Textarea
+                id="message"
+                rows={5}
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                required
+                className="!bg-white hover:!bg-white focus:!bg-white focus-visible:!bg-white border-border resize-none"
+              />
             </div>
             {submitError && (
               <p className="text-sm text-destructive">{submitError}</p>

@@ -4,7 +4,7 @@ import { Resend } from 'resend'
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, email, subject, interestType, message } = body
+    const { name, email, subject, message } = body
 
     if (!name || !email || !message) {
       return NextResponse.json(
@@ -39,7 +39,6 @@ export async function POST(request: Request) {
       <p><strong>Nombre:</strong> ${escapeHtml(name)}</p>
       <p><strong>Email:</strong> ${escapeHtml(email)}</p>
       <p><strong>Asunto:</strong> ${escapeHtml(subject || '—')}</p>
-      ${interestType ? `<p><strong>Tipo de interés:</strong> ${escapeHtml(interestType)}</p>` : ''}
       <p><strong>Mensaje:</strong></p>
       <p>${escapeHtml(message).replace(/\n/g, '<br>')}</p>
     `

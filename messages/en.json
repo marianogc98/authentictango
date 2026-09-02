@@ -1,6 +1,6 @@
 {
   "nav": {
-    "about": "About Me",
+    "about": "About Maria",
     "tours": "The Experience",
     "reviews": "Reviews",
     "gallery": "Gallery",
@@ -15,8 +15,8 @@
     "viewTours": "View Tours"
   },
   "about": {
-    "title": "About Me",
-    "description": "My name is [BOLD]María Inés[/BOLD]. I am a tango dancer and the creator of [BOLD]The Authentic Tango Experience,[/BOLD] a cultural immersion I have been developing for nearly ten years.\n\n I fell in love with tango the very first night I stepped into a milonga. What began as a fascination with the dance gradually became an essential [BOLD]part of my life.[/BOLD] Over the years, I have [BOLD]written a [BOOK_LINK]book of short stories[/BOOK_LINK] set in milongas,[/BOLD] documented this world through [PHOTO_LINK]photography[/PHOTO_LINK] and [BOLD]shaped this experience from the desire to show tango from the inside[/BOLD]—as a living, deeply rooted cultural expression.\n\n Throughout our time together,[BOLD] my role will be to guide you into the world of tango[/BOLD] and the place where it is socially danced—[BOLD]the milonga.[/BOLD] With clarity, depth, and sensitivity, I´ll [BOLD]help you understand its codes and etiquette, its music and history, and the emotional language of the embrace as it unfolds in a real milonga, so tango becomes readable, human, accessible, and deeply meaningful.[/BOLD]",
+    "title": "About Maria",
+    "description": "I am a tango dancer and the creator of [BOLD]The Authentic Tango Experience,[/BOLD] a cultural immersion I have been developing for nearly ten years.\n\n I fell in love with tango the very first night I stepped into a milonga. What began as a fascination with the dance gradually became an essential [BOLD]part of my life.[/BOLD] Over the years, I have [BOLD]written a [BOOK_LINK]book of short stories[/BOOK_LINK] set in milongas,[/BOLD] documented this world through [PHOTO_LINK]photography[/PHOTO_LINK] and [BOLD]shaped this experience from the desire to show tango from the inside[/BOLD]—as a living, deeply rooted cultural expression.\n\n Throughout our time together,[BOLD] my role will be to guide you into the world of tango[/BOLD] and the place where it is socially danced—[BOLD]the milonga.[/BOLD] With clarity, depth, and sensitivity, I´ll [BOLD]help you understand its codes and etiquette, its music and history, and the emotional language of the embrace as it unfolds in a real milonga, so tango becomes readable, human, accessible, and deeply meaningful.[/BOLD]",
     "years": "Years of Experience",
     "tours": "Tours Completed",
     "reviews": "+150 Star Reviews",
@@ -85,18 +85,12 @@
       "name": "Name",
       "email": "Email",
       "subject": "Subject",
-      "interestType": "Type of interest (optional)",
-      "interestOption_placeholder": "Select…",
-      "interestOption_educational": "Educational",
-      "interestOption_university": "University",
-      "interestOption_corporate": "Corporate",
-      "interestOption_grupal": "Group tour",
       "message": "Message",
       "send": "Send"
     },
     "info": {
       "email": "contact@theauthentictangoexperience.com",
-      "phone": "(+549) 11-5015-4342",
+      "phone": "(+549) 11-7063-2395",
       "instagram": "theauthentictangoexperience"
     },
     "whatsapp": "Message us on WhatsApp"
@@ -240,7 +234,7 @@
     "name": "Full name",
     "email": "Email",
     "phone": "Phone (optional)",
-    "payWith": "Pay with",
+    "payWith": "Pay through:",
     "total": "Total",
     "continue": "Continue to payment",
     "working": "Reserving your spot…",
