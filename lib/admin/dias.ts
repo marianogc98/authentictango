@@ -4,13 +4,12 @@ import { and, asc, eq, sql } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db/client'
 import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
-import { aCentavos } from '@/lib/booking/dinero'
+import { getCotizacion } from '@/lib/cotizacion'
+import { aCentavos, usdAPesos } from '@/lib/booking/dinero'
+import { conPesos } from '@/lib/booking/precios'
 import { weekdayDe } from '@/lib/booking/tiempo'
 
-export type SlotEntrada = {
-  time: string; seats: number; priceUsd: string; priceArs: string
-  classPriceUsd: string; classPriceArs: string
-}
+export type SlotEntrada = { time: string; seats: number; priceUsd: string; classPriceUsd: string }
 
 /** Reservas vivas de una fecha: las que hay que respetar sí o sí. */
 async function reservasVivas(date: string) {
@@ -42,23 +41,31 @@ export async function detalleDia(date: string) {
 
   const base = propios.length ? propios : plantilla
   const reservas = await reservasVivas(date)
+  // El equivalente en pesos se muestra sólo como referencia: es lo que va a ver quien
+  // reserve hoy, y mañana va a ser otro número. Por eso viaja junto con la cotización
+  // que lo produjo, para que el panel pueda decir de dónde salió.
+  const cotizacion = await getCotizacion()
 
   return {
     date,
     closed: Boolean(cerrado),
     custom: propios.length > 0,
+    cotizacion,
     slots: base
-      .map((s) => ({
-        time: s.time,
-        seats: s.seats,
-        priceUsd: s.priceUsd,
-        priceArs: s.priceArs,
-        classPriceUsd: s.classPriceUsd,
-        classPriceArs: s.classPriceArs,
-        vendidos: reservas
-          .filter((r) => r.time === s.time && r.status === 'paid')
-          .reduce((n, r) => n + r.seats, 0),
-      }))
+      .map((s) => {
+        const precios = conPesos(s, cotizacion)
+        return {
+          time: s.time,
+          seats: s.seats,
+          priceUsd: precios.priceUsd,
+          priceArs: precios.priceArs,
+          classPriceUsd: precios.classPriceUsd,
+          classPriceArs: precios.classPriceArs,
+          vendidos: reservas
+            .filter((r) => r.time === s.time && r.status === 'paid')
+            .reduce((n, r) => n + r.seats, 0),
+        }
+      })
       .sort((a, b) => a.time.localeCompare(b.time)),
     reservas,
   }
@@ -108,17 +115,38 @@ export async function abrirDia(date: string) {
  * Se niega si dejaría menos lugares de los ya vendidos en algún horario.
  */
 export async function guardarDia(date: string, slots: SlotEntrada[]) {
+  const cotizacion = await getCotizacion()
+
+  // Igual que en la semana: sin cotización se conserva la foto anterior en vez de
+  // guardar cero, que dejaría el horario sin poder venderse en pesos.
+  const previas = cotizacion
+    ? new Map<string, { priceArs: number; classPriceArs: number }>()
+    : new Map(
+        (await db.select().from(dateSlots).where(eq(dateSlots.date, date))).map((f) => [
+          f.time,
+          { priceArs: f.priceArs, classPriceArs: f.classPriceArs },
+        ]),
+      )
+
   const filas = slots
     .filter((s) => /^\d{2}:\d{2}$/.test(s.time))
-    .map((s) => ({
-      date,
-      time: `${s.time}:00`,
-      seats: Math.max(1, Math.min(200, Math.trunc(s.seats) || 1)),
-      priceUsd: aCentavos(s.priceUsd),
-      priceArs: aCentavos(s.priceArs),
-      classPriceUsd: aCentavos(s.classPriceUsd),
-      classPriceArs: aCentavos(s.classPriceArs),
-    }))
+    .map((s) => {
+      const time = `${s.time}:00`
+      const previa = previas.get(time)
+      return {
+        date,
+        time,
+        seats: Math.max(1, Math.min(200, Math.trunc(s.seats) || 1)),
+        priceUsd: aCentavos(s.priceUsd),
+        priceArs: cotizacion
+          ? usdAPesos(aCentavos(s.priceUsd), cotizacion.venta)
+          : previa?.priceArs ?? 0,
+        classPriceUsd: aCentavos(s.classPriceUsd),
+        classPriceArs: cotizacion
+          ? usdAPesos(aCentavos(s.classPriceUsd), cotizacion.venta)
+          : previa?.classPriceArs ?? 0,
+      }
+    })
 
   const vendidosPorHora = new Map<string, number>()
   for (const r of await reservasVivas(date)) {

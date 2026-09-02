@@ -2,6 +2,8 @@ import { randomUUID } from 'node:crypto'
 import { and, eq, sql } from 'drizzle-orm'
 import { db } from '@/lib/db/client'
 import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
+import { getCotizacion } from '@/lib/cotizacion'
+import { conPesos } from './precios'
 import { weekdayDe, yaPaso } from './tiempo'
 import { dentroDeVentana, getVentana } from './ventana'
 
@@ -47,6 +49,11 @@ export type HoldResult =
  *
  * `pg_advisory_xact_lock` se libera solo al terminar la transacción, con commit o con
  * rollback: no hay forma de dejar el slot trabado por un error.
+ *
+ * En pesos el importe sale de convertir el precio en dólares con la cotización del blue.
+ * Se pide ANTES de abrir la transacción: es una llamada HTTP a un tercero y hacerla con
+ * el lock del slot tomado dejaría a todos los que quieren ese horario esperando a que
+ * conteste una API que no controlamos.
  */
 export async function holdSeats(input: HoldInput): Promise<HoldResult> {
   if (input.seats < 1) return { ok: false, reason: 'sin_lugar', seatsLeft: 0 }
@@ -72,6 +79,9 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
     if (Number(n) >= HOLDS_POR_IP) return { ok: false, reason: 'demasiados' }
   }
 
+  // Sólo hace falta para cobrar en pesos; en dólares el precio ya está cargado.
+  const cotizacion = input.currency === 'ARS' ? await getCotizacion() : null
+
   return db.transaction(async (tx) => {
     // Serializa a todos los que compiten por este mismo slot, y sólo por éste.
     await tx.execute(sql`SELECT pg_advisory_xact_lock(hashtext(${`${input.date}T${input.time}`}))`)
@@ -82,7 +92,7 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
     // Misma precedencia que en la disponibilidad: los horarios propios de la fecha
     // reemplazan la plantilla semanal por completo.
     const propios = await tx.select().from(dateSlots).where(eq(dateSlots.date, input.date))
-    const slot = propios.length
+    const fila = propios.length
       ? propios.find((s) => s.time === input.time)
       : (
           await tx.select().from(weeklySlots).where(and(
@@ -91,7 +101,12 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
           ))
         )[0]
 
-    if (!slot) return { ok: false, reason: 'sin_horario' as const }
+    if (!fila) return { ok: false, reason: 'sin_horario' as const }
+
+    // Sin cotización queda el precio en pesos guardado al configurar el horario, que es
+    // viejo pero coherente. Es la misma regla que usa el calendario para mostrarlo, así
+    // que lo que se cobra sigue siendo lo que se mostró.
+    const slot = conPesos(fila, cotizacion)
 
     const precioTour = input.currency === 'USD' ? slot.priceUsd : slot.priceArs
     // Un horario sin precio no se vende. Es preferible no poder reservar a reservar gratis.

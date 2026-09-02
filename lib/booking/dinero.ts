@@ -30,3 +30,23 @@ export function formatearPrecio(centavos: number, moneda: 'USD' | 'ARS', locale 
 export function hhmm(time: string): string {
   return time.slice(0, 5)
 }
+/**
+ * A cuántos pesos se redondea el precio convertido. Un cálculo crudo da $77.253,75 y ese
+ * número no lo pone nadie en una web: se redondea hacia arriba, nunca hacia abajo, para
+ * que un cambio de cotización no termine cobrando de menos.
+ */
+const REDONDEO_ARS = 100
+
+/**
+ * Pasa un precio en dólares a pesos con la cotización dada. Ambos en centavos.
+ *
+ * Es la única conversión del sistema y es pura a propósito: el valor del dólar entra por
+ * parámetro. Así el mismo cálculo corre en el panel para mostrar la referencia, en la
+ * disponibilidad para mostrar el precio y en el hold para cobrarlo, sin riesgo de que
+ * cada lado redondee distinto.
+ */
+export function usdAPesos(centavosUsd: number, venta: number): number {
+  if (centavosUsd <= 0 || !Number.isFinite(venta) || venta <= 0) return 0
+  const pesos = (centavosUsd / 100) * venta
+  return Math.ceil(pesos / REDONDEO_ARS) * REDONDEO_ARS * 100
+}

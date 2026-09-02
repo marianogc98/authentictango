@@ -3,32 +3,40 @@
 import { useState, useTransition } from 'react'
 import { Plus, Trash2 } from 'lucide-react'
 import { abrirDia, cerrarDia, detalleDia, guardarDia, volverALoNormal } from '@/lib/admin/dias'
-import { aTexto, formatearPrecio, hhmm } from '@/lib/booking/dinero'
+import type { Cotizacion } from '@/lib/cotizacion'
+import { aCentavos, aTexto, formatearPrecio, hhmm, usdAPesos } from '@/lib/booking/dinero'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 
 type Detalle = Awaited<ReturnType<typeof detalleDia>>
-type SlotUI = {
-  time: string; seats: number; priceUsd: string; priceArs: string
-  classPriceUsd: string; classPriceArs: string
-}
+type SlotUI = { time: string; seats: number; priceUsd: string; classPriceUsd: string }
 
-const NUEVO = (): SlotUI => ({
-  time: '15:00', seats: 10, priceUsd: '0.00', priceArs: '0.00',
-  classPriceUsd: '0.00', classPriceArs: '0.00',
-})
+const NUEVO = (): SlotUI => ({ time: '15:00', seats: 10, priceUsd: '0.00', classPriceUsd: '0.00' })
 
 const desdeDetalle = (d: Detalle): SlotUI[] =>
   d.slots.map((s) => ({
     time: hhmm(s.time),
     seats: s.seats,
     priceUsd: aTexto(s.priceUsd),
-    priceArs: aTexto(s.priceArs),
     classPriceUsd: aTexto(s.classPriceUsd),
-    classPriceArs: aTexto(s.classPriceArs),
   }))
+
+/**
+ * El equivalente en pesos de lo que se está tipeando, como referencia.
+ *
+ * No se guarda: el precio en pesos se recalcula con el blue cada vez que alguien abre el
+ * calendario, así que este número es el de hoy y mañana será otro.
+ */
+function EnPesos({ usd, cotizacion }: { usd: string; cotizacion: Cotizacion | null }) {
+  const centavos = cotizacion ? usdAPesos(aCentavos(usd), cotizacion.venta) : 0
+  return (
+    <p className="text-xs text-muted-foreground">
+      {centavos > 0 ? `≈ ${formatearPrecio(centavos, 'ARS')}` : '—'}
+    </p>
+  )
+}
 
 function mensajeError(r: Record<string, unknown>): string {
   const hora = String(r.time ?? '').slice(0, 5)
@@ -151,35 +159,22 @@ export function PanelDia({
                     </Button>
                   </div>
 
+                  {/* Lo que se suma por persona si eligen el tour con clase grupal.
+                      En cero, este horario se vende sin clase. */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
                       <Label htmlFor={`usd-${i}`} className="text-xs text-muted-foreground">Precio USD</Label>
                       <Input id={`usd-${i}`} inputMode="decimal" value={s.priceUsd}
                         onChange={(e) => editar(i, 'priceUsd', e.target.value)} />
+                      <EnPesos usd={s.priceUsd} cotizacion={detalle.cotizacion} />
                     </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor={`ars-${i}`} className="text-xs text-muted-foreground">Precio ARS</Label>
-                      <Input id={`ars-${i}`} inputMode="decimal" value={s.priceArs}
-                        onChange={(e) => editar(i, 'priceArs', e.target.value)} />
-                    </div>
-                  </div>
-
-                  {/* Lo que se suma por persona si eligen el tour con clase grupal.
-                      En cero, este horario se vende sin clase. */}
-                  <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
                       <Label htmlFor={`clase-usd-${i}`} className="text-xs text-muted-foreground">
                         + Clase USD
                       </Label>
                       <Input id={`clase-usd-${i}`} inputMode="decimal" value={s.classPriceUsd}
                         onChange={(e) => editar(i, 'classPriceUsd', e.target.value)} />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label htmlFor={`clase-ars-${i}`} className="text-xs text-muted-foreground">
-                        + Clase ARS
-                      </Label>
-                      <Input id={`clase-ars-${i}`} inputMode="decimal" value={s.classPriceArs}
-                        onChange={(e) => editar(i, 'classPriceArs', e.target.value)} />
+                      <EnPesos usd={s.classPriceUsd} cotizacion={detalle.cotizacion} />
                     </div>
                   </div>
 
@@ -197,6 +192,12 @@ export function PanelDia({
               onClick={() => setSlots((v) => [...v, NUEVO()])}>
               <Plus className="mr-1.5 h-4 w-4" /> Agregar horario
             </Button>
+
+            <p className="text-xs text-muted-foreground">
+              {detalle.cotizacion
+                ? `El precio en pesos se calcula con el dólar blue, hoy a $${detalle.cotizacion.venta.toLocaleString('es-AR')} (${detalle.cotizacion.fuente}).`
+                : 'No pudimos consultar el dólar blue ahora mismo: en pesos se sigue cobrando la última cotización guardada.'}
+            </p>
           </section>
         )}
 

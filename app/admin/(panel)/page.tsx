@@ -1,6 +1,7 @@
 import { db } from '@/lib/db/client'
 import { weeklySlots } from '@/lib/db/schema'
 import { getMonthAvailability } from '@/lib/booking/availability'
+import { getCotizacion } from '@/lib/cotizacion'
 import { aTexto, hhmm } from '@/lib/booking/dinero'
 import { hoyBA } from '@/lib/booking/tiempo'
 import { getVentana, ventanaGuardada } from '@/lib/booking/ventana'
@@ -21,9 +22,7 @@ async function semanaParaEditor(): Promise<Record<number, SlotUI[]>> {
       time: hhmm(f.time),
       seats: f.seats,
       priceUsd: aTexto(f.priceUsd),
-      priceArs: aTexto(f.priceArs),
       classPriceUsd: aTexto(f.classPriceUsd),
-      classPriceArs: aTexto(f.classPriceArs),
     })
   }
   for (const d of Object.keys(semana)) {
@@ -51,11 +50,12 @@ export default async function AdminPage({
   const valido = m && /^\d{4}-\d{2}$/.test(m) ? m : hoy.slice(0, 7)
   const [year, month] = valido.split('-').map(Number)
 
-  const [dias, ventana, guardada, semana] = await Promise.all([
+  const [dias, ventana, guardada, semana, cotizacion] = await Promise.all([
     getMonthAvailability(year, month),
     getVentana(),
     ventanaGuardada(),
     semanaParaEditor(),
+    getCotizacion(),
   ])
 
   return (
@@ -64,7 +64,7 @@ export default async function AdminPage({
       <main className="mx-auto max-w-5xl space-y-8 px-4 py-8">
         <Calendario year={year} month={month} dias={dias} hoy={hoy} ventana={ventana} />
         <SeccionVentana inicial={guardada} hoy={hoy} />
-        <SeccionSemana inicial={semana} />
+        <SeccionSemana inicial={semana} cotizacion={cotizacion} />
       </main>
     </>
   )

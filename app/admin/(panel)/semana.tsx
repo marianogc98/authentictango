@@ -3,15 +3,14 @@
 import { useState, useTransition } from 'react'
 import { ChevronRight, Plus, Trash2 } from 'lucide-react'
 import { guardarSemana } from '@/lib/admin/semana'
+import type { Cotizacion } from '@/lib/cotizacion'
+import { aCentavos, formatearPrecio, usdAPesos } from '@/lib/booking/dinero'
 import { Button } from '@/components/ui/button'
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible'
 import { Input } from '@/components/ui/input'
 import { Switch } from '@/components/ui/switch'
 
-export type SlotUI = {
-  time: string; seats: number; priceUsd: string; priceArs: string
-  classPriceUsd: string; classPriceArs: string
-}
+export type SlotUI = { time: string; seats: number; priceUsd: string; classPriceUsd: string }
 
 type Semana = Record<number, SlotUI[]>
 
@@ -27,9 +26,26 @@ const CORTOS: Record<number, string> = {
 }
 
 const NUEVO = (): SlotUI => ({
-  time: '15:00', seats: 10, priceUsd: '0.00', priceArs: '0.00',
-  classPriceUsd: '0.00', classPriceArs: '0.00',
+  time: '15:00', seats: 10, priceUsd: '0.00', classPriceUsd: '0.00',
 })
+
+/**
+ * El equivalente en pesos de lo que se está tipeando.
+ *
+ * Es sólo una referencia: el precio en pesos no se guarda como un valor fijo, se recalcula
+ * con el blue del día cada vez que alguien mira el calendario. Mostrarlo acá sirve para
+ * que ella vea en qué número cae hoy, no para que lo edite.
+ */
+function EnPesos({ usd, cotizacion }: { usd: string; cotizacion: Cotizacion | null }) {
+  if (!cotizacion) return <span className="self-center text-sm text-muted-foreground">—</span>
+
+  const centavos = usdAPesos(aCentavos(usd), cotizacion.venta)
+  return (
+    <span className="self-center text-sm text-muted-foreground">
+      {centavos > 0 ? formatearPrecio(centavos, 'ARS') : '—'}
+    </span>
+  )
+}
 
 /**
  * Una línea con la semana entera, para leerla sin abrir la sección.
@@ -57,7 +73,12 @@ function resumen(semana: Semana): string {
 }
 
 /** La sección plegable del panel: encabezado con el resumen, y adentro el editor. */
-export function SeccionSemana({ inicial }: { inicial: Semana }) {
+export function SeccionSemana({
+  inicial, cotizacion,
+}: {
+  inicial: Semana
+  cotizacion: Cotizacion | null
+}) {
   const [semana, setSemana] = useState(inicial)
   const [abierta, setAbierta] = useState(false)
 
@@ -75,7 +96,7 @@ export function SeccionSemana({ inicial }: { inicial: Semana }) {
           Los horarios habituales. Se configura una vez y después sólo cargás las
           excepciones en el calendario, día por día.
         </p>
-        <EditorSemana semana={semana} onCambio={setSemana} />
+        <EditorSemana semana={semana} onCambio={setSemana} cotizacion={cotizacion} />
       </CollapsibleContent>
     </Collapsible>
   )
@@ -86,10 +107,11 @@ export function SeccionSemana({ inicial }: { inicial: Semana }) {
  * muestre el resumen de lo que se está editando, y no el de lo último guardado.
  */
 function EditorSemana({
-  semana, onCambio: setSemana,
+  semana, onCambio: setSemana, cotizacion,
 }: {
   semana: Semana
   onCambio: React.Dispatch<React.SetStateAction<Semana>>
+  cotizacion: Cotizacion | null
 }) {
   const [guardando, startTransition] = useTransition()
   const [mensaje, setMensaje] = useState<string | null>(null)
@@ -120,11 +142,25 @@ function EditorSemana({
         : `Guardado: ${r.filas} horario${r.filas === 1 ? '' : 's'} en la semana.`)
     })
 
-  const sinPrecio = Object.values(semana).flat()
-    .some((s) => Number(s.priceUsd) === 0 && Number(s.priceArs) === 0)
+  const sinPrecio = Object.values(semana).flat().some((s) => aCentavos(s.priceUsd) === 0)
 
   return (
     <div className="space-y-4">
+      <p className="rounded-md border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
+        {cotizacion ? (
+          <>
+            El precio se carga en dólares. El de pesos se calcula solo con el dólar blue,
+            hoy a <strong className="text-foreground">${cotizacion.venta.toLocaleString('es-AR')}</strong>{' '}
+            ({cotizacion.fuente}), y se actualiza cada media hora.
+          </>
+        ) : (
+          <>
+            El precio se carga en dólares y el de pesos se calcula con el dólar blue. Ahora
+            mismo no pudimos consultar la cotización: se sigue usando la última que quedó
+            guardada.
+          </>
+        )}
+      </p>
       {DIAS.map(([dia, nombre]) => {
         const slots = semana[dia] ?? []
         const activo = slots.length > 0
@@ -142,7 +178,8 @@ function EditorSemana({
             {activo && (
               <div className="mt-4 space-y-3">
                 <div className="hidden gap-3 px-1 text-xs text-muted-foreground sm:grid sm:grid-cols-[100px_90px_1fr_1fr_40px]">
-                  <span>Horario</span><span>Lugares</span><span>Precio USD</span><span>Precio ARS</span><span />
+                  <span>Horario</span><span>Lugares</span><span>Precio USD</span>
+                  <span>En pesos (calculado)</span><span />
                 </div>
 
                 {slots.map((slot, i) => (
@@ -154,8 +191,7 @@ function EditorSemana({
                         onChange={(e) => editar(dia, i, 'seats', e.target.value)} />
                       <Input inputMode="decimal" placeholder="USD" value={slot.priceUsd}
                         onChange={(e) => editar(dia, i, 'priceUsd', e.target.value)} />
-                      <Input inputMode="decimal" placeholder="ARS" value={slot.priceArs}
-                        onChange={(e) => editar(dia, i, 'priceArs', e.target.value)} />
+                      <EnPesos usd={slot.priceUsd} cotizacion={cotizacion} />
                       <Button type="button" variant="ghost" size="icon" aria-label="Quitar horario"
                         onClick={() => quitar(dia, i)}>
                         <Trash2 className="h-4 w-4" />
@@ -171,8 +207,7 @@ function EditorSemana({
                       </span>
                       <Input inputMode="decimal" placeholder="USD" value={slot.classPriceUsd}
                         onChange={(e) => editar(dia, i, 'classPriceUsd', e.target.value)} />
-                      <Input inputMode="decimal" placeholder="ARS" value={slot.classPriceArs}
-                        onChange={(e) => editar(dia, i, 'classPriceArs', e.target.value)} />
+                      <EnPesos usd={slot.classPriceUsd} cotizacion={cotizacion} />
                       <span className="hidden sm:block" />
                     </div>
                   </div>

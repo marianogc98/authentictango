@@ -1,6 +1,8 @@
 import { and, eq, gte, lte, sql, inArray } from 'drizzle-orm'
 import { db } from '@/lib/db/client'
 import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
+import { getCotizacion } from '@/lib/cotizacion'
+import { conPesos } from './precios'
 import { fechasDelMes, weekdayDe, yaPaso } from './tiempo'
 
 export type Slot = {
@@ -32,13 +34,19 @@ export type DiaDisponible = {
  *
  * Reemplazar la plantilla entera (y no mezclarla con las excepciones) evita el caso
  * ambiguo de "cargué las 11 para el 24, ¿sigue habiendo tour a las 15?".
+ *
+ * El precio en pesos no se lee de la base: se calcula acá con la cotización del blue del
+ * momento, a partir del precio en dólares. La cotización se pide una sola vez para todo
+ * el mes, así los 30 días muestran el mismo valor aunque el dólar se mueva mientras tanto.
  */
 export async function getMonthAvailability(year: number, month: number): Promise<DiaDisponible[]> {
   const fechas = fechasDelMes(year, month)
   const desde = fechas[0]
   const hasta = fechas[fechas.length - 1]
 
-  const [semanal, cerrados, propios, tomados] = await Promise.all([
+  const [cotizacion, semanal, cerrados, propios, tomados] = await Promise.all([
+    getCotizacion(),
+
     db.select().from(weeklySlots),
 
     db.select().from(closedDates)
@@ -80,15 +88,16 @@ export async function getMonthAvailability(year: number, month: number): Promise
     const slots: Slot[] = base
       .map((s) => {
         const seatsTaken = ocupados.get(`${date}T${s.time}`) ?? 0
+        const precios = conPesos(s, cotizacion)
         return {
           time: s.time,
           seats: s.seats,
           seatsTaken,
           seatsLeft: Math.max(0, s.seats - seatsTaken),
-          priceUsd: s.priceUsd,
-          priceArs: s.priceArs,
-          classPriceUsd: s.classPriceUsd,
-          classPriceArs: s.classPriceArs,
+          priceUsd: precios.priceUsd,
+          priceArs: precios.priceArs,
+          classPriceUsd: precios.classPriceUsd,
+          classPriceArs: precios.classPriceArs,
           past: yaPaso(date, s.time),
         }
       })
@@ -104,11 +113,14 @@ export async function resolverSlot(date: string, time: string) {
   if (cerrado) return null
 
   const propios = await db.select().from(dateSlots).where(eq(dateSlots.date, date))
-  if (propios.length > 0) return propios.find((s) => s.time === time) ?? null
+  const slot = propios.length
+    ? propios.find((s) => s.time === time) ?? null
+    : (
+        await db.select().from(weeklySlots)
+          .where(and(eq(weeklySlots.weekday, weekdayDe(date)), eq(weeklySlots.time, time)))
+      )[0] ?? null
 
-  const semanal = await db.select().from(weeklySlots)
-    .where(and(eq(weeklySlots.weekday, weekdayDe(date)), eq(weeklySlots.time, time)))
-  return semanal[0] ?? null
+  return slot && conPesos(slot, await getCotizacion())
 }
 
 /** Marca como `expired` los holds vencidos. Los asientos se liberan solos al dejar de contar. */
