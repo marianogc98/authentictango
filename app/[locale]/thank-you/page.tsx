@@ -5,6 +5,7 @@ import { Link } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'
 import { Button } from '@/components/ui/button'
 import { Footer } from '@/components/footer'
+import { BookingConfirmado } from '@/components/booking-confirmado'
 import { getReserva } from '@/lib/booking/consulta'
 import { hhmm } from '@/lib/booking/dinero'
 import { ArrowLeft, Check, Sparkles } from 'lucide-react'
@@ -57,6 +58,19 @@ export default async function ThankYouPage({
 
   return (
     <div className="flex min-h-screen flex-col bg-black">
+      {/* Los dos métodos de pago pasan por acá, así que la conversión se mide en un solo
+          lugar. Sólo si está paga: llegar a /gracias no es haber comprado. */}
+      {confirmada && (
+        <BookingConfirmado
+          uid={confirmada.uid}
+          value={confirmada.amount != null ? confirmada.amount / 100 : null}
+          currency={confirmada.currency}
+          method={confirmada.provider}
+          seats={confirmada.seats}
+          conClase={confirmada.withClass}
+          locale={locale}
+        />
+      )}
       <main className="relative flex flex-1 items-center justify-center overflow-hidden px-4 py-24 lg:px-8">
         {/* Imagen de fondo */}
         <div className="absolute inset-0 z-0">

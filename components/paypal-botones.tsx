@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from 'react'
 import Script from 'next/script'
 import { useTranslations } from 'next-intl'
 import { useRouter } from '@/i18n/navigation'
-import { trackGaEvent } from '@/lib/utils/gtag'
 
 type Botones = {
   render: (contenedor: HTMLElement) => Promise<void>
@@ -34,12 +33,10 @@ export function PaypalBotones({
   uid,
   clientId,
   locale,
-  seats,
 }: {
   uid: string
   clientId: string
   locale: string
-  seats: number
 }) {
   const t = useTranslations('pay')
   const router = useRouter()
@@ -93,14 +90,8 @@ export function PaypalBotones({
           return
         }
 
-        // Éste sí es el evento clave marcado en GA4: sólo cuando el pago se acreditó.
-        trackGaEvent('booking_confirmed', {
-          locale,
-          method: 'paypal',
-          seats: String(seats),
-          currency: 'USD',
-        }).catch(() => {})
-
+        // booking_confirmed lo emite la página de gracias, que es por donde pasan los
+        // dos métodos de pago. Dispararlo también acá lo contaría dos veces.
         router.push({ pathname: '/thank-you', query: { uid } })
       },
 
@@ -121,7 +112,7 @@ export function PaypalBotones({
       setEstado('error')
       setMensaje(t('payError'))
     })
-  }, [cargado, uid, locale, seats, router, t])
+  }, [cargado, uid, locale, router, t])
 
   const sdk =
     `https://www.paypal.com/sdk/js?client-id=${encodeURIComponent(clientId)}` +

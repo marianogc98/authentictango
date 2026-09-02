@@ -8,15 +8,14 @@ import { GA_MEASUREMENT_ID } from '@/lib/utils/gtag'
 const ACTIVO = process.env.NODE_ENV === 'production' && !!GA_MEASUREMENT_ID
 
 /**
- * Los clics salientes que GA4 registra por su cuenta no alcanzan: llegan como un evento
- * `click` genérico, y los `tel:`/`mailto:` ni siquiera cuentan como salientes.
+ * WhatsApp es el único contacto que se mide por clic, y hace falta medirlo a mano: los
+ * clics salientes que GA4 registra solo llegan como un evento `click` genérico.
+ *
+ * El mail no se mide acá. Antes se contaba el clic en la dirección, que sólo dice que
+ * alguien la copió; el formulario emite `contacto_email` al enviarse, que es cuando de
+ * verdad llegó un mensaje.
  */
-function nombreEvento(href: string) {
-  if (/^tel:/i.test(href)) return 'contacto_telefono'
-  if (/^mailto:/i.test(href)) return 'contacto_email'
-  if (/wa\.me|whatsapp\.com/i.test(href)) return 'contacto_whatsapp'
-  return null
-}
+const esWhatsapp = (href: string) => /wa\.me|whatsapp\.com/i.test(href)
 
 export function GoogleAnalytics() {
   useEffect(() => {
@@ -26,10 +25,9 @@ export function GoogleAnalytics() {
       const link = e.target instanceof Element ? e.target.closest('a') : null
       if (!link) return
 
-      const evento = nombreEvento(link.getAttribute('href') ?? '')
-      if (!evento) return
+      if (!esWhatsapp(link.getAttribute('href') ?? '')) return
 
-      window.gtag?.('event', evento, {
+      window.gtag?.('event', 'contacto_whatsapp', {
         origen: link.dataset.origen || window.location.pathname,
       })
     }

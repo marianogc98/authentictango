@@ -13,6 +13,8 @@ export type ReservaPublica = {
   status: string
   amount: number | null
   currency: string | null
+  /** Con qué se pagó: 'paypal' | 'mercadopago'. Null mientras no se haya cobrado. */
+  provider: string | null
   expiresAt: Date
   locale: string
   /** El hold venció aunque el registro todavía diga pending: se calcula, no se confía. */
@@ -34,6 +36,7 @@ export async function getReserva(uid: string): Promise<ReservaPublica | null> {
       withClass: bookings.withClass,
       name: bookings.name, email: bookings.email, status: bookings.status,
       amount: bookings.amount, currency: bookings.currency,
+      provider: bookings.provider,
       expiresAt: bookings.expiresAt, locale: bookings.locale,
     })
     .from(bookings)

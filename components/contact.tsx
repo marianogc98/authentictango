@@ -3,6 +3,7 @@
 import React from "react"
 import { useState } from "react"
 import { useTranslations } from 'next-intl'
+import { trackGaEvent } from '@/lib/utils/gtag'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -38,6 +39,12 @@ export function Contact() {
         setSubmitError(data.error || 'Error al enviar. Intenta de nuevo.')
         return
       }
+
+      // Recién acá hay un mensaje de verdad. Sin nombre ni email: GA4 no admite datos
+      // personales, y para medir el canal alcanza con saber que alguien escribió.
+      trackGaEvent('contacto_email', {
+        origen: window.location.pathname,
+      }).catch(() => {})
 
       setIsSubmitted(true)
       setFormData({ name: "", email: "", subject: "", message: "" })

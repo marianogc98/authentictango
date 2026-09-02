@@ -106,7 +106,6 @@ export default async function PagoPage({
                       uid={reserva.uid}
                       clientId={PAYPAL_CLIENT_ID}
                       locale={locale}
-                      seats={reserva.seats}
                     />
                   </>
                 ) : puedePagarConMp ? (
