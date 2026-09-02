@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { setRequestLocale } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
 import { About } from "@/components/about"
@@ -12,6 +12,16 @@ import { Booking } from "@/components/booking"
 import { Contact } from "@/components/contact"
 import { Footer } from "@/components/footer"
 import { alternatesFor } from '@/lib/seo/alternates'
+import { JsonLd } from '@/components/JsonLd'
+import { experienciaSchema, type OfertaSchema } from '@/lib/seo/schema'
+import { precioDesde } from '@/lib/seo/oferta'
+
+/**
+ * El precio del schema sale de la base, así que la home deja de ser puramente estática.
+ * Con revalidación por hora sigue sirviéndose cacheada: el precio no cambia varias veces
+ * al día, y una consulta por hora no es carga.
+ */
+export const revalidate = 3600
 
 export async function generateMetadata({
   params,
@@ -35,8 +45,29 @@ export default async function Home({
   const { locale } = await params
   setRequestLocale(locale)
 
+  const t = await getTranslations({ locale, namespace: 'services' })
+  const precios = await precioDesde()
+
+  // Cada variante es una oferta del mismo viaje, no dos productos distintos: es el mismo
+  // recorrido, con o sin la clase grupal.
+  const ofertas: OfertaSchema[] = precios
+    ? [
+        { nombre: t('private.title'), centavosUsd: precios.tour },
+        ...(precios.conClase
+          ? [{ nombre: t('group.title'), centavosUsd: precios.conClase }]
+          : []),
+      ]
+    : []
+
   return (
     <>
+      <JsonLd
+        data={experienciaSchema(locale, {
+          nombre: t('private.title'),
+          descripcion: t('private.description'),
+          ofertas,
+        })}
+      />
       <Header />
       <main>
         <Hero />
