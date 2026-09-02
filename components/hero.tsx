@@ -21,7 +21,7 @@ export function Hero() {
           y sin lazy para no penalizar el LCP. */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/hero-tango.webp"
+          src="/images/hero.jpeg"
           alt=""
           fill
           priority
