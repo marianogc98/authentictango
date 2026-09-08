@@ -8,6 +8,7 @@ import { useRouter } from '@/i18n/navigation'
 import { formatearPrecio, hhmm } from '@/lib/booking/dinero'
 import { trackGaEvent } from '@/lib/utils/gtag'
 import { Button } from '@/components/ui/button'
+import { Tarjetas } from '@/components/tarjetas'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -376,7 +377,12 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
 
                       {metodosPosibles.length > 1 && (
                         <div className="space-y-2">
-                          <Label>{t('payWith')}</Label>
+                          {/* Las dos pasarelas aceptan las mismas tarjetas, así que los
+                              logos van junto al rótulo y no repetidos en cada botón. */}
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <Label>{t('payWith')}</Label>
+                            <Tarjetas />
+                          </div>
                           <div className="grid gap-2 sm:grid-cols-2">
                             {metodosPosibles.map((m) => (
                               <button

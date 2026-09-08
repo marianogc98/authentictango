@@ -26,6 +26,17 @@ export function formatearPrecio(centavos: number, moneda: 'USD' | 'ARS', locale 
   }).format(centavos / 100)
 }
 
+/**
+ * El número solo, sin símbolo ni ceros de más: 5000 -> "50", 4550 -> "45,50".
+ * Para los textos donde la moneda ya está escrita al lado ("Desde $50 USD").
+ */
+export function montoSuelto(centavos: number, locale = 'es'): string {
+  return new Intl.NumberFormat(locale === 'en' ? 'en-US' : 'es-AR', {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(centavos / 100)
+}
+
 /** "15:00:00" -> "15:00" */
 export function hhmm(time: string): string {
   return time.slice(0, 5)

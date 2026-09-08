@@ -29,7 +29,7 @@
       "title": "Recorrido cultural a pie sobre tango y visita a una milonga",
       "description": "Comenzamos caminando por las [BOLD]calles de Buenos Aires donde nació el tango, descubriendo su historia, su música, sus personajes y los barrios que lo vieron crecer.[/BOLD]A medida que recorremos la ciudad, el tango se revela no sólo como un baile, sino como [BOLD]una forma de vivir y sentir Buenos Aires.[/BOLD]\n\nLa experiencia continúa con una [BOLD]visita a una milonga auténtica,[/BOLD] el lugar donde [BOLD]el tango está verdaderamente vivo y evoluciona al día de hoy.[/BOLD] A medida que la milonga se despliega en su forma más íntima y espontánea, [BOLD]te iré ayudando a descubrir, de manera divertida y entretenida, sus códigos, rituales y reglas[/BOLD] no dichas, para que puedas comprender y disfrutar esta [BOLD]experiencia desde adentro, de forma natural y cercana.[/BOLD]\n\nMás que observar tango, [BOLD] vivirás una experiencia de inmersión guiada en una cultura viva.[/BOLD]",
       "duration": "Duración: 3 horas",
-      "price": "Desde $50 USD",
+      "price": "Desde ${price} USD",
       "includes": "Incluye: Guía en español e inglés, copa de vino/soda/café, entrada a la milonga",
       "book": "Reservar"
     },
@@ -37,9 +37,9 @@
       "title": "Recorrido cultural a pie sobre tango y visita a una milonga + clase grupal",
       "description": "Comenzamos caminando por las [BOLD]calles de Buenos Aires donde nació el tango, descubriendo su historia, su música, sus personajes y los barrios que lo vieron crecer.[/BOLD] A medida que recorremos la ciudad, el tango se revela no sólo como un baile, sino como [BOLD]una forma de vivir y sentir Buenos Aires.[/BOLD]\n\n La experiencia continúa con la [BOLD]visita a una milonga auténtica[/BOLD] —el lugar donde el tango está verdaderamente vivo y evoluciona al día de hoy en donde los [BOLD]participantes serán invitados a sumarse a una clase grupal relajada y divertida,[/BOLD] una forma simple y entretenida de sentir el tango a través del movimiento y la conexión, [BOLD]sin necesidad de experiencia previa.[/BOLD] Luego de la clase, a medida que la milonga se despliega en su forma más íntima y espontánea, [BOLD]te iré ayudando a descubrir, de manera lúdica y entretenida, sus códigos, rituales y reglas[/BOLD] no dichas, para que puedas comprender y disfrutar esta[BOLD] experiencia desde adentro, de forma natural y cercana.[/BOLD]\n\n Más que simplemente observar tango, esta es una [BOLD]inmersión guiada en una experiencia cultural viva,[/BOLD] donde el contacto a través del cuerpo vuelve el lenguaje del baile más tangible y fácil de comprender.",
       "duration": "Duración: 4 horas",
-      "price": "Desde $75 USD",
+      "price": "Desde ${price} USD",
       "includes": "Incluye: Guía en español e inglés, copa de vino/soda/café, entrada a la milonga, entrada grupal",
-      "book": "Contacto"
+      "book": "Reservar"
     }
   },
   "customizedTours": {
@@ -238,7 +238,7 @@
     "name": "Nombre y apellido",
     "email": "Email",
     "phone": "Teléfono (opcional)",
-    "payWith": "Pagar a través de:",
+    "payWith": "Pagar con tarjetas a través de:",
     "total": "Total",
     "continue": "Continuar al pago",
     "working": "Reservando tu lugar…",

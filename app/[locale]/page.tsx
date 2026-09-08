@@ -72,7 +72,7 @@ export default async function Home({
       <main>
         <Hero />
         <About />
-        <Services />
+        <Services precios={precios} />
         <Reviews />
         <CustomizedTours />
         <Gallery />

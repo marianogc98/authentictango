@@ -11,6 +11,7 @@ import { PaypalBotones } from '@/components/paypal-botones'
 import { PAYPAL_CLIENT_ID, paypalConfigurado } from '@/lib/payments/paypal'
 import { MercadoPagoBoton } from '@/components/mercadopago-boton'
 import { mpConfigurado } from '@/lib/payments/mercadopago'
+import { Tarjetas } from '@/components/tarjetas'
 
 // Depende del estado de una reserva concreta: nunca se prerenderiza ni se cachea.
 export const dynamic = 'force-dynamic'
@@ -116,6 +117,12 @@ export default async function PagoPage({
                   </p>
                 )}
               </div>
+
+              {/* Acá es donde aparece la duda de si hace falta una cuenta de PayPal o de
+                  Mercado Pago. Los logos contestan que no, justo antes de decidir. */}
+              {(puedePagarConPaypal || puedePagarConMp) && (
+                <Tarjetas className="mt-4 justify-center" />
+              )}
 
               <p className="mt-4 text-center text-xs text-muted-foreground">
                 {t('expiresIn', { min: minutos })}

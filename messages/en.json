@@ -29,7 +29,7 @@
       "title": "Cultural tango walking tour and milonga experience",
       "description": "We begin by [BOLD]walking through the streets of Buenos Aires,[/BOLD] where tango was born, discovering its [BOLD]history, music, its characters, and the neighborhoods that shaped it.[/BOLD] As we [BOLD]move through the city,[/BOLD] tango reveals itself not just as a dance, but as a way of living and feeling Buenos Aires.\n\n The experience continues with a [BOLD]visit to an authentic milonga[/BOLD]—the place [BOLD]where tango is truly alive.[/BOLD] As the milonga unfolds in its most intimate and spontaneous form, [BOLD]you’ll enjoy discovering its codes, rituals, and unspoken rules through my guidance, becoming part of this authentic experience in a natural and engaging way.[/BOLD]\n\n [BOLD]More than simply watching tango, this is a guided immersion into a living cultural experience.[/BOLD]",
       "duration": "Duration: 3 hours",
-      "price": "From $50 USD",
+      "price": "From ${price} USD",
       "includes": "Included: English & Spanish guide, glass of wine/soda/coffee, milonga entry",
       "book": "Book Now"
     },
@@ -37,9 +37,9 @@
       "title": "Cultural tango walking tour and milonga experience + group class",
       "description": "We begin by [BOLD]walking through the streets of Buenos Aires,[/BOLD] where tango was born, discovering its [BOLD]history, music, its characters, and the neighborhoods that shaped it.[/BOLD] As we [BOLD]move through the city,[/BOLD] tango reveals itself not just as a dance, but as a way of living and feeling Buenos Aires.\n\n The experience continues with a [BOLD]visit to an authentic milonga[/BOLD] — the place where tango is truly alive. Here, participants are invited to step into a [BOLD]relaxed and fun group class,[/BOLD] an easy and entertaining way to feel tango through movement and connection, [BOLD]no previous experience needed.[/BOLD] After the class, as the milonga unfolds in its most intimate and spontaneous form, [BOLD]you’ll enjoy discovering its codes, rituals, and unspoken rules through my guidance, becoming part of this authentic experience in a natural and engaging way.[/BOLD]\n\n [BOLD]More than simply watching tango, this is a guided immersion into a living cultural experience, where engaging through the body makes the language of the dance more tangible and easier to understand.[/BOLD]",
       "duration": "Duration: 4 hours",
-      "price": "From $75 USD",
+      "price": "From ${price} USD",
       "includes": "Included: English & Spanish guide, glass of wine/soda/coffee, milonga entry, group class",
-      "book": "Contact Me"
+      "book": "Book Now"
     }
   },
   "customizedTours": {
@@ -234,7 +234,7 @@
     "name": "Full name",
     "email": "Email",
     "phone": "Phone (optional)",
-    "payWith": "Pay through:",
+    "payWith": "Pay by card through:",
     "total": "Total",
     "continue": "Continue to payment",
     "working": "Reserving your spot…",
