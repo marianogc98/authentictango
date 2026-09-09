@@ -87,41 +87,51 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
     setFecha(d.date)
     setError(null)
     setPersonas(1)
-    setConClase(false)
-    // Con un solo horario no hay nada que elegir: se selecciona solo.
+    // Con un solo horario no hay nada que elegir: se selecciona solo. Qué experiencia
+    // queda elegida lo resuelve el efecto de más abajo, según cuáles venda ese horario.
     setSlot(d.slots.length === 1 && d.slots[0].seatsLeft > 0 ? d.slots[0] : null)
   }
 
   const diaElegido = dias?.find((d) => d.date === fecha) ?? null
 
-  // Cada moneda tiene su propio precio de clase: si el horario la ofrece en dólares pero
-  // no en pesos, con la clase elegida Mercado Pago deja de ser una forma de pago posible.
-  // Sin este filtro se cobraría el tour solo por haber elegido la otra moneda.
+  /** El precio por persona de una experiencia en una moneda. 0 = no se vende así. */
+  const precioDe = (s: SlotPublico, clase: boolean, m: Metodo) =>
+    m === 'paypal'
+      ? (clase ? s.classPriceUsd : s.priceUsd)
+      : (clase ? s.classPriceArs : s.priceArs)
+
+  // Las dos experiencias son productos independientes: cada una se ofrece sólo si ese
+  // horario le puso precio. Un horario puede vender únicamente la clase grupal, y
+  // entonces el tour solo ni siquiera aparece como opción.
+  const opciones = useMemo<boolean[]>(
+    () => (slot
+      ? [false, true].filter((c) => precioDe(slot, c, 'paypal') > 0 || precioDe(slot, c, 'mercadopago') > 0)
+      : []),
+    [slot],
+  )
+
+  // Si la experiencia elegida no la vende el horario nuevo, se pasa a la que sí: arrastrar
+  // la anterior dejaba el formulario sin forma de pago y sin explicación.
+  useEffect(() => {
+    if (opciones.length && !opciones.includes(conClase)) setConClase(opciones[0])
+  }, [opciones, conClase])
+
+  // Cada moneda tiene su propio precio: si el horario vende la clase en dólares pero no en
+  // pesos, con la clase elegida Mercado Pago deja de ser una forma de pago posible. Sin
+  // este filtro se cobraría la otra experiencia por haber elegido la otra moneda.
   const metodosPosibles = useMemo<Metodo[]>(() => {
     if (!slot) return []
-    const m: Metodo[] = []
-    if (slot.priceUsd > 0 && (!conClase || slot.classPriceUsd > 0)) m.push('paypal')
-    if (slot.priceArs > 0 && (!conClase || slot.classPriceArs > 0)) m.push('mercadopago')
-    return m
+    return (['paypal', 'mercadopago'] as Metodo[]).filter((m) => precioDe(slot, conClase, m) > 0)
   }, [slot, conClase])
-
-  // La opción se ofrece sólo si queda alguna forma de pago con la que comprarla: con el
-  // adicional cargado en una sola moneda, elegirla dejaba el formulario sin método y sin
-  // explicación.
-  const hayClase = Boolean(slot && (
-    (slot.priceUsd > 0 && slot.classPriceUsd > 0) || (slot.priceArs > 0 && slot.classPriceArs > 0)
-  ))
 
   /** El precio por persona de una opción, en todas las monedas en que se puede pagar. */
   const precioPorPersona = (clase: boolean) => {
     if (!slot) return ''
     const partes: string[] = []
-    if (slot.priceUsd > 0 && (!clase || slot.classPriceUsd > 0)) {
-      partes.push(formatearPrecio(slot.priceUsd + (clase ? slot.classPriceUsd : 0), 'USD', locale))
-    }
-    if (slot.priceArs > 0 && (!clase || slot.classPriceArs > 0)) {
-      partes.push(formatearPrecio(slot.priceArs + (clase ? slot.classPriceArs : 0), 'ARS', locale))
-    }
+    const usd = precioDe(slot, clase, 'paypal')
+    const ars = precioDe(slot, clase, 'mercadopago')
+    if (usd > 0) partes.push(formatearPrecio(usd, 'USD', locale))
+    if (ars > 0) partes.push(formatearPrecio(ars, 'ARS', locale))
     return partes.join(' · ')
   }
 
@@ -130,10 +140,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
     setMetodo(metodosPosibles.length === 1 ? metodosPosibles[0] : null)
   }, [metodosPosibles])
 
-  const total = slot && metodo
-    ? ((metodo === 'paypal' ? slot.priceUsd : slot.priceArs)
-       + (conClase ? (metodo === 'paypal' ? slot.classPriceUsd : slot.classPriceArs) : 0)) * personas
-    : null
+  const total = slot && metodo ? precioDe(slot, conClase, metodo) * personas : null
 
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -299,7 +306,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
                             key={s.time}
                             type="button"
                             disabled={agotado}
-                            onClick={() => { setSlot(s); setPersonas(1); setConClase(false); setError(null) }}
+                            onClick={() => { setSlot(s); setPersonas(1); setError(null) }}
                             className={`rounded-md border px-3 py-1.5 text-sm transition-colors
                               ${activo ? 'border-primary bg-primary text-primary-foreground' : 'border-border'}
                               ${agotado ? 'cursor-not-allowed text-muted-foreground/40 line-through' : 'hover:bg-accent'}`}
@@ -318,11 +325,14 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
 
                   {slot && slot.seatsLeft > 0 && (
                     <form onSubmit={enviar} className="space-y-5">
-                      {hayClase && (
+                      {opciones.length > 0 && (
                         <div className="space-y-2">
                           <Label>{t('pickOption')}</Label>
-                          <div className="grid gap-2 sm:grid-cols-2">
-                            {[false, true].map((clase) => (
+                          {/* Con una sola experiencia a la venta igual se muestra, ya
+                              seleccionada: dice qué se está comprando y a qué precio, que
+                              es justo lo que el horario dejó de tener implícito. */}
+                          <div className={`grid gap-2 ${opciones.length > 1 ? 'sm:grid-cols-2' : ''}`}>
+                            {opciones.map((clase) => (
                               <button
                                 key={String(clase)}
                                 type="button"
@@ -397,9 +407,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
                                 </span>
                                 <span className="block text-xs opacity-80">
                                   {formatearPrecio(
-                                    m === 'paypal'
-                                      ? slot.priceUsd + (conClase ? slot.classPriceUsd : 0)
-                                      : slot.priceArs + (conClase ? slot.classPriceArs : 0),
+                                    precioDe(slot, conClase, m),
                                     m === 'paypal' ? 'USD' : 'ARS', locale)}
                                 </span>
                               </button>

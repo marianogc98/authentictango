@@ -8,8 +8,9 @@ import { aCentavos, usdAPesos } from '@/lib/booking/dinero'
 export type SlotEntrada = {
   time: string      // "15:00"
   seats: number
-  priceUsd: string  // tal como se tipeó
-  /** El adicional por persona de la clase grupal. En cero, ese horario no la ofrece. */
+  /** Precio por persona del tour solo, tal como se tipeó. En cero, no se ofrece. */
+  priceUsd: string
+  /** Precio por persona del tour con clase grupal. En cero, ese horario no la ofrece. */
   classPriceUsd: string
 }
 

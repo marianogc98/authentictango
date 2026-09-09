@@ -3,7 +3,7 @@ import { and, eq, sql } from 'drizzle-orm'
 import { db } from '@/lib/db/client'
 import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
 import { getCotizacion } from '@/lib/cotizacion'
-import { conPesos } from './precios'
+import { conPesos, precioDe } from './precios'
 import { weekdayDe, yaPaso } from './tiempo'
 import { dentroDeVentana, getVentana } from './ventana'
 
@@ -24,7 +24,7 @@ export type HoldInput = {
   phone?: string | null
   locale: string
   currency: Moneda
-  /** El tour con la clase grupal. El extra se cobra por persona. */
+  /** Cuál de las dos experiencias: false = tour solo, true = tour con clase grupal. */
   withClass?: boolean
   ip?: string | null
 }
@@ -108,17 +108,18 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
     // que lo que se cobra sigue siendo lo que se mostró.
     const slot = conPesos(fila, cotizacion)
 
-    const precioTour = input.currency === 'USD' ? slot.priceUsd : slot.priceArs
-    // Un horario sin precio no se vende. Es preferible no poder reservar a reservar gratis.
-    if (precioTour <= 0) return { ok: false, reason: 'sin_precio' as const }
+    // Las dos experiencias del horario son independientes: se cobra la que pidieron, y
+    // sólo si ese horario la vende en esa moneda. El precio sale del slot, nunca del
+    // cliente: lo único que manda el navegador es el booleano.
+    const producto = input.withClass ? 'clase' : 'tour'
+    const precioUnitario = precioDe(slot, producto, input.currency)
 
-    // El extra sale del slot, nunca del cliente: lo único que manda el navegador es el
-    // booleano. Si pidió clase en un horario que no la ofrece, rebota en vez de cobrarle
-    // el tour solo: pediría una cosa y compraría otra.
-    const precioClase = input.currency === 'USD' ? slot.classPriceUsd : slot.classPriceArs
-    if (input.withClass && precioClase <= 0) return { ok: false, reason: 'sin_clase' as const }
-
-    const precioUnitario = precioTour + (input.withClass ? precioClase : 0)
+    // Sin precio no se vende: es preferible no poder reservar a reservar gratis. Y rebota
+    // en vez de caer en la otra experiencia, que sería venderle algo que no pidió.
+    if (precioUnitario <= 0) {
+      const reason = input.withClass ? ('sin_clase' as const) : ('sin_precio' as const)
+      return { ok: false as const, reason }
+    }
 
     const [{ tomados }] = await tx
       .select({

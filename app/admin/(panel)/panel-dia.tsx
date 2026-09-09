@@ -159,24 +159,32 @@ export function PanelDia({
                     </Button>
                   </div>
 
-                  {/* Lo que se suma por persona si eligen el tour con clase grupal.
-                      En cero, este horario se vende sin clase. */}
+                  {/* Las dos experiencias del horario, cada una con su precio total por
+                      persona. La que quede en cero no se ofrece a esta hora; los lugares
+                      de arriba son los mismos para las dos. */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1.5">
-                      <Label htmlFor={`usd-${i}`} className="text-xs text-muted-foreground">Precio USD</Label>
+                      <Label htmlFor={`usd-${i}`} className="text-xs text-muted-foreground">Tour solo · USD</Label>
                       <Input id={`usd-${i}`} inputMode="decimal" value={s.priceUsd}
                         onChange={(e) => editar(i, 'priceUsd', e.target.value)} />
                       <EnPesos usd={s.priceUsd} cotizacion={detalle.cotizacion} />
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor={`clase-usd-${i}`} className="text-xs text-muted-foreground">
-                        + Clase USD
+                        Tour + clase · USD
                       </Label>
                       <Input id={`clase-usd-${i}`} inputMode="decimal" value={s.classPriceUsd}
                         onChange={(e) => editar(i, 'classPriceUsd', e.target.value)} />
                       <EnPesos usd={s.classPriceUsd} cotizacion={detalle.cotizacion} />
                     </div>
                   </div>
+
+                  {aCentavos(s.priceUsd) === 0 && aCentavos(s.classPriceUsd) === 0 && (
+                    <p className="rounded bg-amber-500/10 px-2.5 py-1.5 text-xs">
+                      Sin precio en ninguna de las dos: este horario no se va a poder
+                      reservar desde la web.
+                    </p>
+                  )}
 
                   {vendidos > 0 && (
                     <p className="rounded bg-muted px-2.5 py-1.5 text-xs text-muted-foreground">

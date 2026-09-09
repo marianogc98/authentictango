@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getMonthAvailability } from '@/lib/booking/availability'
+import { seVende } from '@/lib/booking/precios'
 import { hoyBA } from '@/lib/booking/tiempo'
 import { dentroDeVentana, getVentana } from '@/lib/booking/ventana'
 import type { DiaPublico } from '@/lib/booking/tipos'
@@ -14,10 +15,11 @@ const MESES_ADELANTE = 18
 /**
  * GET /api/availability?m=YYYY-MM
  *
- * Devuelve sólo lo reservable. Un horario sin precio no se ofrece: mientras los importes
- * estén en cero, el día aparece sin turnos en vez de dejar reservar gratis. Lo mismo
- * pasa con los días fuera de la ventana de reservas: existen en el calendario, pero sin
- * turnos.
+ * Devuelve sólo lo reservable. Un horario sin ningún precio no se ofrece: mientras las
+ * dos experiencias estén en cero, el día aparece sin turnos en vez de dejar reservar
+ * gratis. Los precios viajan por separado y el navegador decide con ellos qué
+ * experiencias mostrar. Lo mismo pasa con los días fuera de la ventana de reservas:
+ * existen en el calendario, pero sin turnos.
  *
  * Los horarios completos SÍ se devuelven (con seatsLeft en 0) para poder mostrarlos
  * agotados, que informa más que esconderlos.
@@ -58,7 +60,10 @@ export async function GET(request: Request) {
       slots: d.closed || !dentroDeVentana(d.date, ventana)
         ? []
         : d.slots
-            .filter((s) => !s.past && (s.priceUsd > 0 || s.priceArs > 0))
+            // Alcanza con que el horario venda alguna de las dos experiencias: uno que
+            // sólo ofrece la clase grupal es tan reservable como uno que sólo ofrece el
+            // tour. Sin precio en ninguna de las dos, no hay nada que vender.
+            .filter((s) => !s.past && (seVende(s, 'tour') || seVende(s, 'clase')))
             .map((s) => ({
               time: s.time,
               seatsLeft: s.seatsLeft,

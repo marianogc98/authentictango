@@ -7,9 +7,10 @@
 export type SlotPublico = {
   time: string
   seatsLeft: number
+  /** Precio por persona del tour solo. 0 = ese horario no lo vende. */
   priceUsd: number
   priceArs: number
-  /** Lo que se suma por persona al elegir el tour con clase grupal. 0 = no se ofrece. */
+  /** Precio por persona del tour con clase grupal. 0 = ese horario no la vende. */
   classPriceUsd: number
   classPriceArs: number
 }

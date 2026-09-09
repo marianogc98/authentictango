@@ -142,10 +142,19 @@ function EditorSemana({
         : `Guardado: ${r.filas} horario${r.filas === 1 ? '' : 's'} en la semana.`)
     })
 
-  const sinPrecio = Object.values(semana).flat().some((s) => aCentavos(s.priceUsd) === 0)
+  // Un horario sin ninguno de los dos precios no vende nada. Con uno solo cargado sí se
+  // vende: es la forma de ofrecer, por ejemplo, únicamente el tour con clase grupal.
+  const sinPrecio = Object.values(semana).flat()
+    .some((s) => aCentavos(s.priceUsd) === 0 && aCentavos(s.classPriceUsd) === 0)
 
   return (
     <div className="space-y-4">
+      <p className="rounded-md border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
+        Cada horario vende dos experiencias por separado: el tour solo y el tour con clase
+        grupal. Cada una lleva su propio precio total por persona, y la que quede en cero
+        no se ofrece a esa hora. Los lugares son los mismos para las dos: es una sola
+        salida.
+      </p>
       <p className="rounded-md border border-border bg-muted/40 p-3 text-sm text-muted-foreground">
         {cotizacion ? (
           <>
@@ -178,7 +187,7 @@ function EditorSemana({
             {activo && (
               <div className="mt-4 space-y-3">
                 <div className="hidden gap-3 px-1 text-xs text-muted-foreground sm:grid sm:grid-cols-[100px_90px_1fr_1fr_40px]">
-                  <span>Horario</span><span>Lugares</span><span>Precio USD</span>
+                  <span>Horario</span><span>Lugares</span><span>Tour solo · USD</span>
                   <span>En pesos (calculado)</span><span />
                 </div>
 
@@ -198,12 +207,12 @@ function EditorSemana({
                       </Button>
                     </div>
 
-                    {/* El adicional de la clase, no el precio del combo: se suma al de
-                        arriba y se cobra por persona. En cero, ese horario se vende sin
-                        clase y la opcion ni siquiera aparece en la web. */}
+                    {/* El precio completo de la otra experiencia, no un adicional: las dos
+                        se venden por separado y comparten los lugares de arriba. En cero,
+                        esa experiencia no aparece en la web a esa hora. */}
                     <div className="grid grid-cols-2 gap-3 sm:grid-cols-[190px_1fr_1fr_40px]">
                       <span className="col-span-2 self-center text-xs text-muted-foreground sm:col-span-1">
-                        + clase grupal, por persona
+                        Tour + clase grupal · USD
                       </span>
                       <Input inputMode="decimal" placeholder="USD" value={slot.classPriceUsd}
                         onChange={(e) => editar(dia, i, 'classPriceUsd', e.target.value)} />
@@ -224,8 +233,9 @@ function EditorSemana({
 
       {sinPrecio && (
         <p className="rounded-md border border-amber-500/40 bg-amber-500/10 p-3 text-sm">
-          Hay horarios sin precio. Mientras estén en cero no se van a poder reservar desde
-          la web: es preferible que no se pueda reservar a que se reserve gratis.
+          Hay horarios sin ningún precio cargado. Mientras las dos experiencias estén en
+          cero no se van a poder reservar desde la web: es preferible que no se pueda
+          reservar a que se reserve gratis.
         </p>
       )}
 

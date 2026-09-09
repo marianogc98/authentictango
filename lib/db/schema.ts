@@ -16,10 +16,14 @@ import {
  * Los precios van en centavos como enteros. Nunca float: 0.1 + 0.2 !== 0.3 y con plata
  * eso termina en un centavo que no cierra.
  *
- * La clase grupal es un adicional del mismo tour, no otro producto: viaja como un precio
- * más del slot y no como una fila aparte. Si fuera un slot propio tendría su propia cuenta
- * de asientos y el mismo horario se vendería dos veces. `class_price = 0` significa que
- * ese horario no ofrece clase, igual que un precio en cero significa que no se vende.
+ * Cada horario vende dos experiencias independientes: el tour solo (`price_*`) y el tour
+ * con clase grupal (`class_price_*`). Cada una lleva su propio precio POR PERSONA, y un
+ * precio en cero significa que esa experiencia no se vende a esa hora. Se puede ofrecer
+ * una sin la otra: un horario sólo de clase grupal es un horario con `price = 0`.
+ *
+ * Las dos comparten los asientos del horario, y por eso viajan como dos precios de la
+ * misma fila y no como filas aparte: es una sola salida a esa hora, con una sola cuenta
+ * de lugares. Con una fila por producto, el mismo cupo se vendería dos veces.
  */
 
 /** La semana habitual. Varias filas por día si hay más de un horario. */
@@ -29,9 +33,10 @@ export const weeklySlots = pgTable(
     weekday: integer('weekday').notNull(), // 0 = domingo … 6 = sábado
     time: time('time').notNull(),
     seats: integer('seats').notNull().default(10),
+    /** Precio POR PERSONA del tour solo. 0 = ese horario no vende el tour solo. */
     priceUsd: integer('price_usd').notNull().default(0),
     priceArs: integer('price_ars').notNull().default(0),
-    /** Lo que se suma POR PERSONA si eligen el tour con clase grupal. 0 = no se ofrece. */
+    /** Precio POR PERSONA del tour con clase grupal. 0 = ese horario no la vende. */
     classPriceUsd: integer('class_price_usd').notNull().default(0),
     classPriceArs: integer('class_price_ars').notNull().default(0),
   },
@@ -51,8 +56,10 @@ export const dateSlots = pgTable(
     date: date('date').notNull(),
     time: time('time').notNull(),
     seats: integer('seats').notNull(),
+    /** Precio POR PERSONA del tour solo. 0 = ese horario no vende el tour solo. */
     priceUsd: integer('price_usd').notNull(),
     priceArs: integer('price_ars').notNull(),
+    /** Precio POR PERSONA del tour con clase grupal. 0 = ese horario no la vende. */
     classPriceUsd: integer('class_price_usd').notNull().default(0),
     classPriceArs: integer('class_price_ars').notNull().default(0),
   },
@@ -78,8 +85,9 @@ export const bookings = pgTable(
     time: time('time').notNull(),
     seats: integer('seats').notNull(),
 
-    /** Compraron el tour con la clase grupal. El precio ya está dentro de `amount`; esto
-     *  queda para saber qué compraron: el mail, el panel y cuánta gente espera la clase. */
+    /** Cuál de las dos experiencias compraron: false = tour solo, true = tour con clase
+     *  grupal. El precio ya está dentro de `amount`; esto queda para saber qué compraron:
+     *  el mail, el panel y cuánta gente espera la clase. */
     withClass: boolean('with_class').notNull().default(false),
 
     name: text('name').notNull(),

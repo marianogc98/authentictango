@@ -48,16 +48,13 @@ export default async function Home({
   const t = await getTranslations({ locale, namespace: 'services' })
   const precios = await precioDesde()
 
-  // Cada variante es una oferta del mismo viaje, no dos productos distintos: es el mismo
-  // recorrido, con o sin la clase grupal.
-  const ofertas: OfertaSchema[] = precios
-    ? [
-        { nombre: t('private.title'), centavosUsd: precios.tour },
-        ...(precios.conClase
-          ? [{ nombre: t('group.title'), centavosUsd: precios.conClase }]
-          : []),
-      ]
-    : []
+  // Las dos experiencias son ofertas del mismo recorrido, y cada una se declara sólo si
+  // hoy hay algún horario que la venda: prometerle a Google un precio que el checkout no
+  // puede cobrar es peor que no declararlo.
+  const ofertas: OfertaSchema[] = [
+    ...(precios?.tour ? [{ nombre: t('private.title'), centavosUsd: precios.tour }] : []),
+    ...(precios?.conClase ? [{ nombre: t('group.title'), centavosUsd: precios.conClase }] : []),
+  ]
 
   return (
     <>

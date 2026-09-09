@@ -9,6 +9,7 @@ import { aCentavos, usdAPesos } from '@/lib/booking/dinero'
 import { conPesos } from '@/lib/booking/precios'
 import { weekdayDe } from '@/lib/booking/tiempo'
 
+/** Los dos precios por persona del horario. Cada uno en cero apaga esa experiencia. */
 export type SlotEntrada = { time: string; seats: number; priceUsd: string; classPriceUsd: string }
 
 /** Reservas vivas de una fecha: las que hay que respetar sí o sí. */
