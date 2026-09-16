@@ -1,1 +1,1 @@
-ALTER TABLE "bookings" ADD COLUMN "referral" text;
+ALTER TABLE "bookings" ADD COLUMN IF NOT EXISTS "referral" text;
