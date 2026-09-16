@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useParams } from "next/navigation"
 import { useTranslations, useLocale } from 'next-intl'
 import { Link, useRouter, usePathname } from '@/i18n/navigation'
 import { Menu, X } from "lucide-react"
@@ -11,6 +12,8 @@ export function Header() {
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
+  // Sin el locale: es el segmento que se está cambiando, no un parámetro de la ruta.
+  const { locale: _locale, ...params } = useParams()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -24,7 +27,16 @@ export function Header() {
 
   const toggleLanguage = () => {
     const newLocale = locale === 'es' ? 'en' : 'es'
-    router.push(pathname, { locale: newLocale })
+    // Los parámetros de la URL viajan al otro idioma: sin esto, entrar por un link con
+    // UTM y cambiar de idioma los borraba. El descuento de referido no depende de esto
+    // (queda en una cookie), pero la URL tiene que seguir diciendo por dónde entró.
+    // Se lee de window y no con useSearchParams para no sacar las páginas del prerender.
+    const query = Object.fromEntries(new URLSearchParams(window.location.search))
+    router.push(
+      // @ts-expect-error -- params es el de la ruta actual, así que siempre coincide con pathname
+      { pathname, params, query },
+      { locale: newLocale },
+    )
   }
 
   const scrollToSection = (id: string) => {

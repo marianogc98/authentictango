@@ -1,4 +1,6 @@
+import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
+import { COOKIE_REFERIDO } from '@/lib/booking/referidos'
 import { z } from 'zod'
 import { holdSeats, type Moneda } from '@/lib/booking/hold'
 
@@ -54,6 +56,9 @@ export async function POST(request: Request) {
       locale: datos.locale,
       withClass: datos.withClass,
       currency: MONEDA[datos.method],
+      // Sale de la cookie y no del cuerpo: la deja el middleware al entrar por el link,
+      // y así el descuento sigue aunque haya cambiado de idioma en el medio.
+      referral: (await cookies()).get(COOKIE_REFERIDO)?.value ?? null,
       ip: ipDe(request),
     })
 

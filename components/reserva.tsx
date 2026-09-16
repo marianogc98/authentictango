@@ -6,6 +6,7 @@ import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { DiaPublico, SlotPublico } from '@/lib/booking/tipos'
 import { useRouter } from '@/i18n/navigation'
 import { formatearPrecio, hhmm } from '@/lib/booking/dinero'
+import { COOKIE_REFERIDO, conDescuento, porcentajeDe } from '@/lib/booking/referidos'
 import { trackGaEvent } from '@/lib/utils/gtag'
 import { Button } from '@/components/ui/button'
 import { Tarjetas } from '@/components/tarjetas'
@@ -59,6 +60,18 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   const [personas, setPersonas] = useState(1)
   const [conClase, setConClase] = useState(false)
   const [metodo, setMetodo] = useState<Metodo | null>(null)
+
+  // El descuento de referido lo aplica el servidor al reservar; esto es sólo para
+  // mostrarlo antes. Se lee en un efecto porque la página es estática y la cookie
+  // existe sólo en el navegador.
+  const [descuento, setDescuento] = useState(0)
+  useEffect(() => {
+    const valor = document.cookie
+      .split('; ')
+      .find((c) => c.startsWith(`${COOKIE_REFERIDO}=`))
+      ?.slice(COOKIE_REFERIDO.length + 1)
+    setDescuento(porcentajeDe(valor ? decodeURIComponent(valor) : null))
+  }, [])
 
   const [enviando, setEnviando] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -140,7 +153,10 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
     setMetodo(metodosPosibles.length === 1 ? metodosPosibles[0] : null)
   }, [metodosPosibles])
 
-  const total = slot && metodo ? precioDe(slot, conClase, metodo) * personas : null
+  const moneda = metodo === 'paypal' ? 'USD' : 'ARS'
+  const subtotal = slot && metodo ? precioDe(slot, conClase, metodo) * personas : null
+  // Mismo cálculo que en el servidor, así lo que se ve es exactamente lo que se cobra.
+  const total = subtotal !== null ? conDescuento(subtotal, descuento, moneda) : null
 
   async function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -416,12 +432,24 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
                         </div>
                       )}
 
-                      {total !== null && metodo && (
-                        <div className="flex items-baseline justify-between border-t border-border pt-3">
-                          <span className="text-sm text-muted-foreground">{t('total')}</span>
-                          <span className="text-xl font-bold">
-                            {formatearPrecio(total, metodo === 'paypal' ? 'USD' : 'ARS', locale)}
-                          </span>
+                      {total !== null && subtotal !== null && metodo && (
+                        <div className="border-t border-border pt-3">
+                          <div className="flex items-baseline justify-between">
+                            <span className="text-sm text-muted-foreground">{t('total')}</span>
+                            <span className="text-xl font-bold">
+                              {total !== subtotal && (
+                                <span className="mr-2 text-sm font-normal text-muted-foreground line-through">
+                                  {formatearPrecio(subtotal, moneda, locale)}
+                                </span>
+                              )}
+                              {formatearPrecio(total, moneda, locale)}
+                            </span>
+                          </div>
+                          {descuento > 0 && (
+                            <p className="mt-1 text-right text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                              {t('referralDiscount', { n: descuento })}
+                            </p>
+                          )}
                         </div>
                       )}
 

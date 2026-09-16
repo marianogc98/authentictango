@@ -235,6 +235,7 @@
     "email": "Email",
     "phone": "Phone (optional)",
     "payWith": "Pay by card through:",
+    "referralDiscount": "Includes a {n}% referral discount",
     "total": "Total",
     "continue": "Continue to payment",
     "working": "Reserving your spot…",

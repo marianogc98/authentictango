@@ -239,6 +239,7 @@
     "email": "Email",
     "phone": "Teléfono (opcional)",
     "payWith": "Pagar con tarjetas a través de:",
+    "referralDiscount": "Incluye {n}% de descuento por referido",
     "total": "Total",
     "continue": "Continuar al pago",
     "working": "Reservando tu lugar…",

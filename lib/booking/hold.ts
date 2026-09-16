@@ -4,6 +4,7 @@ import { db } from '@/lib/db/client'
 import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
 import { getCotizacion } from '@/lib/cotizacion'
 import { conPesos, precioDe } from './precios'
+import { codigoValido, conDescuento, porcentajeDe } from './referidos'
 import { weekdayDe, yaPaso } from './tiempo'
 import { dentroDeVentana, getVentana } from './ventana'
 
@@ -26,6 +27,8 @@ export type HoldInput = {
   currency: Moneda
   /** Cuál de las dos experiencias: false = tour solo, true = tour con clase grupal. */
   withClass?: boolean
+  /** Código de referido que trae la cookie, tal cual llegó. Se valida acá. */
+  referral?: string | null
   ip?: string | null
 }
 
@@ -137,7 +140,10 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
       return { ok: false, reason: 'sin_lugar' as const, seatsLeft: Math.max(0, libres) }
     }
 
-    const amount = precioUnitario * input.seats
+    // El descuento va sobre el total y no sobre el precio unitario: redondeado por
+    // persona, en pesos se acumularía un peso de diferencia por cada lugar.
+    const referral = codigoValido(input.referral)
+    const amount = conDescuento(precioUnitario * input.seats, porcentajeDe(referral), input.currency)
     const uid = randomUUID()
 
     await tx.insert(bookings).values({
@@ -150,6 +156,7 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
       phone: input.phone ?? null,
       locale: input.locale,
       withClass: Boolean(input.withClass),
+      referral,
       ip: input.ip ?? null,
       status: 'pending',
       amount,

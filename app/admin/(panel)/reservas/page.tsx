@@ -186,6 +186,10 @@ function Fila({ r }: { r: Reserva }) {
         {r.amount != null && r.currency
           ? formatearPrecio(r.amount, r.currency as 'USD' | 'ARS')
           : '—'}
+        {/* El importe ya viene con el descuento: esto dice por qué es menor y a quién se le debe. */}
+        {r.referral && (
+          <span className="block text-[11px] font-normal text-muted-foreground">ref. {r.referral}</span>
+        )}
       </Td>
 
       <Td>

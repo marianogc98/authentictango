@@ -95,6 +95,11 @@ export const bookings = pgTable(
     phone: text('phone'),
     locale: text('locale').notNull().default('en'),
 
+    /** Código del link de referido por el que entró (su `utm_source`), si entró por uno.
+     *  El descuento ya está aplicado en `amount`; esto queda para saber a quién se le
+     *  debe cada venta. */
+    referral: text('referral'),
+
     /** Sólo para limitar abuso: un bot podría crear holds hasta llenar el calendario. */
     ip: text('ip'),
 

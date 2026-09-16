@@ -113,6 +113,7 @@ const COLUMNAS = {
   time: bookings.time,
   seats: bookings.seats,
   withClass: bookings.withClass,
+  referral: bookings.referral,
   name: bookings.name,
   email: bookings.email,
   phone: bookings.phone,
@@ -131,6 +132,8 @@ export type Reserva = {
   time: string
   seats: number
   withClass: boolean
+  /** Link de referido por el que entró. El importe ya tiene el descuento aplicado. */
+  referral: string | null
   name: string
   email: string
   phone: string | null
