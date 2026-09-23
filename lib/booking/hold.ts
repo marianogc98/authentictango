@@ -4,7 +4,8 @@ import { db } from '@/lib/db/client'
 import { bookings, closedDates, dateSlots, weeklySlots } from '@/lib/db/schema'
 import { getCotizacion } from '@/lib/cotizacion'
 import { conPesos, precioDe } from './precios'
-import { codigoValido, conDescuento, porcentajeDe } from './referidos'
+import { referidoActivo } from './descuento'
+import { conDescuento } from './referidos'
 import { weekdayDe, yaPaso } from './tiempo'
 import { dentroDeVentana, getVentana } from './ventana'
 
@@ -141,9 +142,12 @@ export async function holdSeats(input: HoldInput): Promise<HoldResult> {
     }
 
     // El descuento va sobre el total y no sobre el precio unitario: redondeado por
-    // persona, en pesos se acumularía un peso de diferencia por cada lugar.
-    const referral = codigoValido(input.referral)
-    const amount = conDescuento(precioUnitario * input.seats, porcentajeDe(referral), input.currency)
+    // persona, en pesos se acumularía un peso de diferencia por cada lugar. Un referido
+    // con 0% en esta moneda no descuenta, pero la venta igual queda anotada a su nombre.
+    const ref = await referidoActivo(input.referral, tx)
+    const porcentaje = ref ? (input.currency === 'USD' ? ref.usd : ref.ars) : 0
+    const amount = conDescuento(precioUnitario * input.seats, porcentaje, input.currency)
+    const referral = ref?.code ?? null
     const uid = randomUUID()
 
     await tx.insert(bookings).values({

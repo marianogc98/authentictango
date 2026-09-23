@@ -6,7 +6,7 @@ import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react'
 import type { DiaPublico, SlotPublico } from '@/lib/booking/tipos'
 import { useRouter } from '@/i18n/navigation'
 import { formatearPrecio, hhmm } from '@/lib/booking/dinero'
-import { COOKIE_REFERIDO, conDescuento, porcentajeDe } from '@/lib/booking/referidos'
+import { conDescuento } from '@/lib/booking/referidos'
 import { trackGaEvent } from '@/lib/utils/gtag'
 import { Button } from '@/components/ui/button'
 import { Tarjetas } from '@/components/tarjetas'
@@ -62,15 +62,14 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   const [metodo, setMetodo] = useState<Metodo | null>(null)
 
   // El descuento de referido lo aplica el servidor al reservar; esto es sólo para
-  // mostrarlo antes. Se lee en un efecto porque la página es estática y la cookie
-  // existe sólo en el navegador.
-  const [descuento, setDescuento] = useState(0)
+  // mostrarlo antes. Se pide en un efecto porque la página es estática: depende de la
+  // cookie del visitante y de cómo esté cargado su referido en el panel.
+  const [descuentos, setDescuentos] = useState({ usd: 0, ars: 0 })
   useEffect(() => {
-    const valor = document.cookie
-      .split('; ')
-      .find((c) => c.startsWith(`${COOKIE_REFERIDO}=`))
-      ?.slice(COOKIE_REFERIDO.length + 1)
-    setDescuento(porcentajeDe(valor ? decodeURIComponent(valor) : null))
+    fetch('/api/referido')
+      .then((r) => r.json())
+      .then((d) => setDescuentos({ usd: Number(d.usd) || 0, ars: Number(d.ars) || 0 }))
+      .catch(() => {})
   }, [])
 
   const [enviando, setEnviando] = useState(false)
@@ -156,6 +155,7 @@ export function Reserva({ locale, embebido = false }: { locale: string; embebido
   const moneda = metodo === 'paypal' ? 'USD' : 'ARS'
   const subtotal = slot && metodo ? precioDe(slot, conClase, metodo) * personas : null
   // Mismo cálculo que en el servidor, así lo que se ve es exactamente lo que se cobra.
+  const descuento = moneda === 'USD' ? descuentos.usd : descuentos.ars
   const total = subtotal !== null ? conDescuento(subtotal, descuento, moneda) : null
 
   async function enviar(e: React.FormEvent<HTMLFormElement>) {

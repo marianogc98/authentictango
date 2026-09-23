@@ -1,39 +1,35 @@
 /**
  * Links de referidos: quien entra por uno tiene un descuento sobre el total de lo que
- * reserve, en cualquier moneda y por cualquier cantidad de lugares.
+ * reserve, por cualquier cantidad de lugares. Cada referido tiene un porcentaje para
+ * dólares y otro para pesos, y se administran desde el panel (tabla `referrals`).
  *
  * El link se reconoce por su `utm_source` y queda guardado en una cookie. La cookie es lo
  * que hace que el descuento sobreviva a todo lo que pasa después de entrar: cambiar de
  * idioma (que arma una URL nueva sin los parámetros), navegar por la home o volver otro
  * día. Los UTM de la URL sólo sirven para el primer request.
  *
- * Sólo cuentan los códigos de esta lista. Cualquiera puede escribir `?utm_source=loquesea`
- * en la barra, y un UTM de una campaña paga tampoco tiene por qué dar descuento. El
- * servidor vuelve a validar contra esta lista al cobrar, así que editar la cookie a mano
- * no sirve para inventar un código ni para subir el porcentaje.
+ * El middleware guarda cualquier `utm_source` con forma de código, sin consultar la base:
+ * corre en cada request y en el runtime Edge. Quien decide si el código vale y cuánto
+ * descuenta es el servidor, al cobrar (ver `descuento.ts`), así que ni un UTM inventado
+ * ni una cookie editada dan descuento.
  *
- * Para sumar un referido nuevo alcanza con agregarlo acá: la clave es el `utm_source` del
- * link, en minúsculas.
+ * Este archivo no toca la base a propósito: lo importan el middleware y el navegador.
  */
-const REFERIDOS: Record<string, { porcentaje: number }> = {
-  'lautaro.melcom': { porcentaje: 10 },
-}
 
 export const COOKIE_REFERIDO = 'ref'
 
 /** Días que dura el descuento desde que se entró por el link. */
 export const DIAS_REFERIDO = 5
 
-/** Normaliza un código y devuelve el canónico si existe, o null. */
-export function codigoValido(valor: string | null | undefined): string | null {
-  const codigo = valor?.trim().toLowerCase()
-  return codigo && Object.prototype.hasOwnProperty.call(REFERIDOS, codigo) ? codigo : null
-}
+/** Tope del porcentaje: por encima, un error de tipeo termina regalando el tour. */
+export const PORCENTAJE_MAXIMO = 90
 
-/** Porcentaje de descuento de un código. 0 si no es un referido conocido. */
-export function porcentajeDe(valor: string | null | undefined): number {
-  const codigo = codigoValido(valor)
-  return codigo ? REFERIDOS[codigo].porcentaje : 0
+const FORMATO = /^[a-z0-9._-]{2,40}$/
+
+/** Normaliza un código y lo devuelve si tiene forma de código, o null. No dice si existe. */
+export function normalizarCodigo(valor: string | null | undefined): string | null {
+  const codigo = valor?.trim().toLowerCase()
+  return codigo && FORMATO.test(codigo) ? codigo : null
 }
 
 /**

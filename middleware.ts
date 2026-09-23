@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { routing } from './i18n/routing';
 import { SITE_HOST } from './lib/site';
 import { COOKIE, sesionValida } from './lib/admin/auth';
-import { COOKIE_REFERIDO, DIAS_REFERIDO, codigoValido } from './lib/booking/referidos';
+import { COOKIE_REFERIDO, DIAS_REFERIDO, normalizarCodigo } from './lib/booking/referidos';
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -43,18 +43,18 @@ export default async function middleware(request: NextRequest) {
   const response = intlMiddleware(request);
 
   // Quien entra por un link de referido se queda con el descuento aunque después cambie
-  // de idioma: el selector arma una URL nueva y los UTM no viajan. Se guarda sólo si el
-  // código es uno conocido, y el último link por el que se entró es el que vale.
-  const referido = codigoValido(request.nextUrl.searchParams.get('utm_source'));
+  // de idioma: el selector arma una URL nueva y los UTM no viajan. Se guarda cualquier
+  // código bien formado sin consultar la base (esto corre en cada request): si existe y
+  // está activo lo decide el servidor al cobrar. El último link por el que se entró vale.
+  const referido = normalizarCodigo(request.nextUrl.searchParams.get('utm_source'));
   if (referido) {
     response.cookies.set(COOKIE_REFERIDO, referido, {
       path: '/',
       maxAge: DIAS_REFERIDO * 24 * 60 * 60,
       sameSite: 'lax',
       secure: process.env.NODE_ENV === 'production',
-      // Legible desde el navegador a propósito: el checkout la lee para mostrar el
-      // descuento antes de reservar. No es un secreto; el servidor la revalida al cobrar.
-      httpOnly: false,
+      // El checkout pregunta el descuento a /api/referido, que la lee del lado del servidor.
+      httpOnly: true,
     });
   }
 

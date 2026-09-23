@@ -127,6 +127,22 @@ export const bookings = pgTable(
   ],
 )
 
+/**
+ * Links de referidos. El `code` es el `utm_source` del link, en minúsculas.
+ *
+ * Cada moneda tiene su propio porcentaje, igual que su propio precio: 0 en una moneda
+ * significa que pagando así no hay descuento, pero la venta igual queda anotada a su
+ * nombre. Desactivar un referido corta el descuento aunque el visitante ya tenga la
+ * cookie; no se borra porque las reservas viejas lo siguen nombrando.
+ */
+export const referrals = pgTable('referrals', {
+  code: text('code').primaryKey(),
+  percentUsd: integer('percent_usd').notNull().default(0),
+  percentArs: integer('percent_ars').notNull().default(0),
+  active: boolean('active').notNull().default(true),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+})
+
 /** Cuántos asientos de un slot están comprometidos: pagados, o con hold vigente. */
 export const asientosTomados = sql`
   COALESCE(SUM(CASE WHEN status = 'paid' OR (status = 'pending' AND expires_at > now())
