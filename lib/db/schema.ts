@@ -186,3 +186,19 @@ export const reviews = pgTable('reviews', {
   visible: boolean('visible').notNull().default(true),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })
+
+/**
+ * Las fotos de la galería, en el orden de `position` (la primera sale grande).
+ *
+ * `src` es la ruta pública tal cual: '/images/…' para las que vinieron con el sitio y
+ * '/media/…' para las que ella sube desde el panel, que viven en el volumen. Guardar la
+ * ruta y no sólo el nombre del archivo deja convivir a las dos sin casos especiales.
+ */
+export const galleryImages = pgTable('gallery_images', {
+  id: serial('id').primaryKey(),
+  src: text('src').notNull(),
+  altEs: text('alt_es').notNull().default(''),
+  altEn: text('alt_en').notNull().default(''),
+  position: integer('position').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+})

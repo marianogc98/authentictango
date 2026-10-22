@@ -16,9 +16,10 @@ import { JsonLd } from '@/components/JsonLd'
 import { experienciaSchema, type OfertaSchema } from '@/lib/seo/schema'
 import { precioDesde } from '@/lib/seo/oferta'
 import { resenasPublicas } from '@/lib/resenas'
+import { imagenesGaleria } from '@/lib/galeria'
 
 /**
- * El precio del schema y las reseñas salen de la base, así que la home deja de ser
+ * El precio del schema, las reseñas y la galería salen de la base, así que la home deja de ser
  * puramente estática. Se sirve cacheada y se regenera como mucho una vez por minuto, que
  * no es carga. No más espaciado porque la base no es alcanzable durante el build: la
  * versión del build sale sin precio ni reseñas, y tiene que durar poco.
@@ -51,7 +52,11 @@ export default async function Home({
   setRequestLocale(locale)
 
   const t = await getTranslations({ locale, namespace: 'services' })
-  const [precios, resenas] = await Promise.all([precioDesde(), resenasPublicas(locale)])
+  const [precios, resenas, imagenes] = await Promise.all([
+    precioDesde(),
+    resenasPublicas(locale),
+    imagenesGaleria(locale),
+  ])
 
   // Las dos experiencias son ofertas del mismo recorrido, y cada una se declara sólo si
   // hoy hay algún horario que la venda: prometerle a Google un precio que el checkout no
@@ -78,7 +83,7 @@ export default async function Home({
         <Services precios={precios} />
         <Reviews resenas={resenas} />
         <CustomizedTours />
-        <Gallery />
+        <Gallery images={imagenes} />
         <Ebook />
         <Booking />
         <About />

@@ -34,3 +34,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# fotos subidas desde el panel en desarrollo (en producción van al volumen de MEDIA_DIR)
+/.media

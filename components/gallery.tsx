@@ -4,17 +4,10 @@ import { useState, useEffect } from "react"
 import Image from "next/image"
 import { X, ChevronLeft, ChevronRight } from "lucide-react"
 import { useTranslations } from 'next-intl'
+import type { ImagenGaleria } from '@/lib/galeria'
 
-const images = [
-  { src: "/images/hero-tango.webp", alt: "Pareja bailando tango" },
-  { src: "/images/gallery-1.jpg", alt: "Pies de bailarines de tango" },
-  { src: "/images/gallery-2.webp", alt: "Barrio San Telmo" },
-  { src: "/images/gallery-3.webp", alt: "Interior de milonga tradicional" },
-  { src: "/images/gallery-4.webp", alt: "Orquesta de tango en vivo" },
-  { src: "/images/gallery-5.webp", alt: "Barrio La Boca" },
-]
-
-export function Gallery() {
+/** Las fotos salen de la base y se ordenan desde el panel. Sin fotos, no hay sección. */
+export function Gallery({ images }: { images: ImagenGaleria[] }) {
   const t = useTranslations('gallery')
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
 
@@ -46,6 +39,8 @@ export function Gallery() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedImage])
 
+  if (images.length === 0) return null
+
   return (
     <section id="gallery" className="py-12 lg:py-16 bg-secondary">
       <div className="container mx-auto px-4 lg:px-8">
@@ -58,23 +53,28 @@ export function Gallery() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {images.map((image, index) => {
             const isFirst = index === 0
-            const isLast = index === images.length - 1
+            // En el celular van de a dos debajo de la grande: si la última queda sola,
+            // ocupa el ancho entero en vez de dejar un hueco al lado.
+            const isLoneLast = index > 0 && index === images.length - 1 && (images.length - 1) % 2 === 1
             return (
             <button
-              key={index}
+              key={image.id}
               onClick={() => openLightbox(index)}
               className={`relative overflow-hidden rounded-lg group cursor-pointer ${
-                isFirst 
-                  ? "col-span-2 row-span-2 aspect-square md:aspect-auto" 
-                  : isLast 
-                    ? "col-span-2 md:col-span-1 aspect-square"
+                isFirst
+                  // En desktop la grande toma el alto de las dos de al lado; con menos de
+                  // tres fotos no hay al lado, y se queda cuadrada.
+                  ? `col-span-2 row-span-2 aspect-square ${images.length >= 3 ? 'md:aspect-auto' : ''}`
+                  : isLoneLast
+                    ? "col-span-2 md:col-span-1 aspect-[2/1] md:aspect-square"
                     : "aspect-square"
               }`}
             >
               <Image
-                src={image.src || "/placeholder.svg"}
+                src={image.src}
                 alt={image.alt}
                 fill
+                sizes={isFirst ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 50vw'}
                 className="object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-background/0 group-hover:bg-background/30 transition-colors duration-300" />
@@ -110,8 +110,9 @@ export function Gallery() {
             onClick={(e) => e.stopPropagation()}
           >
             <Image
-              src={images[selectedImage].src || "/placeholder.svg"}
+              src={images[selectedImage].src}
               alt={images[selectedImage].alt}
+              sizes="100vw"
               fill
               className="object-contain"
             />

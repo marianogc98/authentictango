@@ -50,6 +50,13 @@
       "when": 1792699891065,
       "tag": "0006_reviews",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1792700399008,
+      "tag": "0007_gallery",
+      "breakpoints": true
     }
   ]
 }

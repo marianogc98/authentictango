@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button'
 /**
  * El calendario es operar —qué viene, quién viene—, y reservas es mirar para atrás
  * —qué se vendió, cuánto entró—. La configuración de horarios no está acá porque vive
- * dentro del calendario, que es donde se usa. Referidos es aparte: no tiene fecha. Reseñas
- * es contenido de la web, no operación.
+ * dentro del calendario, que es donde se usa. Referidos es aparte: no tiene fecha. Reseñas y
+ * galería son contenido de la web, no operación.
  */
-export function AdminNav({ activo }: { activo: 'calendario' | 'reservas' | 'referidos' | 'resenas' }) {
+export function AdminNav({ activo }: { activo: 'calendario' | 'reservas' | 'referidos' | 'resenas' | 'galeria' }) {
   const clase = (id: string) =>
     `text-sm font-medium transition-colors ${
       activo === id ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'
@@ -22,6 +22,7 @@ export function AdminNav({ activo }: { activo: 'calendario' | 'reservas' | 'refe
           <Link href="/admin/reservas" className={clase('reservas')}>Reservas</Link>
           <Link href="/admin/referidos" className={clase('referidos')}>Referidos</Link>
           <Link href="/admin/resenas" className={clase('resenas')}>Reseñas</Link>
+          <Link href="/admin/galeria" className={clase('galeria')}>Galería</Link>
         </nav>
         <form action={cerrarSesion}>
           <Button type="submit" variant="ghost" size="sm">Salir</Button>
