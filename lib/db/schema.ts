@@ -166,3 +166,23 @@ export const bookingWindow = pgTable('booking_window', {
   endDate: date('end_date'),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 })
+
+/**
+ * Las reseñas de la home, que ella carga desde el panel.
+ *
+ * Cada una guarda su texto en los dos idiomas en la misma fila: es la misma reseña
+ * traducida, y con una fila por idioma se podría borrar una y dejar huérfana la otra.
+ *
+ * `date` es el mes de la reseña —se guarda el día 1— y es también el orden: la más nueva
+ * primero. `visible` permite sacarla de la web sin perder el texto.
+ */
+export const reviews = pgTable('reviews', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  rating: integer('rating').notNull().default(5),
+  date: date('date').notNull(),
+  textEs: text('text_es').notNull(),
+  textEn: text('text_en').notNull(),
+  visible: boolean('visible').notNull().default(true),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+})

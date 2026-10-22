@@ -15,13 +15,18 @@ import { alternatesFor } from '@/lib/seo/alternates'
 import { JsonLd } from '@/components/JsonLd'
 import { experienciaSchema, type OfertaSchema } from '@/lib/seo/schema'
 import { precioDesde } from '@/lib/seo/oferta'
+import { resenasPublicas } from '@/lib/resenas'
 
 /**
- * El precio del schema sale de la base, así que la home deja de ser puramente estática.
- * Con revalidación por hora sigue sirviéndose cacheada: el precio no cambia varias veces
- * al día, y una consulta por hora no es carga.
+ * El precio del schema y las reseñas salen de la base, así que la home deja de ser
+ * puramente estática. Se sirve cacheada y se regenera como mucho una vez por minuto, que
+ * no es carga. No más espaciado porque la base no es alcanzable durante el build: la
+ * versión del build sale sin precio ni reseñas, y tiene que durar poco.
+ *
+ * Lo que ella cambia en el panel no espera a este minuto: el panel revalida la home al
+ * guardar.
  */
-export const revalidate = 3600
+export const revalidate = 60
 
 export async function generateMetadata({
   params,
@@ -46,7 +51,7 @@ export default async function Home({
   setRequestLocale(locale)
 
   const t = await getTranslations({ locale, namespace: 'services' })
-  const precios = await precioDesde()
+  const [precios, resenas] = await Promise.all([precioDesde(), resenasPublicas(locale)])
 
   // Las dos experiencias son ofertas del mismo recorrido, y cada una se declara sólo si
   // hoy hay algún horario que la venda: prometerle a Google un precio que el checkout no
@@ -71,7 +76,7 @@ export default async function Home({
         {/* Las experiencias van primero: son lo que se vende. Quién las guía va después
             de reservar, para quien quiere saber más antes de escribir. */}
         <Services precios={precios} />
-        <Reviews />
+        <Reviews resenas={resenas} />
         <CustomizedTours />
         <Gallery />
         <Ebook />
