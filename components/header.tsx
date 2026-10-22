@@ -48,10 +48,10 @@ export function Header() {
   }
 
   const navLinks = [
-    { id: 'about', label: t('about') },
     { id: 'tours', label: t('tours') },
     { id: 'reviews', label: t('reviews') },
     { id: 'ebook', label: t('ebook') },
+    { id: 'about', label: t('about') },
     { id: 'contact', label: t('contact') },
   ]
 
@@ -64,7 +64,7 @@ export function Header() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           <Link href="/" className="flex items-center gap-2">
-            <span className={`font-sans text-xl lg:text-2xl font-bold tracking-tight transition-colors ${
+            <span className={`font-sans text-base sm:text-xl lg:text-2xl font-bold tracking-tight transition-colors ${
               isScrolled ? 'text-foreground' : 'text-white'
             }`}>
               The Authentic <span className={isScrolled ? 'text-primary' : 'text-white'}>Tango Experience</span>
@@ -96,7 +96,7 @@ export function Header() {
                   : 'border-white/30 hover:bg-white/10 text-white'
               }`}
             >
-              {locale === 'es' ? 'EN' : 'ES'}
+              {locale === 'es' ? 'English' : 'Español'}
             </button>
             <Button 
               onClick={() => scrollToSection('booking')}
@@ -115,7 +115,7 @@ export function Header() {
                   : 'border-white/30 text-white'
               }`}
             >
-              {locale === 'es' ? 'EN' : 'ES'}
+              {locale === 'es' ? 'English' : 'Español'}
             </button>
             <button
               className={`p-2 transition-colors ${

@@ -17,7 +17,7 @@ export function Ebook() {
   const available = t.raw('available') as Record<string, string>
 
   return (
-    <section id="ebook" className="py-16 lg:py-24">
+    <section id="ebook" className="py-12 lg:py-16">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-3 gap-12 lg:gap-20 items-center">
           <div className="order-2 lg:order-1 lg:col-span-2">
@@ -25,7 +25,7 @@ export function Ebook() {
               {t('title')}
             </h2>
             
-            <div className="text-muted-foreground text-base md:text-lg mb-8 whitespace-pre-line">
+            <div className="text-muted-foreground text-base md:text-lg mb-8 whitespace-pre-line text-justify hyphens-auto">
               <RichText
                 content={processDescription(t('description'))}
                 className="[&_strong]:font-bold"

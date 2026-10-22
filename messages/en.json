@@ -1,7 +1,7 @@
 {
   "nav": {
     "about": "About Maria",
-    "tours": "The Experience",
+    "tours": "The Experiences",
     "reviews": "Reviews",
     "gallery": "Gallery",
     "ebook": "E-book",
@@ -10,13 +10,12 @@
   },
   "hero": {
     "title": "Discover the Heart of Argentine Tango",
-    "subtitle": "Feel the Rhythm of the City",
     "bookNow": "Book Now",
     "viewTours": "View Tours"
   },
   "about": {
     "title": "About Maria",
-    "description": "I am a tango dancer and the creator of [BOLD]The Authentic Tango Experience,[/BOLD] a cultural immersion I have been developing for nearly ten years.\n\n I fell in love with tango the very first night I stepped into a milonga. What began as a fascination with the dance gradually became an essential [BOLD]part of my life.[/BOLD] Over the years, I have [BOLD]written a [BOOK_LINK]book of short stories[/BOOK_LINK] set in milongas,[/BOLD] documented this world through [PHOTO_LINK]photography[/PHOTO_LINK] and [BOLD]shaped this experience from the desire to show tango from the inside[/BOLD]—as a living, deeply rooted cultural expression.\n\n Throughout our time together,[BOLD] my role will be to guide you into the world of tango[/BOLD] and the place where it is socially danced—[BOLD]the milonga.[/BOLD] With clarity, depth, and sensitivity, I´ll [BOLD]help you understand its codes and etiquette, its music and history, and the emotional language of the embrace as it unfolds in a real milonga, so tango becomes readable, human, accessible, and deeply meaningful.[/BOLD]",
+    "description": "I am a tango dancer and the creator of [BOLD]The Authentic Tango Experience,[/BOLD] a cultural immersion I have been developing for nearly ten years.\n\n I fell in love with tango the very first night I stepped into a milonga. What began as a fascination with the dance gradually became an essential [BOLD]part of my life.[/BOLD] Over the years, I have [BOLD]written a [BOOK_LINK]book of short stories[/BOOK_LINK] set in milongas,[/BOLD] documented this world through photography and [BOLD]shaped this experience from the desire to show tango from the inside—as a living, deeply rooted cultural expression.[/BOLD]\n\n Throughout our time together,[BOLD] my role will be to guide you into the world of tango[/BOLD] and the place where it is socially danced—[BOLD]the milonga.[/BOLD] With clarity, depth, and sensitivity, I´ll [BOLD]help you understand its codes and etiquette, its music and history, and the emotional language of the embrace as it unfolds in a real milonga, so tango becomes readable, human, accessible, and deeply meaningful.[/BOLD]",
     "years": "Years of Experience",
     "tours": "Tours Completed",
     "reviews": "+150 Star Reviews",
@@ -24,23 +23,37 @@
     "playVideo": "Play video"
   },
   "services": {
-    "title": "The Experience",
+    "title": "The Experiences",
     "private": {
-      "title": "Cultural tango walking tour and milonga experience",
-      "description": "We begin by [BOLD]walking through the streets of Buenos Aires,[/BOLD] where tango was born, discovering its [BOLD]history, music, its characters, and the neighborhoods that shaped it.[/BOLD] As we [BOLD]move through the city,[/BOLD] tango reveals itself not just as a dance, but as a way of living and feeling Buenos Aires.\n\n The experience continues with a [BOLD]visit to an authentic milonga[/BOLD]—the place [BOLD]where tango is truly alive.[/BOLD] As the milonga unfolds in its most intimate and spontaneous form, [BOLD]you’ll enjoy discovering its codes, rituals, and unspoken rules through my guidance, becoming part of this authentic experience in a natural and engaging way.[/BOLD]\n\n [BOLD]More than simply watching tango, this is a guided immersion into a living cultural experience.[/BOLD]",
-      "duration": "Duration: 3 hours",
+      "title": "Discover the Soul of Buenos Aires: A Tango Cultural Walking Tour & a Milonga Experience",
+      "description": "Go beyond the tourist shows on a tango walking tour that reveals the authentic culture few visitors ever experience. Explore iconic landmarks, uncover the stories and traditions behind Argentina's most emblematic art form, and step into a traditional milonga to witness locals dancing in their own world.\n\nThis is not a dance lesson — it's a cultural immersion. Guided by an expert tango guide, dancer, and teacher, you'll discover the codes, rituals, music, and magic that make tango a living part of Buenos Aires.",
+      "duration": "3 hours",
       "price": "From ${price} USD",
       "includes": "Included: English & Spanish guide, glass of wine/soda/coffee, milonga entry",
-      "book": "Book Now"
+      "book": "Book Now",
+      "itinerary": [
+        "Meet in an iconic area of Buenos Aires and begin exploring the city through the fascinating world of tango.",
+        "Walk along tango-related streets and discover hidden tango spots, iconic landmarks, and stories that reveal the history and soul of this unique cultural expression.",
+        "Visit an authentic social milonga where locals meet and experience tango from the inside, where locals and dancers come together to share their passion.",
+        "Discover the hidden codes of social tango, including etiquette, customs, and rituals, with an expert tango guide who is also a dancer and a teacher."
+      ]
     },
     "group": {
-      "title": "Cultural tango walking tour and milonga experience + group class",
-      "description": "We begin by [BOLD]walking through the streets of Buenos Aires,[/BOLD] where tango was born, discovering its [BOLD]history, music, its characters, and the neighborhoods that shaped it.[/BOLD] As we [BOLD]move through the city,[/BOLD] tango reveals itself not just as a dance, but as a way of living and feeling Buenos Aires.\n\n The experience continues with a [BOLD]visit to an authentic milonga[/BOLD] — the place where tango is truly alive. Here, participants are invited to step into a [BOLD]relaxed and fun group class,[/BOLD] an easy and entertaining way to feel tango through movement and connection, [BOLD]no previous experience needed.[/BOLD] After the class, as the milonga unfolds in its most intimate and spontaneous form, [BOLD]you’ll enjoy discovering its codes, rituals, and unspoken rules through my guidance, becoming part of this authentic experience in a natural and engaging way.[/BOLD]\n\n [BOLD]More than simply watching tango, this is a guided immersion into a living cultural experience, where engaging through the body makes the language of the dance more tangible and easier to understand.[/BOLD]",
-      "duration": "Duration: 4 hours",
+      "title": "Discover the Soul of Buenos Aires: A Tango Cultural Walking Tour & Group Tango Class & Milonga Experience",
+      "description": "Go beyond the tourist shows on a tango walking tour that reveals the authentic culture few visitors ever experience. Explore iconic landmarks, uncover the stories and traditions behind Argentina's most emblematic art form, and step into a traditional milonga to witness locals dancing in their own world.\n\nThis is not a dance lesson — it's a cultural immersion. Guided by an expert tango guide, dancer, and teacher, you'll discover the codes, rituals, music, and magic that make tango a living part of Buenos Aires.",
+      "duration": "4.5 hours",
       "price": "From ${price} USD",
       "includes": "Included: English & Spanish guide, glass of wine/soda/coffee, milonga entry, group class",
-      "book": "Book Now"
-    }
+      "book": "Book Now",
+      "itinerary": [
+        "Meet in an iconic area of Buenos Aires and begin exploring the city through the fascinating world of tango.",
+        "Walk along tango-related streets and discover hidden tango spots, iconic landmarks, and stories that reveal the history and soul of this unique cultural expression.",
+        "Visit an authentic social milonga where locals meet and experience tango from the inside, where locals and dancers come together to share their passion.",
+        "Have a fun and insightful group class.",
+        "Discover the hidden codes of social tango, including etiquette, customs, and rituals, with an expert tango guide who is also a dancer and a teacher."
+      ]
+    },
+    "itineraryTitle": "What You'll Do"
   },
   "customizedTours": {
     "title": "Customized Tours",
@@ -296,5 +309,9 @@
     "message": "The link may be mistyped, or the page may have moved. Head back home, or take a look at the dates available for the experience.",
     "backHome": "Back home",
     "book": "See available dates"
+  },
+  "common": {
+    "readMore": "Read more…",
+    "readLess": "Show less"
   }
 }

@@ -1,12 +1,13 @@
 "use client"
 
-import { Users, ArrowRight } from "lucide-react"
+import { ArrowRight } from "lucide-react"
 import { useLocale, useTranslations } from 'next-intl'
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import useEmblaCarousel from 'embla-carousel-react'
 import { useState, useEffect, useCallback } from 'react'
 import { RichText } from '@/components/rich-text'
+import { Plegable } from '@/components/plegable'
 import { montoSuelto } from '@/lib/booking/dinero'
 import type { PrecioDesde } from '@/lib/seo/oferta'
 
@@ -59,11 +60,11 @@ export function Services({ precios }: { precios?: PrecioDesde | null }) {
   }
 
   const renderTourCard = (key: string, index: number, isMobile: boolean = false) => {
-    const Icon = Users
     const isPopular = key === 'private'
     // Sin base no hay precio que mostrar. Antes que arriesgar un número inventado, la
     // tarjeta se muestra sin la línea de precio: el checkout sigue diciendo cuánto sale.
     const centavos = key === 'group' ? precios?.conClase ?? null : precios?.tour ?? null
+    const itinerario = t.raw(`${key}.itinerary`) as string[]
     const cardContent = (
       <Card className="bg-card border-border transition-all duration-300 relative h-full ring-2 ring-primary pt-6">
         {isPopular && (
@@ -74,25 +75,29 @@ export function Services({ precios }: { precios?: PrecioDesde | null }) {
           </div>
         )}
         <CardHeader className="pt-2">
-          <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
-            <Icon className="h-6 w-6 text-primary" />
-          </div>
-          <CardTitle className="font-sans text-xl text-foreground">
-            {t(`${key}.title`)}
+          {/* La duración va en el título, sin negrita: así no hace falta repetirla abajo. */}
+          <CardTitle className="font-sans text-xl text-foreground text-balance">
+            {t(`${key}.title`)}{' '}
+            <span className="font-normal text-muted-foreground whitespace-nowrap">
+              ({t(`${key}.duration`)})
+            </span>
           </CardTitle>
-          <CardDescription className="text-muted-foreground whitespace-pre-line">
-            <RichText 
-              content={processDescription(t(`${key}.description`))}
-              className="[&_strong]:font-bold"
-            />
-          </CardDescription>
         </CardHeader>
         {/* El bloque de precio y botón se empuja al pie para que las dos tarjetas lo tengan
             a la misma altura aunque las descripciones midan distinto. */}
         <CardContent className="flex flex-1 flex-col space-y-4">
-          <div className="flex items-center justify-between text-sm">
-            <span className="text-muted-foreground">{t(`${key}.duration`)}</span>
-          </div>
+          {/* Cortada a pocas líneas: con el texto entero las tarjetas eran una pared y
+              medían distinto. Lo que se corta queda a un "Leer más" de distancia. */}
+          <Plegable lineas={5} className="text-sm text-muted-foreground text-justify hyphens-auto">
+            <RichText
+              content={processDescription(t(`${key}.description`))}
+              className="[&_strong]:font-bold"
+            />
+            <p className="mt-3 font-semibold text-foreground">{t('itineraryTitle')}</p>
+            <ul className="mt-1 list-disc space-y-1 pl-5">
+              {itinerario.map((paso) => <li key={paso}>{paso}</li>)}
+            </ul>
+          </Plegable>
           <div className="text-sm text-muted-foreground whitespace-pre-line">
             {t(`${key}.includes`)}
           </div>
@@ -122,10 +127,10 @@ export function Services({ precios }: { precios?: PrecioDesde | null }) {
   }
 
   return (
-    <section id="tours" className="py-16 lg:py-24">
+    <section id="tours" className="py-12 lg:py-16">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="font-sans text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
+          <div className="text-center max-w-3xl mx-auto mb-6 lg:mb-8">
+            <h2 className="font-sans text-2xl md:text-4xl lg:text-5xl font-bold text-foreground text-balance">
               {t('title')}
             </h2>
           </div>

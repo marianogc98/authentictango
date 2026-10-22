@@ -1,7 +1,7 @@
 {
   "nav": {
     "about": "Sobre María",
-    "tours": "La Experiencia",
+    "tours": "Las Experiencias",
     "reviews": "Reseñas",
     "gallery": "Galería",
     "ebook": "E-book",
@@ -10,13 +10,12 @@
   },
   "hero": {
     "title": "Descubre el corazón del tango argentino",
-    "subtitle": "Vive la ciudad al ritmo del tango",
     "bookNow": "Reserva Ahora",
     "viewTours": "Leer Más"
   },
   "about": {
     "title": "Sobre María",
-    "description": "Soy bailarina de tango y creadora de [BOLD]The Authentic Tango Experience, una inmersión cultural que desarrollo desde hace casi diez años.[/BOLD]\n\nMe enamoré del tango la primera noche que entré a una milonga, y desde entonces se convirtió en una parte esencial de mi vida. [BOOK_LINK]He escrito un libro de relatos ambientados en milongas,[/BOOK_LINK] documentado este mundo a través de la [PHOTO_LINK]fotografía[/PHOTO_LINK] y creado esta experiencia para mostrar el tango desde adentro: como una expresión cultural viva y auténtica.\n\nDurante la experiencia, [BOLD]te guiaré al mundo del tango y a la milonga, el espacio donde se baila socialmente. De forma clara, cercana y divertida, te ayudaré a comprender sus códigos, su música y su historia, para que el tango se vuelva accesible, humano y profundamente disfrutable.[/BOLD]",
+    "description": "Soy bailarina de tango y creadora de [BOLD]The Authentic Tango Experience, una inmersión cultural que desarrollo desde hace casi diez años.[/BOLD]\n\nMe enamoré del tango la primera noche que entré a una milonga, y desde entonces se convirtió en una parte esencial de mi vida. [BOOK_LINK]He escrito un libro de relatos ambientados en milongas,[/BOOK_LINK] documentado este mundo a través de la fotografía y [BOLD]creado esta experiencia para mostrar el tango desde adentro: como una expresión cultural viva y auténtica.[/BOLD]\n\nDurante la experiencia, [BOLD]te guiaré al mundo del tango y a la milonga, el espacio donde se baila socialmente. De forma clara, cercana y divertida, te ayudaré a comprender sus códigos, su música y su historia, para que el tango se vuelva accesible, humano y profundamente disfrutable.[/BOLD]",
     "years": "Años de Experiencia",
     "tours": "Tours Realizados",
     "reviews": "+150 Calificaciones",
@@ -24,23 +23,37 @@
     "playVideo": "Reproducir video"
   },
   "services": {
-    "title": "La Experiencia",
+    "title": "Las Experiencias",
     "private": {
-      "title": "Recorrido cultural a pie sobre tango y visita a una milonga",
-      "description": "Comenzamos caminando por las [BOLD]calles de Buenos Aires donde nació el tango, descubriendo su historia, su música, sus personajes y los barrios que lo vieron crecer.[/BOLD]A medida que recorremos la ciudad, el tango se revela no sólo como un baile, sino como [BOLD]una forma de vivir y sentir Buenos Aires.[/BOLD]\n\nLa experiencia continúa con una [BOLD]visita a una milonga auténtica,[/BOLD] el lugar donde [BOLD]el tango está verdaderamente vivo y evoluciona al día de hoy.[/BOLD] A medida que la milonga se despliega en su forma más íntima y espontánea, [BOLD]te iré ayudando a descubrir, de manera divertida y entretenida, sus códigos, rituales y reglas[/BOLD] no dichas, para que puedas comprender y disfrutar esta [BOLD]experiencia desde adentro, de forma natural y cercana.[/BOLD]\n\nMás que observar tango, [BOLD] vivirás una experiencia de inmersión guiada en una cultura viva.[/BOLD]",
-      "duration": "Duración: 3 horas",
+      "title": "Descubrí el alma de Buenos Aires: un recorrido cultural de tango a pie y una experiencia en una milonga",
+      "description": "Un recorrido a pie por el tango que te revela la cultura auténtica que pocos visitantes llegan a conocer. Explorá lugares emblemáticos, descubrí historias y tradiciones detrás de una de las expresiones artísticas más representativas de Argentina y entrá a una milonga tradicional para conocer de cerca ese mundo en el que los porteños se encuentran a bailar.\n\nEsto no es una clase de baile: es una inmersión cultural. De la mano de una guía experta en tango, bailarina y profesora, descubrirás los códigos, los rituales, la música y la magia que hacen del tango una parte viva de Buenos Aires.",
+      "duration": "3 horas",
       "price": "Desde ${price} USD",
       "includes": "Incluye: Guía en español e inglés, copa de vino/soda/café, entrada a la milonga",
-      "book": "Reservar"
+      "book": "Reservar",
+      "itinerary": [
+        "Encontrarte en un lugar emblemático de Buenos Aires y comenzar a explorar la ciudad a través del fascinante mundo del tango.",
+        "Recorrer calles vinculadas al tango y descubrir rincones tangueros poco conocidos, lugares emblemáticos e historias que revelan la historia y el alma de esta expresión cultural única.",
+        "Visitar una auténtica milonga social donde se reúnen los porteños y vivir el tango desde adentro, en un espacio donde locales y bailarines se encuentran para compartir su pasión.",
+        "Descubrir los códigos ocultos del tango social, incluidas las reglas de etiqueta, las costumbres y los rituales, de la mano de una guía experta en tango que también es bailarina y profesora."
+      ]
     },
     "group": {
-      "title": "Recorrido cultural a pie sobre tango y visita a una milonga + clase grupal",
-      "description": "Comenzamos caminando por las [BOLD]calles de Buenos Aires donde nació el tango, descubriendo su historia, su música, sus personajes y los barrios que lo vieron crecer.[/BOLD] A medida que recorremos la ciudad, el tango se revela no sólo como un baile, sino como [BOLD]una forma de vivir y sentir Buenos Aires.[/BOLD]\n\n La experiencia continúa con la [BOLD]visita a una milonga auténtica[/BOLD] —el lugar donde el tango está verdaderamente vivo y evoluciona al día de hoy en donde los [BOLD]participantes serán invitados a sumarse a una clase grupal relajada y divertida,[/BOLD] una forma simple y entretenida de sentir el tango a través del movimiento y la conexión, [BOLD]sin necesidad de experiencia previa.[/BOLD] Luego de la clase, a medida que la milonga se despliega en su forma más íntima y espontánea, [BOLD]te iré ayudando a descubrir, de manera lúdica y entretenida, sus códigos, rituales y reglas[/BOLD] no dichas, para que puedas comprender y disfrutar esta[BOLD] experiencia desde adentro, de forma natural y cercana.[/BOLD]\n\n Más que simplemente observar tango, esta es una [BOLD]inmersión guiada en una experiencia cultural viva,[/BOLD] donde el contacto a través del cuerpo vuelve el lenguaje del baile más tangible y fácil de comprender.",
-      "duration": "Duración: 4 horas",
+      "title": "Descubrí el alma de Buenos Aires: un recorrido cultural de tango a pie + una clase grupal de tango + una experiencia en una milonga",
+      "description": "Un recorrido a pie por el tango que te revela la cultura auténtica que pocos visitantes llegan a conocer. Explorá lugares emblemáticos, descubrí historias y tradiciones detrás de una de las expresiones artísticas más representativas de Argentina y entrá a una milonga tradicional para conocer de cerca ese mundo en el que los porteños se encuentran a bailar.\n\nEsto no es una clase de baile: es una inmersión cultural. De la mano de una guía experta en tango, bailarina y profesora, descubrirás los códigos, los rituales, la música y la magia que hacen del tango una parte viva de Buenos Aires.",
+      "duration": "4,5 horas",
       "price": "Desde ${price} USD",
       "includes": "Incluye: Guía en español e inglés, copa de vino/soda/café, entrada a la milonga, entrada grupal",
-      "book": "Reservar"
-    }
+      "book": "Reservar",
+      "itinerary": [
+        "Encontrarte en un lugar emblemático de Buenos Aires y comenzar a explorar la ciudad a través del fascinante mundo del tango.",
+        "Recorrer calles vinculadas al tango y descubrir rincones tangueros poco conocidos, lugares emblemáticos e historias que revelan la historia y el alma de esta expresión cultural única.",
+        "Visitar una auténtica milonga social donde se reúnen los porteños y vivir el tango desde adentro, en un espacio donde locales y bailarines se encuentran para compartir su pasión.",
+        "Tomar una clase grupal divertida y enriquecedora.",
+        "Descubrir los códigos ocultos del tango social, incluidas las reglas de etiqueta, las costumbres y los rituales, de la mano de una guía experta en tango que también es bailarina y profesora."
+      ]
+    },
+    "itineraryTitle": "Qué vas a hacer"
   },
   "customizedTours": {
     "title": "Tours Personalizados",
@@ -300,5 +313,9 @@
     "message": "Puede que el link esté mal escrito o que la página se haya mudado. Volvé al inicio, o mirá las fechas disponibles para vivir la experiencia.",
     "backHome": "Volver al inicio",
     "book": "Ver fechas"
+  },
+  "common": {
+    "readMore": "Leer más…",
+    "readLess": "Leer menos"
   }
 }

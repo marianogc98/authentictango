@@ -16,7 +16,9 @@ export function Hero() {
   }
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
+    // No ocupa la pantalla entera a propósito: debajo de los botones quedaba un hueco
+    // grande, y es mejor que ya se asome la sección que sigue.
+    <section className="relative min-h-[75svh] flex items-center justify-center overflow-hidden bg-black">
       {/* Foto de fondo: es lo primero que se ve, así que se carga con prioridad
           y sin lazy para no penalizar el LCP. */}
       <div className="absolute inset-0 z-0">
@@ -32,15 +34,11 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80" />
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 lg:px-8 py-20 w-full">
+      <div className="relative z-10 container mx-auto px-4 lg:px-8 pt-24 pb-12 w-full">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="font-sans text-3xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 text-balance">
+          <h1 className="font-sans text-3xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 text-balance">
             {t('title')}
           </h1>
-
-          <p className="text-base md:text-xl text-white/90 max-w-2xl mx-auto mb-8 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 text-pretty">
-            {t('subtitle')}
-          </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">
             <Button size="lg" onClick={() => scrollToSection('booking')} className="text-base px-8">
@@ -57,13 +55,6 @@ export function Hero() {
               {t('viewTours')}
             </Button>
           </div>
-        </div>
-      </div>
-
-      {/* Indicador de scroll */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-20">
-        <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-2">
-          <div className="w-1 h-2 bg-white/50 rounded-full" />
         </div>
       </div>
     </section>

@@ -68,13 +68,15 @@ export default async function Home({
       <Header />
       <main>
         <Hero />
-        <About />
+        {/* Las experiencias van primero: son lo que se vende. Quién las guía va después
+            de reservar, para quien quiere saber más antes de escribir. */}
         <Services precios={precios} />
         <Reviews />
         <CustomizedTours />
         <Gallery />
         <Ebook />
         <Booking />
+        <About />
         <Contact />
       </main>
       <Footer />

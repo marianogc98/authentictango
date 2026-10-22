@@ -9,7 +9,6 @@ const processDescription = (text: string): string => {
   return text
     .replace(/\[BOLD\](.*?)\[\/BOLD\]/g, '<strong>$1</strong>')
     .replace(/\[BOOK_LINK\](.*?)\[\/BOOK_LINK\]/g, '<a href="#ebook" class="text-primary hover:opacity-80 transition-opacity underline">$1</a>')
-    .replace(/\[PHOTO_LINK\](.*?)\[\/PHOTO_LINK\]/g, '<a href="https://instagram.com/miofotosba" target="_blank" rel="noopener noreferrer" class="text-primary hover:opacity-80 transition-opacity underline">$1</a>')
 }
 
 const VIDEO_ID = 'yNpuM482hfo'
@@ -117,7 +116,7 @@ export function About() {
   }, [hasAnimated])
 
   return (
-    <section id="about" className="py-16 lg:py-24 bg-secondary" ref={sectionRef}>
+    <section id="about" className="py-12 lg:py-16" ref={sectionRef}>
       <div className="container mx-auto px-4 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Es un Short: va en vertical (9:16) y con la miniatura `oardefault`, que es
@@ -163,7 +162,7 @@ export function About() {
             <div className="space-y-4 text-muted-foreground mb-8">
               <RichText 
                 content={processDescription(t('description'))}
-                className="whitespace-pre-line [&_a]:text-primary [&_a]:hover:opacity-80 [&_a]:transition-opacity [&_a]:underline [&_strong]:font-bold"
+                className="whitespace-pre-line text-justify hyphens-auto [&_a]:text-primary [&_a]:hover:opacity-80 [&_a]:transition-opacity [&_a]:underline [&_strong]:font-bold"
               />
             </div>
 
