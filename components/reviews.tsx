@@ -80,13 +80,17 @@ export function Reviews({ resenas }: { resenas: ResenaPublica[] }) {
                   <CarouselItem key={resena.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                     <Card className="h-full gap-0 py-0 border-border shadow-sm">
                       <CardContent className="p-5 h-full flex flex-col">
-                        {/* El nombre al lado de las estrellas: abajo, solo, ocupaba un renglón entero. */}
-                        <div className="flex items-center justify-between gap-3 mb-3">
-                          <div className="flex min-w-0 items-center gap-2">
+                        {/* El nombre al lado de las estrellas: abajo, solo, ocupaba un renglón entero.
+                            Si con el país no entra, baja de renglón en vez de cortarse. */}
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1">
                             <Estrellas cantidad={resena.estrellas} />
-                            <h3 className="truncate font-semibold text-foreground">{resena.nombre}</h3>
+                            <h3 className="min-w-0 font-semibold text-foreground">
+                              {resena.nombre}
+                              {resena.pais && <span className="font-normal text-muted-foreground">, {resena.pais}</span>}
+                            </h3>
                           </div>
-                          <p className="shrink-0 text-xs text-muted-foreground">{resena.mes}</p>
+                          <p className="shrink-0 pt-0.5 text-xs text-muted-foreground">{resena.mes}</p>
                         </div>
 
                         <Plegable

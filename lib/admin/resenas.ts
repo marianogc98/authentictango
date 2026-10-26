@@ -6,10 +6,13 @@ import { revalidatePath } from 'next/cache'
 import { db } from '@/lib/db/client'
 import { reviews } from '@/lib/db/schema'
 import { COOKIE, sesionValida } from '@/lib/admin/auth'
+import { esCodigoPais } from '@/lib/paises'
 
 export type FilaResena = {
   id: number
   name: string
+  /** Código ISO del país, o "" si no se cargó. */
+  country: string
   rating: number
   /** "2025-12": lo que usa un <input type="month">. */
   mes: string
@@ -22,7 +25,7 @@ export type DatosResena = Omit<FilaResena, 'id'>
 
 export type ResultadoResena =
   | { ok: true }
-  | { ok: false; error: 'sin_sesion' | 'sin_nombre' | 'estrellas_invalidas' | 'mes_invalido' | 'sin_texto' }
+  | { ok: false; error: 'sin_sesion' | 'sin_nombre' | 'pais_invalido' | 'estrellas_invalidas' | 'mes_invalido' | 'sin_texto' }
 
 /** Un server action es un endpoint público: el layout protege la página, no la acción. */
 async function conSesion(): Promise<boolean> {
@@ -36,6 +39,10 @@ function normalizar(d: DatosResena):
   const name = String(d.name ?? '').trim()
   if (!name) return { ok: false, error: 'sin_nombre' }
 
+  // El país es opcional: las reseñas que venían de los textos no lo tenían.
+  const country = String(d.country ?? '').trim().toUpperCase() || null
+  if (country && !esCodigoPais(country)) return { ok: false, error: 'pais_invalido' }
+
   const rating = Number(d.rating)
   if (!Number.isInteger(rating) || rating < 1 || rating > 5) return { ok: false, error: 'estrellas_invalidas' }
 
@@ -48,7 +55,7 @@ function normalizar(d: DatosResena):
   const textEn = String(d.textEn ?? '').trim()
   if (!textEs || !textEn) return { ok: false, error: 'sin_texto' }
 
-  return { ok: true, fila: { name, rating, date: `${mes}-01`, textEs, textEn, visible: Boolean(d.visible) } }
+  return { ok: true, fila: { name, country, rating, date: `${mes}-01`, textEs, textEn, visible: Boolean(d.visible) } }
 }
 
 /** La home se cachea: sin esto, un cambio tardaría hasta un minuto en verse. */
@@ -64,6 +71,7 @@ export async function listarResenas(): Promise<FilaResena[]> {
   return filas.map((r) => ({
     id: r.id,
     name: r.name,
+    country: r.country ?? '',
     rating: r.rating,
     mes: r.date.slice(0, 7),
     textEs: r.textEs,

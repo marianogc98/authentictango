@@ -10,10 +10,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { CODIGOS_PAIS, nombrePais } from '@/lib/paises'
 
 const ERRORES: Record<string, string> = {
   sin_sesion: 'La sesión venció. Volvé a entrar al panel.',
   sin_nombre: 'Falta el nombre.',
+  pais_invalido: 'Elegí el país de la lista.',
   estrellas_invalidas: 'Las estrellas van de 1 a 5.',
   mes_invalido: 'Elegí el mes de la reseña.',
   sin_texto: 'Hace falta el texto en los dos idiomas.',
@@ -24,7 +26,14 @@ const mensajeDe = (r: ResultadoResena) => (r.ok ? null : ERRORES[r.error] ?? 'No
 /** El mes actual en formato "2026-10", para arrancar una reseña nueva. */
 const mesActual = () => new Date().toISOString().slice(0, 7)
 
-const vacia = (): DatosResena => ({ name: '', rating: 5, mes: mesActual(), textEs: '', textEn: '', visible: true })
+const vacia = (): DatosResena => ({
+  name: '', country: '', rating: 5, mes: mesActual(), textEs: '', textEn: '', visible: true,
+})
+
+/** Los países por su nombre en español, que es como ella los busca en la lista. */
+const PAISES = CODIGOS_PAIS
+  .map((codigo) => ({ codigo, nombre: nombrePais(codigo, 'es') }))
+  .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
 
 export function NuevaResena() {
   const [abierta, setAbierta] = useState(false)
@@ -130,10 +139,26 @@ function Campos({ id, datos, onChange }: {
 
   return (
     <div className="mt-3 space-y-3">
-      <div className="grid gap-3 sm:grid-cols-[minmax(0,2fr)_auto_auto_auto] sm:items-end">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)_auto_auto_auto] lg:items-end">
         <div className="space-y-1.5">
           <Label htmlFor={`${id}-nombre`} className="text-xs text-muted-foreground">Nombre</Label>
           <Input id={`${id}-nombre`} value={datos.name} onChange={(e) => set('name', e.target.value)} />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor={`${id}-pais`} className="text-xs text-muted-foreground">País</Label>
+          <select
+            id={`${id}-pais`}
+            value={datos.country}
+            onChange={(e) => set('country', e.target.value)}
+            className="h-9 w-full rounded-md border border-input bg-transparent px-3 text-sm"
+          >
+            <option value="">Sin país</option>
+            {/* Los nombres los pone Intl, y el servidor y el navegador pueden traer versiones
+                apenas distintas de los datos de idioma: no es un error que valga avisar. */}
+            {PAISES.map((p) => (
+              <option key={p.codigo} value={p.codigo} suppressHydrationWarning>{p.nombre}</option>
+            ))}
+          </select>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor={`${id}-estrellas`} className="text-xs text-muted-foreground">Estrellas</Label>

@@ -183,6 +183,8 @@ export const reviews = pgTable('reviews', {
   date: date('date').notNull(),
   textEs: text('text_es').notNull(),
   textEn: text('text_en').notNull(),
+  /** Código ISO del país ("AR", "US"). El nombre se escribe en el idioma de la página. */
+  country: text('country'),
   visible: boolean('visible').notNull().default(true),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })
