@@ -41,15 +41,21 @@ export function Services({ precios }: { precios?: PrecioDesde | null }) {
     }
   })
 
-  const onSelect = useCallback((emblaApi: any) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap())
-  }, [])
+  // Lee el carrusel del cierre y no del argumento del evento: en desktop el carrusel está
+  // apagado por el breakpoint, y ahí Embla dispara el evento sin pasarlo.
+  const onSelect = useCallback(() => {
+    if (emblaApi) setSelectedIndex(emblaApi.selectedScrollSnap())
+  }, [emblaApi])
 
   useEffect(() => {
     if (!emblaApi) return
-    onSelect(emblaApi)
+    onSelect()
     emblaApi.on('reInit', onSelect)
     emblaApi.on('select', onSelect)
+    return () => {
+      emblaApi.off('reInit', onSelect)
+      emblaApi.off('select', onSelect)
+    }
   }, [emblaApi, onSelect])
 
   const scrollToSection = (id: string) => {

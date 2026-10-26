@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { Header } from "@/components/header"
 import { Hero } from "@/components/hero"
-import { About } from "@/components/about"
 import { Services } from "@/components/services"
 import { Reviews } from "@/components/reviews"
 import { CustomizedTours } from "@/components/customized-tours"
@@ -78,15 +77,14 @@ export default async function Home({
       <Header />
       <main>
         <Hero />
-        {/* Las experiencias van primero: son lo que se vende. Quién las guía va después
-            de reservar, para quien quiere saber más antes de escribir. */}
+        {/* Las experiencias van primero: son lo que se vende. Quién las guía va al final,
+            dentro de <Contact />, para quien quiere saber más antes de escribir. */}
         <Services precios={precios} />
         <Reviews resenas={resenas} />
         <CustomizedTours />
         <Gallery images={imagenes} />
         <Ebook />
         <Booking />
-        <About />
         <Contact />
       </main>
       <Footer />

@@ -1,6 +1,6 @@
 "use client"
 
-import { CheckCircle, Play } from "lucide-react"
+import { Play } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import { RichText } from '@/components/rich-text'
 import { useEffect, useState, useRef } from 'react'
@@ -13,180 +13,82 @@ const processDescription = (text: string): string => {
 
 const VIDEO_ID = 'yNpuM482hfo'
 
+/**
+ * Quién guía la experiencia. No es una sección propia: va arriba del contacto, en la
+ * misma sección, porque se leen juntos —quién soy, y cómo escribirme— y separados
+ * sumaban otro título y otro bloque de aire a una home que ya es larga.
+ */
 export function About() {
   const t = useTranslations('about')
-  const [animatedValues, setAnimatedValues] = useState([0, 0, 0])
   const [videoActivo, setVideoActivo] = useState(false)
-  const [hasAnimated, setHasAnimated] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id)
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
+  const ref = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    // Manejar clicks en enlaces internos
+    // El link al libro es HTML del texto, no un componente: se intercepta acá para que
+    // haga scroll suave en vez de saltar.
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement
-      if (target.tagName === 'A' && target.getAttribute('href')?.startsWith('#')) {
+      const href = target.tagName === 'A' ? target.getAttribute('href') : null
+      if (href?.startsWith('#')) {
         e.preventDefault()
-        const href = target.getAttribute('href')
-        if (href) {
-          scrollToSection(href.substring(1))
-        }
+        document.getElementById(href.substring(1))?.scrollIntoView({ behavior: 'smooth' })
       }
     }
 
-    if (sectionRef.current) {
-      sectionRef.current.addEventListener('click', handleClick)
-    }
-
-    return () => {
-      if (sectionRef.current) {
-        sectionRef.current.removeEventListener('click', handleClick)
-      }
-    }
+    const el = ref.current
+    el?.addEventListener('click', handleClick)
+    return () => el?.removeEventListener('click', handleClick)
   }, [])
 
-  const stats = [
-    { value: 10, suffix: '+', label: t('years') },
-    { value: 500, suffix: '+', label: t('tours') },
-    { value: 4.9, suffix: '', label: t('reviews') },
-  ]
-
-  useEffect(() => {
-    if (hasAnimated) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
-            setHasAnimated(true)
-            
-            const targetValues = [10, 500, 4.9]
-            const duration = 2000 // 2 segundos
-            const steps = 60
-            const stepDuration = duration / steps
-            
-            const intervals: NodeJS.Timeout[] = []
-            
-            targetValues.forEach((targetValue, index) => {
-              const increment = targetValue / steps
-              let currentStep = 0
-              
-              const interval = setInterval(() => {
-                currentStep++
-                setAnimatedValues((prev) => {
-                  const newValues = [...prev]
-                  const newValue = Math.min(increment * currentStep, targetValue)
-                  newValues[index] = newValue
-                  return newValues
-                })
-                
-                if (currentStep >= steps) {
-                  clearInterval(interval)
-                }
-              }, stepDuration)
-              
-              intervals.push(interval)
-            })
-            
-            return () => {
-              intervals.forEach(interval => clearInterval(interval))
-            }
-          }
-        })
-      },
-      { threshold: 0.5 }
-    )
-
-    const currentRef = sectionRef.current
-    if (currentRef) {
-      observer.observe(currentRef)
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef)
-      }
-    }
-  }, [hasAnimated])
-
   return (
-    <section id="about" className="py-12 lg:py-16" ref={sectionRef}>
-      <div className="container mx-auto px-4 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Es un Short: va en vertical (9:16) y con la miniatura `oardefault`, que es
-              el cuadro original; `maxresdefault` es el recorte 16:9 y sale cortado.
-              No se autorreproduce: hasta que no lo piden solo se ve la miniatura,
-              así el reproductor de YouTube tampoco se descarga de entrada. */}
-          <div className="relative mx-auto w-full max-w-[320px] aspect-[9/16] rounded-lg overflow-hidden bg-black">
-            {videoActivo ? (
-              <iframe
-                src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-                title={t('videoTitle')}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="absolute inset-0 w-full h-full border-0"
-              />
-            ) : (
-              <button
-                type="button"
-                onClick={() => setVideoActivo(true)}
-                aria-label={t('playVideo')}
-                className="group absolute inset-0 w-full h-full"
-              >
-                <img
-                  src={`https://i.ytimg.com/vi/${VIDEO_ID}/oardefault.jpg`}
-                  alt={t('videoTitle')}
-                  loading="lazy"
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
-                <span className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40" />
-                <span className="absolute inset-0 flex items-center justify-center">
-                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
-                    <Play className="h-7 w-7 translate-x-0.5" fill="currentColor" />
-                  </span>
-                </span>
-              </button>
-            )}
-          </div>
+    <div id="about" ref={ref} className="scroll-mt-20 grid lg:grid-cols-[220px_minmax(0,1fr)] gap-8 lg:gap-12 items-center">
+      {/* Es un Short: va en vertical (9:16) y con la miniatura `oardefault`, que es
+          el cuadro original; `maxresdefault` es el recorte 16:9 y sale cortado.
+          No se autorreproduce: hasta que no lo piden solo se ve la miniatura,
+          así el reproductor de YouTube tampoco se descarga de entrada. */}
+      <div className="order-2 lg:order-1 relative mx-auto w-full max-w-[240px] lg:max-w-[220px] aspect-[9/16] rounded-lg overflow-hidden bg-black">
+        {videoActivo ? (
+          <iframe
+            src={`https://www.youtube.com/embed/${VIDEO_ID}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+            title={t('videoTitle')}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="absolute inset-0 w-full h-full border-0"
+          />
+        ) : (
+          <button
+            type="button"
+            onClick={() => setVideoActivo(true)}
+            aria-label={t('playVideo')}
+            className="group absolute inset-0 w-full h-full"
+          >
+            <img
+              src={`https://i.ytimg.com/vi/${VIDEO_ID}/oardefault.jpg`}
+              alt={t('videoTitle')}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <span className="absolute inset-0 bg-black/30 transition-colors group-hover:bg-black/40" />
+            <span className="absolute inset-0 flex items-center justify-center">
+              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
+                <Play className="h-7 w-7 translate-x-0.5" fill="currentColor" />
+              </span>
+            </span>
+          </button>
+        )}
+      </div>
 
-          <div>
-            <h2 className="font-sans text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
-              {t('title')}
-            </h2>
-            <div className="space-y-4 text-muted-foreground mb-8">
-              <RichText 
-                content={processDescription(t('description'))}
-                className="whitespace-pre-line text-justify hyphens-auto [&_a]:text-primary [&_a]:hover:opacity-80 [&_a]:transition-opacity [&_a]:underline [&_strong]:font-bold"
-              />
-            </div>
-
-            <div className="grid grid-cols-3 gap-4">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-card p-4 rounded-lg border border-border text-center"
-                >
-                  <div className="text-2xl md:text-3xl font-bold mb-1">
-                    {stat.value === 4.9 
-                      ? animatedValues[index].toFixed(1)
-                      : Math.floor(animatedValues[index])
-                    }{stat.suffix}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+      <div className="order-1 lg:order-2">
+        <h2 className="font-sans text-2xl md:text-4xl lg:text-5xl font-bold text-foreground mb-6 text-balance">
+          {t('title')}
+        </h2>
+        <div className="text-muted-foreground">
+          <RichText
+            content={processDescription(t('description'))}
+            className="whitespace-pre-line text-justify hyphens-auto [&_a]:text-primary [&_a]:hover:opacity-80 [&_a]:transition-opacity [&_a]:underline [&_strong]:font-bold"
+          />
         </div>
       </div>
-    </section>
+    </div>
   )
 }
