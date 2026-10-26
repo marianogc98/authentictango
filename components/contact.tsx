@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Send, Instagram, Facebook, Mail, Phone } from "lucide-react"
 import { FaAirbnb } from "react-icons/fa"
-import { About } from "@/components/about"
+import { AboutTexto, AboutVideo } from "@/components/about"
 
 export function Contact() {
   const t = useTranslations('contact')
@@ -58,19 +58,21 @@ export function Contact() {
   }
 
   return (
-    // Sobre María y el contacto comparten sección: ver el comentario de <About />. Cada
-    // uno conserva su id, así los links del menú siguen llevando a cada parte.
+    // Sobre María y el contacto comparten sección (ver about.tsx): en desktop, el video a
+    // la izquierda y el texto con el formulario a la derecha. En el celular se apilan en
+    // el orden del DOM —texto, video, formulario—, y la grilla los reubica en desktop.
+    // Cada parte conserva su id, así los links del menú siguen llevando a cada una.
     <section className="py-12 lg:py-16">
-      <div className="container mx-auto px-4 lg:px-8">
-        <About />
+      <div className="container mx-auto px-4 lg:px-8 grid gap-8 lg:grid-cols-[300px_minmax(0,1fr)] lg:gap-x-12 lg:gap-y-8">
+        <AboutTexto className="lg:col-start-2" />
 
-        <div id="contact" className="scroll-mt-20 mt-10 lg:mt-12 rounded-xl bg-secondary px-3 py-6 sm:p-5 md:p-8">
-          <div className="text-center max-w-3xl mx-auto mb-6">
-            <h2 className="font-sans text-2xl md:text-3xl lg:text-4xl font-bold text-foreground text-balance">
-              {t('title')}
-            </h2>
-          </div>
+        {/* En desktop acompaña el scroll: la columna de la derecha es mucho más alta. */}
+        <div className="lg:col-start-1 lg:row-start-1 lg:row-span-2">
+          <AboutVideo className="mx-auto max-w-[260px] lg:max-w-none lg:sticky lg:top-24" />
+        </div>
 
+        {/* Sin título: ya se sabe que es para escribir, y el menú trae hasta acá. */}
+        <div id="contact" className="scroll-mt-24 lg:col-start-2 rounded-xl bg-secondary px-3 py-6 sm:p-5 md:p-8">
           <div className="space-y-8">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-3 gap-4">
