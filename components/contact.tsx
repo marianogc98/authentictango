@@ -144,32 +144,34 @@ export function Contact() {
               <label htmlFor="message" className="block text-sm font-medium text-foreground mb-2">
                 {t('form.message')}
               </label>
-              <Textarea
-                id="message"
-                rows={5}
-                value={formData.message}
-                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                required
-                className="!bg-white hover:!bg-white focus:!bg-white focus-visible:!bg-white border-border resize-none"
-              />
+              {/* El botón al lado del mensaje, al pie: abajo, solo, ocupaba un renglón
+                  entero. En el celular no hay ancho para los dos, y vuelve a ir debajo. */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                <Textarea
+                  id="message"
+                  rows={5}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  required
+                  className="flex-1 !bg-white hover:!bg-white focus:!bg-white focus-visible:!bg-white border-border resize-none"
+                />
+                <Button type="submit" className="w-full shrink-0 sm:w-auto" disabled={isSubmitting}>
+                  {isSubmitting ? (
+                    "..."
+                  ) : isSubmitted ? (
+                    "✓"
+                  ) : (
+                    <>
+                      {t('form.send')}
+                      <Send className="ml-2 h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
             {submitError && (
               <p className="text-sm text-destructive">{submitError}</p>
             )}
-            <div className="flex justify-end">
-              <Button type="submit" className="w-full sm:w-auto" disabled={isSubmitting}>
-                {isSubmitting ? (
-                  "..."
-                ) : isSubmitted ? (
-                  "✓"
-                ) : (
-                  <>
-                    {t('form.send')}
-                    <Send className="ml-2 h-4 w-4" />
-                  </>
-                )}
-              </Button>
-            </div>
           </form>
 
           {/* Los otros canales, separados del formulario y en grilla: sueltos en una fila
