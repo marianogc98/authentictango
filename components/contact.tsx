@@ -94,8 +94,11 @@ export function Contact() {
           <AboutVideo className="mx-auto max-w-[340px] lg:max-w-none lg:sticky lg:top-24" />
         </div>
 
-        {/* Sin título: ya se sabe que es para escribir, y el menú trae hasta acá. */}
+        {/* El título va un escalón debajo del de Sobre María: es parte de la misma sección. */}
         <div id="contact" className="scroll-mt-24 lg:col-start-2 rounded-xl bg-secondary px-3 py-6 sm:p-5 md:p-8">
+          <h3 className="font-sans text-xl md:text-2xl lg:text-3xl font-bold text-foreground mb-6 text-balance">
+            {t('title')}
+          </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Nombre y email juntos, el asunto solo: en tres columnas los campos quedaban
                 demasiado angostos para lo que se escribe en cada uno. */}
