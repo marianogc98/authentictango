@@ -1,0 +1,1 @@
+ALTER TABLE "gallery_images" ADD COLUMN IF NOT EXISTS "youtube_id" text;

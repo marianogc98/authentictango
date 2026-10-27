@@ -2,7 +2,8 @@ import { asc } from 'drizzle-orm'
 import { db } from '@/lib/db/client'
 import { galleryImages } from '@/lib/db/schema'
 
-export type ImagenGaleria = { id: number; src: string; alt: string }
+/** `youtubeId` sólo en los videos: `src` es entonces su miniatura. */
+export type ImagenGaleria = { id: number; src: string; alt: string; youtubeId: string | null }
 
 /**
  * Las fotos con las que vino el sitio. Se muestran si la base no contesta —por ejemplo
@@ -24,9 +25,14 @@ export async function imagenesGaleria(locale: string): Promise<ImagenGaleria[]> 
       .select()
       .from(galleryImages)
       .orderBy(asc(galleryImages.position), asc(galleryImages.id))
-    return filas.map((f) => ({ id: f.id, src: f.src, alt: locale === 'es' ? f.altEs : f.altEn }))
+    return filas.map((f) => ({
+      id: f.id,
+      src: f.src,
+      alt: locale === 'es' ? f.altEs : f.altEn,
+      youtubeId: f.youtubeId,
+    }))
   } catch (err) {
     console.error('[galeria]', err instanceof Error ? err.message : err)
-    return DE_SIEMPRE.map((f, i) => ({ id: -i - 1, src: f.src, alt: locale === 'es' ? f.es : f.en }))
+    return DE_SIEMPRE.map((f, i) => ({ id: -i - 1, src: f.src, alt: locale === 'es' ? f.es : f.en, youtubeId: null }))
   }
 }

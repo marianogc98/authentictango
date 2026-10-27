@@ -199,6 +199,8 @@ export const reviews = pgTable('reviews', {
 export const galleryImages = pgTable('gallery_images', {
   id: serial('id').primaryKey(),
   src: text('src').notNull(),
+  // Si es un video de YouTube, su id; `src` es entonces la miniatura que da YouTube.
+  youtubeId: text('youtube_id'),
   altEs: text('alt_es').notNull().default(''),
   altEn: text('alt_en').notNull().default(''),
   position: integer('position').notNull().default(0),

@@ -1,7 +1,7 @@
 import { listarImagenes } from '@/lib/admin/galeria'
 import { carpetaMedia } from '@/lib/media'
 import { AdminNav } from '../../nav'
-import { ListaImagenes, SubirImagenes } from './galeria'
+import { AgregarVideo, ListaImagenes, SubirImagenes } from './galeria'
 
 export const dynamic = 'force-dynamic'
 
@@ -16,7 +16,7 @@ export default async function GaleriaPage() {
         <div>
           <h1 className="text-2xl font-bold">Galería</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Las fotos de la galería de la web, en este orden. La primera sale más grande.
+            Las fotos y videos de la galería de la web, en este orden. La primera sale más grande.
             Las fotos se achican antes de subirse, así que se puede subir directo desde el
             celular. La descripción no se ve, pero la leen Google y quienes navegan con
             lector de pantalla.
@@ -31,6 +31,7 @@ export default async function GaleriaPage() {
             pueden subir fotos nuevas, pero sí ordenar y borrar las que hay.
           </p>
         )}
+        <AgregarVideo />
         <ListaImagenes filas={filas} />
       </main>
     </>

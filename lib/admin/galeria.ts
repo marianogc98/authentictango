@@ -11,11 +11,11 @@ import { galleryImages } from '@/lib/db/schema'
 import { COOKIE, sesionValida } from '@/lib/admin/auth'
 import { NOMBRE_MEDIA, RUTA_MEDIA, carpetaMedia } from '@/lib/media'
 
-export type FilaImagen = { id: number; src: string; altEs: string; altEn: string }
+export type FilaImagen = { id: number; src: string; youtubeId: string | null; altEs: string; altEn: string }
 
 export type ResultadoImagen =
   | { ok: true }
-  | { ok: false; error: 'sin_sesion' | 'sin_volumen' | 'archivo_invalido' | 'muy_grande' }
+  | { ok: false; error: 'sin_sesion' | 'sin_volumen' | 'archivo_invalido' | 'muy_grande' | 'link_invalido' }
 
 /** El panel achica las fotos antes de mandarlas; esto es sólo el tope por si no lo hace. */
 const BYTES_MAXIMOS = 8 * 1024 * 1024
@@ -33,7 +33,7 @@ function refrescar() {
 export async function listarImagenes(): Promise<FilaImagen[]> {
   if (!(await conSesion())) return []
   return db
-    .select({ id: galleryImages.id, src: galleryImages.src, altEs: galleryImages.altEs, altEn: galleryImages.altEn })
+    .select({ id: galleryImages.id, src: galleryImages.src, youtubeId: galleryImages.youtubeId, altEs: galleryImages.altEs, altEn: galleryImages.altEn })
     .from(galleryImages)
     .orderBy(asc(galleryImages.position), asc(galleryImages.id))
 }
@@ -69,6 +69,46 @@ export async function subirImagen(form: FormData): Promise<ResultadoImagen> {
     src: `${RUTA_MEDIA}${nombre}`,
     altEs,
     altEn,
+    position: sql`(SELECT COALESCE(MAX(${galleryImages.position}), 0) + 1 FROM ${galleryImages})`,
+  })
+
+  refrescar()
+  return { ok: true }
+}
+
+/**
+ * Saca el id de un link de YouTube, en cualquiera de las formas en que se comparte:
+ * youtu.be/ID, watch?v=ID, /shorts/ID, /embed/ID, /live/ID. El id son siempre 11
+ * caracteres; se valida para no meter en la página cualquier cosa que peguen.
+ */
+function idDeYoutube(link: string): string | null {
+  let url: URL
+  try {
+    url = new URL(link.trim().replace(/^(?!https?:\/\/)/, 'https://'))
+  } catch {
+    return null
+  }
+  const host = url.hostname.replace(/^(www\.|m\.)/, '')
+  let id: string | null = null
+  if (host === 'youtu.be') id = url.pathname.split('/')[1] ?? null
+  else if (host === 'youtube.com' || host === 'youtube-nocookie.com') {
+    id = url.searchParams.get('v') ?? url.pathname.match(/^\/(?:shorts|embed|live)\/([^/]+)/)?.[1] ?? null
+  }
+  return id && /^[A-Za-z0-9_-]{11}$/.test(id) ? id : null
+}
+
+/** Agrega un video de YouTube al final de la galería. No ocupa el volumen: se embebe. */
+export async function agregarVideo(link: string, altEs: string, altEn: string): Promise<ResultadoImagen> {
+  if (!(await conSesion())) return { ok: false, error: 'sin_sesion' }
+
+  const id = idDeYoutube(String(link))
+  if (!id) return { ok: false, error: 'link_invalido' }
+
+  await db.insert(galleryImages).values({
+    src: `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+    youtubeId: id,
+    altEs: String(altEs).trim(),
+    altEn: String(altEn).trim(),
     position: sql`(SELECT COALESCE(MAX(${galleryImages.position}), 0) + 1 FROM ${galleryImages})`,
   })
 

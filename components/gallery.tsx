@@ -2,11 +2,15 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { X, ChevronLeft, ChevronRight } from "lucide-react"
+import { X, ChevronLeft, ChevronRight, Play } from "lucide-react"
 import { useTranslations } from 'next-intl'
 import type { ImagenGaleria } from '@/lib/galeria'
 
-/** Las fotos salen de la base y se ordenan desde el panel. Sin fotos, no hay sección. */
+/**
+ * Las fotos salen de la base y se ordenan desde el panel. Sin fotos, no hay sección.
+ * Entre ellas puede haber videos de YouTube: en la grilla se ve su miniatura, y el
+ * reproductor sólo se carga al abrirlo.
+ */
 export function Gallery({ images }: { images: ImagenGaleria[] }) {
   const t = useTranslations('gallery')
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
@@ -70,14 +74,32 @@ export function Gallery({ images }: { images: ImagenGaleria[] }) {
                     : "aspect-square"
               }`}
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes={isFirst ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 50vw'}
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
-              />
+              {image.youtubeId ? (
+                // La miniatura viene de YouTube: next/image no la optimiza sin sumar el dominio.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={image.src}
+                  alt={image.alt}
+                  loading="lazy"
+                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              ) : (
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  fill
+                  sizes={isFirst ? '(min-width: 768px) 66vw, 100vw' : '(min-width: 768px) 33vw, 50vw'}
+                  className="object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              )}
               <div className="absolute inset-0 bg-background/0 group-hover:bg-background/30 transition-colors duration-300" />
+              {image.youtubeId && (
+                <span className="absolute inset-0 flex items-center justify-center">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg transition-transform group-hover:scale-110">
+                    <Play className="h-6 w-6 translate-x-0.5" fill="currentColor" />
+                  </span>
+                </span>
+              )}
             </button>
             )
           })}
@@ -109,13 +131,24 @@ export function Gallery({ images }: { images: ImagenGaleria[] }) {
             className="relative w-full max-w-5xl aspect-video"
             onClick={(e) => e.stopPropagation()}
           >
-            <Image
-              src={images[selectedImage].src}
-              alt={images[selectedImage].alt}
-              sizes="100vw"
-              fill
-              className="object-contain"
-            />
+            {images[selectedImage].youtubeId ? (
+              <iframe
+                key={images[selectedImage].id}
+                src={`https://www.youtube.com/embed/${images[selectedImage].youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+                title={images[selectedImage].alt || t('title')}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="absolute inset-0 h-full w-full rounded-lg border-0"
+              />
+            ) : (
+              <Image
+                src={images[selectedImage].src}
+                alt={images[selectedImage].alt}
+                sizes="100vw"
+                fill
+                className="object-contain"
+              />
+            )}
           </div>
           
           <button

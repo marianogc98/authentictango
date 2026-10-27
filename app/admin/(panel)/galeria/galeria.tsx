@@ -1,9 +1,9 @@
 'use client'
 
-import { useRef, useState, useTransition } from 'react'
-import { ArrowDown, ArrowUp } from 'lucide-react'
+import { useRef, useState, useTransition, type FormEvent } from 'react'
+import { ArrowDown, ArrowUp, Play } from 'lucide-react'
 import {
-  borrarImagen, guardarImagen, moverImagen, subirImagen,
+  agregarVideo, borrarImagen, guardarImagen, moverImagen, subirImagen,
   type FilaImagen, type ResultadoImagen,
 } from '@/lib/admin/galeria'
 import { Button } from '@/components/ui/button'
@@ -15,6 +15,7 @@ const ERRORES: Record<string, string> = {
   sin_volumen: 'Falta configurar dónde se guardan las fotos (MEDIA_DIR).',
   archivo_invalido: 'Ese archivo no es una foto que se pueda usar.',
   muy_grande: 'La foto es demasiado pesada.',
+  link_invalido: 'Ese link no es de un video de YouTube.',
 }
 
 const mensajeDe = (r: ResultadoImagen) => (r.ok ? null : ERRORES[r.error] ?? 'No se pudo guardar.')
@@ -93,6 +94,42 @@ export function SubirImagenes() {
   )
 }
 
+/** Un video de YouTube entra a la galería pegando su link: no se sube, se embebe. */
+export function AgregarVideo() {
+  const [link, setLink] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [agregando, startTransition] = useTransition()
+
+  const agregar = (e: FormEvent) => {
+    e.preventDefault()
+    startTransition(async () => {
+      const r = await agregarVideo(link, '', '').catch(() => null)
+      const fallo = r ? mensajeDe(r) : 'No se pudo conectar con el servidor.'
+      setError(fallo)
+      if (!fallo) setLink('')
+    })
+  }
+
+  return (
+    <form onSubmit={agregar} className="rounded-lg border border-border p-4">
+      <Label htmlFor="video-link" className="text-sm">Agregar un video de YouTube</Label>
+      <div className="mt-2 flex flex-wrap items-center gap-3">
+        <Input
+          id="video-link"
+          value={link}
+          onChange={(e) => setLink(e.target.value)}
+          placeholder="https://www.youtube.com/watch?v=…"
+          className="min-w-0 flex-1 basis-64"
+        />
+        <Button type="submit" disabled={agregando || !link.trim()}>
+          {agregando ? 'Agregando…' : 'Agregar video'}
+        </Button>
+      </div>
+      {error && <Aviso texto={error} />}
+    </form>
+  )
+}
+
 export function ListaImagenes({ filas }: { filas: FilaImagen[] }) {
   if (filas.length === 0) {
     return (
@@ -134,7 +171,7 @@ function Imagen({ fila, posicion, primera, ultima }: {
     })
 
   const borrar = () => {
-    if (!confirm('¿Sacar esta foto de la galería? No se puede deshacer.')) return
+    if (!confirm(`¿Sacar ${fila.youtubeId ? 'este video' : 'esta foto'} de la galería? No se puede deshacer.`)) return
     correr(() => borrarImagen(fila.id))
   }
 
@@ -144,8 +181,15 @@ function Imagen({ fila, posicion, primera, ultima }: {
         {/* eslint-disable-next-line @next/next/no-img-element -- miniatura del panel, no hace falta optimizarla */}
         <img src={fila.src} alt={fila.altEs} className="absolute inset-0 h-full w-full object-cover" />
         <span className="absolute left-2 top-2 rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">
-          {posicion}{primera ? ' · grande' : ''}
+          {posicion}{primera ? ' · grande' : ''}{fila.youtubeId ? ' · video' : ''}
         </span>
+        {fila.youtubeId && (
+          <span className="absolute inset-0 flex items-center justify-center">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full bg-black/70 text-white">
+              <Play className="h-5 w-5 translate-x-0.5" fill="currentColor" />
+            </span>
+          </span>
+        )}
       </div>
       <div className="space-y-3 p-3">
         <div className="space-y-1.5">
