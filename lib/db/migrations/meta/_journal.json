@@ -71,6 +71,13 @@
       "when": 1793140869443,
       "tag": "0009_gallery_youtube",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1793366979581,
+      "tag": "0010_review_platform",
+      "breakpoints": true
     }
   ]
 }

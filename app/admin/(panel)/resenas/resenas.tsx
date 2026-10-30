@@ -11,11 +11,13 @@ import { Label } from '@/components/ui/label'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { CODIGOS_PAIS, nombrePais } from '@/lib/paises'
+import type { Plataforma } from '@/lib/plataformas'
 
 const ERRORES: Record<string, string> = {
   sin_sesion: 'La sesión venció. Volvé a entrar al panel.',
   sin_nombre: 'Falta el nombre.',
   pais_invalido: 'Elegí el país de la lista.',
+  plataforma_invalida: 'Elegí si la reseña es de Airbnb o de Google.',
   estrellas_invalidas: 'Las estrellas van de 1 a 5.',
   mes_invalido: 'Elegí el mes de la reseña.',
   sin_texto: 'Hace falta el texto en los dos idiomas.',
@@ -27,7 +29,7 @@ const mensajeDe = (r: ResultadoResena) => (r.ok ? null : ERRORES[r.error] ?? 'No
 const mesActual = () => new Date().toISOString().slice(0, 7)
 
 const vacia = (): DatosResena => ({
-  name: '', country: '', rating: 5, mes: mesActual(), textEs: '', textEn: '', visible: true,
+  name: '', country: '', platform: 'airbnb', rating: 5, mes: mesActual(), textEs: '', textEn: '', visible: true,
 })
 
 /** Los países por su nombre en español, que es como ella los busca en la lista. */
@@ -139,7 +141,7 @@ function Campos({ id, datos, onChange }: {
 
   return (
     <div className="mt-3 space-y-3">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)_auto_auto_auto] lg:items-end">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-[minmax(0,2fr)_minmax(0,1.3fr)_auto_auto_auto_auto] lg:items-end">
         <div className="space-y-1.5">
           <Label htmlFor={`${id}-nombre`} className="text-xs text-muted-foreground">Nombre</Label>
           <Input id={`${id}-nombre`} value={datos.name} onChange={(e) => set('name', e.target.value)} />
@@ -158,6 +160,18 @@ function Campos({ id, datos, onChange }: {
             {PAISES.map((p) => (
               <option key={p.codigo} value={p.codigo} suppressHydrationWarning>{p.nombre}</option>
             ))}
+          </select>
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor={`${id}-plataforma`} className="text-xs text-muted-foreground">Plataforma</Label>
+          <select
+            id={`${id}-plataforma`}
+            value={datos.platform}
+            onChange={(e) => set('platform', e.target.value as Plataforma)}
+            className="h-9 rounded-md border border-input bg-transparent px-3 text-sm"
+          >
+            <option value="airbnb">Airbnb</option>
+            <option value="google">Google</option>
           </select>
         </div>
         <div className="space-y-1.5">

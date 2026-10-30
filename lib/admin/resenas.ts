@@ -7,6 +7,7 @@ import { db } from '@/lib/db/client'
 import { reviews } from '@/lib/db/schema'
 import { COOKIE, sesionValida } from '@/lib/admin/auth'
 import { esCodigoPais } from '@/lib/paises'
+import { esPlataforma, type Plataforma } from '@/lib/plataformas'
 
 export type FilaResena = {
   id: number
@@ -14,6 +15,7 @@ export type FilaResena = {
   /** Código ISO del país, o "" si no se cargó. */
   country: string
   rating: number
+  platform: Plataforma
   /** "2025-12": lo que usa un <input type="month">. */
   mes: string
   textEs: string
@@ -25,7 +27,7 @@ export type DatosResena = Omit<FilaResena, 'id'>
 
 export type ResultadoResena =
   | { ok: true }
-  | { ok: false; error: 'sin_sesion' | 'sin_nombre' | 'pais_invalido' | 'estrellas_invalidas' | 'mes_invalido' | 'sin_texto' }
+  | { ok: false; error: 'sin_sesion' | 'sin_nombre' | 'pais_invalido' | 'plataforma_invalida' | 'estrellas_invalidas' | 'mes_invalido' | 'sin_texto' }
 
 /** Un server action es un endpoint público: el layout protege la página, no la acción. */
 async function conSesion(): Promise<boolean> {
@@ -43,6 +45,9 @@ function normalizar(d: DatosResena):
   const country = String(d.country ?? '').trim().toUpperCase() || null
   if (country && !esCodigoPais(country)) return { ok: false, error: 'pais_invalido' }
 
+  const platform = String(d.platform ?? '')
+  if (!esPlataforma(platform)) return { ok: false, error: 'plataforma_invalida' }
+
   const rating = Number(d.rating)
   if (!Number.isInteger(rating) || rating < 1 || rating > 5) return { ok: false, error: 'estrellas_invalidas' }
 
@@ -55,7 +60,7 @@ function normalizar(d: DatosResena):
   const textEn = String(d.textEn ?? '').trim()
   if (!textEs || !textEn) return { ok: false, error: 'sin_texto' }
 
-  return { ok: true, fila: { name, country, rating, date: `${mes}-01`, textEs, textEn, visible: Boolean(d.visible) } }
+  return { ok: true, fila: { name, country, platform, rating, date: `${mes}-01`, textEs, textEn, visible: Boolean(d.visible) } }
 }
 
 /** La home se cachea: sin esto, un cambio tardaría hasta un minuto en verse. */
@@ -73,6 +78,7 @@ export async function listarResenas(): Promise<FilaResena[]> {
     name: r.name,
     country: r.country ?? '',
     rating: r.rating,
+    platform: esPlataforma(r.platform) ? r.platform : 'airbnb',
     mes: r.date.slice(0, 7),
     textEs: r.textEs,
     textEn: r.textEn,

@@ -2,6 +2,7 @@ import { desc, eq } from 'drizzle-orm'
 import { db } from '@/lib/db/client'
 import { reviews } from '@/lib/db/schema'
 import { nombrePais } from '@/lib/paises'
+import { esPlataforma, type Plataforma } from '@/lib/plataformas'
 
 /** Lo que la home necesita de una reseña, ya en el idioma de la página. */
 export type ResenaPublica = {
@@ -10,6 +11,7 @@ export type ResenaPublica = {
   /** El país ya escrito en el idioma de la página, si se cargó. */
   pais: string | null
   estrellas: number
+  plataforma: Plataforma
   /** El mes ya escrito: "diciembre de 2025", "December 2025". */
   mes: string
   texto: string
@@ -44,6 +46,7 @@ export async function resenasPublicas(locale: string): Promise<ResenaPublica[]> 
       id: r.id,
       nombre: r.name,
       estrellas: r.rating,
+      plataforma: esPlataforma(r.platform) ? r.platform : 'airbnb',
       pais: r.country ? nombrePais(r.country, locale) : null,
       mes: mesEscrito(r.date, locale),
       texto: locale === 'es' ? r.textEs : r.textEn,

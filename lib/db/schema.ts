@@ -185,6 +185,8 @@ export const reviews = pgTable('reviews', {
   textEn: text('text_en').notNull(),
   /** Código ISO del país ("AR", "US"). El nombre se escribe en el idioma de la página. */
   country: text('country'),
+  /** De dónde salió: 'airbnb' o 'google'. La tarjeta muestra el ícono. */
+  platform: text('platform').notNull().default('airbnb'),
   visible: boolean('visible').notNull().default(true),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 })

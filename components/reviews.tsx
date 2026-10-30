@@ -24,20 +24,21 @@ function Estrellas({ cantidad }: { cantidad: number }) {
   )
 }
 
+const PLATAFORMA = {
+  airbnb: { Icono: FaAirbnb, color: 'text-[#FF5A5F]', nombre: 'Airbnb' },
+  google: { Icono: SiGoogle, color: 'text-[#4285F4]', nombre: 'Google' },
+} as const
+
 /**
  * Las reseñas salen de la base, cargadas desde el panel; los puntajes de cada plataforma
  * siguen en los textos porque son un número que ella copia de Airbnb y de Google.
  *
- * Todas van juntas y sin decir de qué plataforma es cada una: lo que importa es lo que
- * dicen. Por eso los recuadros de puntaje tampoco llevan a ningún lado.
+ * Todas van juntas, ordenadas por fecha; cada tarjeta lleva el ícono de su plataforma.
  */
 export function Reviews({ resenas }: { resenas: ResenaPublica[] }) {
   const t = useTranslations('reviews')
 
-  const puntajes = [
-    { id: 'airbnb', Icono: FaAirbnb, color: 'text-[#FF5A5F]' },
-    { id: 'google', Icono: SiGoogle, color: 'text-[#4285F4]' },
-  ] as const
+  const puntajes = (['airbnb', 'google'] as const).map((id) => ({ id, ...PLATAFORMA[id] }))
 
   return (
     <section id="reviews" className="py-12 lg:py-16 bg-secondary">
@@ -76,7 +77,9 @@ export function Reviews({ resenas }: { resenas: ResenaPublica[] }) {
           <div className="relative">
             <Carousel opts={{ align: 'start', loop: true }} className="w-full">
               <CarouselContent className="-ml-2 md:-ml-4">
-                {resenas.map((resena) => (
+                {resenas.map((resena) => {
+                  const { Icono, color, nombre } = PLATAFORMA[resena.plataforma]
+                  return (
                   <CarouselItem key={resena.id} className="pl-2 md:pl-4 basis-full md:basis-1/2 lg:basis-1/3">
                     <Card className="h-full gap-0 py-0 border-border shadow-sm">
                       <CardContent className="p-5 h-full flex flex-col">
@@ -90,7 +93,10 @@ export function Reviews({ resenas }: { resenas: ResenaPublica[] }) {
                               {resena.pais && <span className="font-normal text-muted-foreground">, {resena.pais}</span>}
                             </h3>
                           </div>
-                          <p className="shrink-0 pt-0.5 text-xs text-muted-foreground">{resena.mes}</p>
+                          <div className="flex shrink-0 items-center gap-2 pt-0.5">
+                            <p className="text-xs text-muted-foreground">{resena.mes}</p>
+                            <Icono className={`h-4 w-4 ${color}`} aria-label={nombre} title={nombre} />
+                          </div>
                         </div>
 
                         <Plegable
@@ -102,7 +108,8 @@ export function Reviews({ resenas }: { resenas: ResenaPublica[] }) {
                       </CardContent>
                     </Card>
                   </CarouselItem>
-                ))}
+                  )
+                })}
               </CarouselContent>
               <CarouselPrevious className="hidden md:flex -left-12" />
               <CarouselNext className="hidden md:flex -right-12" />
